@@ -1,36 +1,51 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# FacultyConnect — MERN setup
 
-## Getting Started
+Setup only: blank React client, Express/Node server, and Mongoose connection configuration. No pages, API routes, models, authentication, or application features.
 
-First, run the development server:
+## MVC structure
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```text
+client/src/
+  views/                React screens (View layer; empty)
+  App.jsx               Blank application root
+  main.jsx              React entry point
+server/src/
+  config/
+    env.js              Environment configuration
+    database.js         MongoDB connection
+  models/               Mongoose schemas and models (empty)
+  controllers/          Request handlers (empty)
+  routes/
+    index.js            Empty router mounted at /api
+  app.js                Express middleware and route mounting
+  index.js              Database initialization and server startup
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Future requests follow routes → controllers → models. React provides the View
+layer in this MERN project; server-side templates are not needed.
+The empty folders contain `.gitkeep` files so Git can preserve the scaffold.
+No feature models, controllers, endpoints, or screens are implemented.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## Run
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```sh
+npm install
+npm run dev
+```
 
-## Learn More
+Client: http://localhost:3000. Server: http://localhost:5000.
+The client is intentionally blank; the server has no routes, so requests return 404.
 
-To learn more about Next.js, take a look at the following resources:
+## MongoDB
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Provide a running local MongoDB instance or a MongoDB Atlas connection string.
+Copy `server/.env.example` to `server/.env` and set `MONGODB_URI`.
+Restart the server after changing environment variables.
+Without `server/.env`, the server starts without a database connection.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Scripts
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `npm run dev`: run client and server together.
+- `npm run build`: build the client.
+- `npm start`: run the server.
+- `npm run preview --workspace client`: preview the built client.

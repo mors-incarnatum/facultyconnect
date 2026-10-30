@@ -3,8 +3,11 @@ import react from "@vitejs/plugin-react";
 
 export default defineConfig({
   plugins: [react()],
+  // Keep generated cache outside the dependency directory, which may be read-only.
+  cacheDir: ".vite",
   server: {
     port: 3000,
+    strictPort: true,
     proxy: {
       "/api": "http://localhost:5000",
     },

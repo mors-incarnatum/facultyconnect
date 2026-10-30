@@ -5,6 +5,20 @@ import { useApp } from "../../state/AppContext.jsx";
 
 const GROUPS = [
   {
+    title: "Faculty workspace", role: "faculty", items: [
+      ["/faculty", "Overview", "Requests, upcoming consultations, and status counts"],
+      ["/faculty/consultations", "Consultations", "Review current requests and appointment history"],
+      ["/faculty/consultations/a6", "Consultation request", "Read the student topic and accept or decline"],
+      ["/faculty/consultations/a1", "Manage consultation", "Complete or cancel a confirmed appointment"],
+      ["/faculty/availability", "Availability manager", "Weekly hours, date exceptions, and publishing"],
+      ["/faculty/availability/slots", "Published slots", "Review available and reserved consultation times"],
+      ["/faculty/availability/new", "Create availability", "Publish a one-off consultation slot"],
+      ["/faculty/availability/sl04/edit", "Edit availability", "Update an unreserved time slot"],
+      ["/faculty/availability/sl04/remove", "Remove availability", "Review and remove a published time"],
+      ["/faculty/help", "Help & support", "How to manage requests and availability"],
+    ],
+  },
+  {
     title: "Account", role: null, items: [
       ["/login", "Sign in", "Role-based log-in for students and faculty"],
       ["/register", "Register", "Create a student or faculty account"],
@@ -48,6 +62,7 @@ export default function Index() {
         <p className="lead">FacultyConnect brings consultation scheduling into one place. Faculty publish their available times, students find the right person and request a slot, and both sides see the same appointment status.</p>
         <div className="btn-row" style={{ marginTop: 0 }}>
           <DemoLink role="student" to="/student" className="btn primary">Explore as a student</DemoLink>
+          <DemoLink role="faculty" to="/faculty" className="btn">Explore as faculty</DemoLink>
         </div>
         <div className="value-grid">
           <div className="card"><h3>See real availability</h3><p className="muted">Students check open slots before they ask, so there is no back-and-forth over email.</p></div>
@@ -58,7 +73,7 @@ export default function Index() {
 
       <section className="directory" aria-labelledby="dir-title">
         <h2 id="dir-title">Every view, one place</h2>
-        <p className="muted">Phase 1 prototype with hardcoded sample data. Each link opens a screen using the sample student account (Alex Johnson).</p>
+        <p className="muted">Phase 1 prototype with hardcoded sample data. Workspace links use Alex Johnson (student) or Dr. Sarah Chen (faculty). Changes are shared during this demo and reset on page reload.</p>
         {GROUPS.map((g) => (
           <div className="dir-group" key={g.title}>
             <h3>{g.title}</h3>

@@ -2,6 +2,7 @@ import { createContext, useCallback, useContext, useMemo, useRef, useState } fro
 import {
   TODAY, initialAppointments, initialFaculty, initialSlots, initialStudents,
 } from "../data/mock.js";
+import { defaultWeeklyHours, publishSchedule, validateSlot } from "./availability.js";
 
 const AppContext = createContext(null);
 export const ACTIVE = ["pending", "confirmed"];
@@ -30,6 +31,7 @@ export function AppProvider({ children }) {
   const [appointments, setAppointments] = useState(initialAppointments);
   const [session, setSession] = useState(loadSession);
   const [selection, setSelection] = useState({ facultyId: null, slotId: null });
+  const [schedules, setSchedules] = useState({});
   const counter = useRef(100);
   const nextId = (prefix) => `${prefix}${++counter.current}`;
 
@@ -131,12 +133,49 @@ export function AppProvider({ children }) {
     setAppointments((list) => list.map((a) => (a.id === id ? { ...a, status } : a)));
   }, []);
 
+  const updateFacultyStatus = (id, status) => {
+    const a = getAppointment(id);
+    const allowed = a?.status === "pending" ? ["confirmed", "declined", "completed", "cancelled"] : a?.status === "confirmed" ? ["completed", "cancelled"] : [];
+    if (user?.role !== "faculty" || getSlot(a?.slotId)?.facultyId !== user.id || !allowed.includes(status)) return { ok: false };
+    setStatus(id, status);
+    return { ok: true };
+  };
+  const saveFacultySlot = (fields, id) => {
+    if (user?.role !== "faculty") return { ok: false, error: "Sign in as faculty." };
+    if (id && (getSlot(id)?.facultyId !== user.id || holderOf(id))) return { ok: false, error: "Reserved slots cannot be edited." };
+    const slot = { ...fields, facultyId: user.id, location: fields.location.trim() };
+    const error = slot.date < TODAY ? "Choose a date from today onwards." : validateSlot(slot, slots, id);
+    if (error) return { ok: false, error };
+    const slotId = id || nextId("sl");
+    // Keep historical records attached to the original schedule.
+    if (id && appointments.some((a) => a.slotId === id)) return { ok: false, error: "This slot has appointment history. Create a new slot instead." };
+    setSlots((list) => id ? list.map((s) => s.id === id ? { ...slot, id } : s) : [...list, { ...slot, id: slotId }]);
+    return { ok: true, id: slotId };
+  };
+  const removeFacultySlot = (id) => {
+    const slot = getSlot(id);
+    if (user?.role !== "faculty" || slot?.facultyId !== user.id || holderOf(id)) return { ok: false, error: "Reserved slots cannot be removed." };
+    if (appointments.some((a) => a.slotId === id)) return { ok: false, error: "This slot has appointment history and must be retained." };
+    setSlots((list) => list.filter((s) => s.id !== id));
+    return { ok: true, slot };
+  };
+  const saveFacultySchedule = (schedule) => {
+    if (user?.role !== "faculty") return { ok: false, error: "Sign in as faculty." };
+    const result = publishSchedule({ slots, appointments, facultyId: user.id, ...schedule, today: TODAY, nextId });
+    if (!result.ok) return result;
+    setSlots(result.slots);
+    setSchedules((s) => ({ ...s, [user.id]: schedule }));
+    return { ok: true };
+  };
+  const facultySchedule = schedules[user?.id] || { weekly: defaultWeeklyHours(), exceptions: [], location: user?.office || "" };
+
   const value = {
     user, session, signIn, signInAs, signOut, register,
     faculty, students, slots, appointments,
     getFaculty, getStudent, getSlot, getAppointment, holderOf, isAvailable, availableSlotsFor,
     selection, setSelection,
     createAppointment, updateTopic, deleteTopic, setStatus,
+    updateFacultyStatus, saveFacultySlot, removeFacultySlot, saveFacultySchedule, facultySchedule,
   };
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 }

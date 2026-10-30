@@ -5,6 +5,11 @@ import { SEMESTER, UNIVERSITY } from "../data/mock.js";
 import { todayLabel } from "./ui.jsx";
 
 const NAV = {
+  faculty: [
+    { to: "/faculty", label: "Overview", end: true },
+    { to: "/faculty/availability", label: "My availability" },
+    { to: "/faculty/consultations", label: "Consultations" },
+  ],
   student: [
     { to: "/student", label: "Overview", end: true },
     { to: "/student/faculty", label: "Find faculty", also: ["/student/request", "/student/booking-conflict"] },

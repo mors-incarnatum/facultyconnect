@@ -1,6 +1,12 @@
 node_modules/
+.vite/
 dist/
 .env
 .env.*
 !.env.example
 *.log
+
+/docs
+/server
+/tools
+

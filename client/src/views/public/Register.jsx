@@ -1,14 +1,15 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useApp } from "../../state/AppContext.jsx";
-import { departments } from "../../data/mock.js";
+import { departments } from "../../data/initialData.js";
 import { Field } from "../../components/ui.jsx";
 import AuthLayout from "./AuthLayout.jsx";
 
 export default function Register() {
   const { register } = useApp();
   const navigate = useNavigate();
-  const [role, setRole] = useState("student");
+  const { state } = useLocation();
+  const [role, setRole] = useState(state?.role === "faculty" ? "faculty" : "student");
   const [form, setForm] = useState({ name: "", email: "", password: "", confirm: "", department: departments[0] });
   const [error, setError] = useState("");
   const set = (k) => (e) => setForm({ ...form, [k]: e.target.value });
@@ -21,7 +22,7 @@ export default function Register() {
     if (form.password !== form.confirm) return setError("Passwords do not match.");
     const res = register({ role, name: form.name.trim(), email: form.email, department: form.department });
     if (!res.ok) return setError(res.error);
-    navigate("/register/success", { state: { role, name: form.name.trim(), email: form.email.trim() } });
+    navigate("/register/success", { state: { role, name: form.name.trim(), email: form.email.trim(), from: state?.from } });
   };
 
   return (
@@ -45,7 +46,7 @@ export default function Register() {
         <Field label="Confirm password" type="password" value={form.confirm} onChange={set("confirm")} autoComplete="new-password" />
         <button className="btn primary block" type="submit">Create account</button>
         <p className="hint">After creating your account, sign in to continue.</p>
-        <p className="foot"><Link to="/login">Already have an account? Sign in</Link></p>
+        <p className="foot"><Link to="/login" state={state}>Already have an account? Sign in</Link></p>
       </form>
     </AuthLayout>
   );
@@ -63,7 +64,7 @@ export function RegisterSuccess() {
           {state?.name ? `Welcome, ${state.name}. ` : ""}Your account is ready. Sign in to {role === "faculty" ? "publish your consultation schedule" : "find faculty and request consultations"}.
         </p>
         <div className="btn-row">
-          <Link to="/login" state={{ role }} className="btn primary">Sign in</Link>
+          <Link to="/login" state={{ email: state?.email, from: state?.from }} className="btn primary">Sign in</Link>
           <Link to="/" className="btn">Back to home</Link>
         </div>
       </div>

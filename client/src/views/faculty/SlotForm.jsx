@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { useApp } from "../../state/AppContext.jsx";
-import { TODAY } from "../../data/mock.js";
+import { TODAY } from "../../data/initialData.js";
 import { Field, PageHead, StatusBadge, modeLabel } from "../../components/ui.jsx";
 import { fmtShort, fmtRange } from "../../utils/format.js";
 import { MissingRecord } from "./shared.jsx";

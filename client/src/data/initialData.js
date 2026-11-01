@@ -1,4 +1,4 @@
-// Hardcoded sample data for Phase 1
+// Initial account and scheduling data
 import { addMinutes } from "../utils/format.js";
 
 export const TODAY = "2026-10-26"; 

@@ -64,7 +64,7 @@ export default function Overview() {
           <WeekCalendar
             facultyIds={faculty.map((f) => f.id)}
             studentId={user.id}
-            onPick={(slots) => { setSelection({ facultyId: slots[0].facultyId, slotId: slots[0].id }); navigate("/student/faculty/calendar"); }}
+            onPick={(slots) => { setSelection({ facultyId: slots[0].facultyId, slotId: slots[0].id }); navigate(`/student/faculty/calendar?faculty=${slots[0].facultyId}&slot=${slots[0].id}`); }}
           />
         </section>
       </div>

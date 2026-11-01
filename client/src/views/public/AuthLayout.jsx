@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { UNIVERSITY } from "../../data/mock.js";
+import { UNIVERSITY } from "../../data/initialData.js";
 
 export default function AuthLayout({ children }) {
   return (

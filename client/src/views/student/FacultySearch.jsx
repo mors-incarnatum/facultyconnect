@@ -1,7 +1,7 @@
-import { useState } from "react";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { useApp } from "../../state/AppContext.jsx";
-import { departments } from "../../data/mock.js";
+import { departments } from "../../data/initialData.js";
 import { Avatar, Field, PageHead, modeLabel } from "../../components/ui.jsx";
 import WeekCalendar from "../../components/WeekCalendar.jsx";
 import { fmtLong, fmtRange, fmtShort, fmtTime } from "../../utils/format.js";
@@ -17,16 +17,19 @@ function useFacultyResults() {
     if (!term) return true;
     return [f.name, f.department, ...f.subjects, ...f.courses].join(" ").toLowerCase().includes(term);
   });
-  return { q, dept, results, setParams };
+  return { q, dept, results, params, setParams };
 }
 
 export default function FacultySearch({ view }) {
   const { availableSlotsFor, getSlot, selection, setSelection, user } = useApp();
   const navigate = useNavigate();
-  const { q, dept, results, setParams } = useFacultyResults();
+  const location = useLocation();
+  const { q, dept, results, params, setParams } = useFacultyResults();
+  const preview = useRef(null);
   const [draftQ, setDraftQ] = useState(q);
   const [draftDept, setDraftDept] = useState(dept);
   const [sameTime, setSameTime] = useState([]);
+  useEffect(() => { setDraftQ(q); setDraftDept(dept); setSameTime([]); }, [q, dept]);
 
   const submit = (e) => {
     e.preventDefault();
@@ -37,13 +40,22 @@ export default function FacultySearch({ view }) {
   };
 
   // Derived selection: keep the chosen faculty/slot when still valid.
-  const selFaculty = results.find((f) => f.id === selection.facultyId) || results[0] || null;
+  const selFaculty = results.find((f) => f.id === (params.get("faculty") || selection.facultyId)) || results[0] || null;
   const options = selFaculty ? availableSlotsFor(selFaculty.id) : [];
-  const chosen = getSlot(selection.slotId);
+  const chosen = getSlot(params.get("slot") || selection.slotId);
   const selSlot = options.find((s) => s.id === chosen?.id) || options[0] || null;
 
-  const pickFaculty = (f) => setSelection({ facultyId: f.id, slotId: availableSlotsFor(f.id)[0]?.id || null });
-  const pickSlot = (s) => setSelection({ facultyId: s.facultyId, slotId: s.id });
+  const choose = (facultyId, slotId) => {
+    setSelection({ facultyId, slotId });
+    const next = new URLSearchParams(params);
+    next.set("faculty", facultyId);
+    if (slotId) next.set("slot", slotId); else next.delete("slot");
+    setParams(next);
+    if (window.matchMedia("(max-width: 1100px)").matches) preview.current?.scrollIntoView({ block: "start", behavior: "smooth" });
+  };
+  const pickFaculty = (f) => choose(f.id, availableSlotsFor(f.id)[0]?.id || null);
+  const pickSlot = (s) => choose(s.facultyId, s.id);
+  const onward = { ...location.state, returnTo: location.pathname + location.search };
   const upNext = results.flatMap((f) => availableSlotsFor(f.id).slice(0, 2).map((s) => ({ s, f })))
     .sort((a, b) => (a.s.date + a.s.start).localeCompare(b.s.date + b.s.start)).slice(0, 3);
 
@@ -65,8 +77,8 @@ export default function FacultySearch({ view }) {
       <div className="toolbar">
         <strong className="muted small">{results.length} faculty · {dept || "All departments"}{q ? ` · “${q}”` : ""}</strong>
         <div className="toggle auto" role="group" aria-label="View">
-          <button type="button" aria-pressed={view === "list"} onClick={() => navigate(`/student/faculty${window.location.hash.includes("?") ? "?" + window.location.hash.split("?")[1] : ""}`)}>List</button>
-          <button type="button" aria-pressed={view === "calendar"} onClick={() => navigate(`/student/faculty/calendar${window.location.hash.includes("?") ? "?" + window.location.hash.split("?")[1] : ""}`)}>Calendar</button>
+          <button type="button" aria-pressed={view === "list"} onClick={() => navigate(`/student/faculty${location.search}`, { state: location.state })}>List</button>
+          <button type="button" aria-pressed={view === "calendar"} onClick={() => navigate(`/student/faculty/calendar${location.search}`, { state: location.state })}>Calendar</button>
         </div>
       </div>
 
@@ -95,13 +107,13 @@ export default function FacultySearch({ view }) {
                     <span className="when">
                       {next ? (<><strong>{fmtShort(next.date)} · {fmtTime(next.start)}</strong><span className="muted small">{next.mode === "online" ? "Online consultation" : next.location}</span></>) : <span className="muted small">No open times</span>}
                     </span>
-                    <span className="act">{selected ? "Selected" : "View profile"}</span>
+                    <span className="act">{selected ? "Selected" : "View times"}</span>
                   </button>
                 );
               })}
               <div className="notice" style={{ marginTop: 4 }}>
                 Choose a faculty member to see their consultation details.
-                <div className="muted small" style={{ marginTop: 8 }}>Availability updated Oct 26, 2026 · 9:45 AM. Slots are checked again when you submit.</div>
+                <div className="muted small" style={{ marginTop: 8 }}>Slots are checked again when you submit.</div>
               </div>
             </>
           ) : (
@@ -135,7 +147,7 @@ export default function FacultySearch({ view }) {
         </div>
 
         {selFaculty && (
-          <aside className="card preview" aria-label="Faculty preview">
+          <aside className="card preview" aria-label="Faculty preview" ref={preview}>
             <div className="eyebrow">Faculty preview</div>
             <div className="head">
               <Avatar person={selFaculty} size="lg" />
@@ -153,7 +165,7 @@ export default function FacultySearch({ view }) {
                 <div className="when-big">{fmtLong(selSlot.date)}</div>
                 <div className="time-big">{fmtRange(selSlot.start, selSlot.end)}</div>
                 <p className="muted" style={{ marginBottom: 16 }}>{modeLabel(selSlot)} · 30 minutes<br />{selSlot.location}</p>
-                <Link className="btn primary block" to={`/student/request?slot=${selSlot.id}`}>Request consultation →</Link>
+                <Link className="btn primary block" to={`/student/request?slot=${selSlot.id}`} state={onward}>Request consultation →</Link>
                 <div style={{ marginTop: 18 }}><strong>Other available times</strong>
                   <ul>
                     {options.filter((s) => s.id !== selSlot.id).slice(0, 4).map((s) => (
@@ -166,7 +178,7 @@ export default function FacultySearch({ view }) {
             ) : <div className="notice warn">No open consultation times at the moment.</div>}
             <hr className="divider" />
             <p className="muted small">Pending requests reserve the selected slot until the faculty responds.</p>
-            <p style={{ marginTop: 10 }}><Link to={`/student/faculty/${selFaculty.id}`}>View full profile →</Link></p>
+            <p style={{ marginTop: 10 }}><Link to={`/student/faculty/${selFaculty.id}`} state={onward}>View full profile →</Link></p>
           </aside>
         )}
       </div>

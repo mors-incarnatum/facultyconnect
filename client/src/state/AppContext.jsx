@@ -1,12 +1,11 @@
 import { createContext, useCallback, useContext, useMemo, useRef, useState } from "react";
 import {
   TODAY, initialAppointments, initialFaculty, initialSlots, initialStudents,
-} from "../data/mock.js";
+} from "../data/initialData.js";
 import { defaultWeeklyHours, publishSchedule, validateSlot } from "./availability.js";
 
 const AppContext = createContext(null);
 export const ACTIVE = ["pending", "confirmed"];
-export const DEMO_ACCOUNTS = { student: "s1", faculty: "f1" };
 
 const loadSession = () => {
   try {
@@ -49,16 +48,17 @@ export function AppProvider({ children }) {
   }, []);
 
   const signIn = useCallback(
-    (role, email) => {
-      const list = role === "student" ? students : faculty;
-      const found = list.find((u) => u.email.toLowerCase() === email.trim().toLowerCase());
-      if (!found) return { ok: false, error: `No ${role} account found for that email address.` };
+    (email) => {
+      const normalizedEmail = email.trim().toLowerCase();
+      const student = students.find((u) => u.email.toLowerCase() === normalizedEmail);
+      const found = student || faculty.find((u) => u.email.toLowerCase() === normalizedEmail);
+      if (!found) return { ok: false, error: "No account found for that email address." };
+      const role = student ? "student" : "faculty";
       startSession(role, found.id);
-      return { ok: true };
+      return { ok: true, role };
     },
     [students, faculty, startSession],
   );
-  const signInAs = useCallback((role) => startSession(role, DEMO_ACCOUNTS[role]), [startSession]);
   const signOut = useCallback(() => {
     setSession(null);
     saveSession(null);
@@ -67,8 +67,7 @@ export function AppProvider({ children }) {
 
   const register = useCallback(
     ({ role, name, email, department }) => {
-      const list = role === "student" ? students : faculty;
-      if (list.some((u) => u.email.toLowerCase() === email.trim().toLowerCase()))
+      if ([...students, ...faculty].some((u) => u.email.toLowerCase() === email.trim().toLowerCase()))
         return { ok: false, error: "An account with that email address already exists." };
       if (role === "student") {
         setStudents((s) => [...s, { id: nextId("s"), name, email: email.trim(), program: "Undeclared" }]);
@@ -170,7 +169,7 @@ export function AppProvider({ children }) {
   const facultySchedule = schedules[user?.id] || { weekly: defaultWeeklyHours(), exceptions: [], location: user?.office || "" };
 
   const value = {
-    user, session, signIn, signInAs, signOut, register,
+    user, session, signIn, signOut, register,
     faculty, students, slots, appointments,
     getFaculty, getStudent, getSlot, getAppointment, holderOf, isAvailable, availableSlotsFor,
     selection, setSelection,

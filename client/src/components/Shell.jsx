@@ -1,8 +1,9 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useApp } from "../state/AppContext.jsx";
-import { SEMESTER, UNIVERSITY } from "../data/mock.js";
+import { SEMESTER, UNIVERSITY } from "../data/initialData.js";
 import { todayLabel } from "./ui.jsx";
+import WorkspaceTrail from "./WorkspaceTrail.jsx";
 
 const NAV = {
   faculty: [
@@ -20,13 +21,25 @@ const NAV = {
 /** Layout route: requires a signed-in user of the given role. */
 export default function Shell({ role }) {
   const { user, signOut } = useApp();
-  const { pathname } = useLocation();
+  const { pathname, search } = useLocation();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const loggingOut = useRef(false);
+  const main = useRef(null);
+
+  useEffect(() => {
+    setOpen(false);
+    const heading = main.current?.querySelector("h1");
+    if (heading) {
+      heading.tabIndex = -1;
+      heading.focus({ preventScroll: true });
+      document.title = `${heading.textContent} · FacultyConnect`;
+    }
+    window.scrollTo(0, 0);
+  }, [pathname]);
 
   if (!user && loggingOut.current) return null;
-  if (!user) return <Navigate to="/login" replace state={{ from: pathname, role }} />;
+  if (!user) return <Navigate to="/login" replace state={{ from: pathname + search, role }} />;
   if (user.role !== role) return <Navigate to={`/${user.role}`} replace />;
 
   const isActive = (item) =>
@@ -34,6 +47,7 @@ export default function Shell({ role }) {
 
   return (
     <div className="shell">
+      <a className="skip-link" href="#workspace-content" onClick={(event) => { event.preventDefault(); main.current?.focus(); }}>Skip to content</a>
       <aside className={`sidebar ${open ? "open" : ""}`}>
         <div className="mobile-bar">
           <Link to={`/${role}`} className="brand">FacultyConnect</Link>
@@ -42,7 +56,7 @@ export default function Shell({ role }) {
           </button>
         </div>
         <div className="collapsible">
-          <Link to="/" className="brand">FacultyConnect</Link>
+          <Link to={`/${role}`} className="brand">FacultyConnect</Link>
           <div className="brand-sub">{UNIVERSITY}</div>
           <hr />
           <div className="nav-label">{role} workspace</div>
@@ -60,15 +74,16 @@ export default function Shell({ role }) {
             <div className="who">{user.name}</div>
             <div className="role">{role === "student" ? "Student" : user.department}</div>
           </div>
-          <Link to={`/${role}/help`}>Help &amp; support</Link>
+          <Link to={`/${role}/help`} aria-current={pathname === `/${role}/help` ? "page" : undefined}>Help &amp; support</Link>
           <button className="link-btn" onClick={() => { loggingOut.current = true; signOut(); navigate("/"); }}>Log out →</button>
         </div>
       </aside>
-      <main className="main">
+      <main className="main" id="workspace-content" ref={main} tabIndex={-1}>
         <div className="topline">
           <span className="eyebrow">Your academic connections</span>
           <span>{todayLabel()}</span>
         </div>
+        <WorkspaceTrail role={role} />
         <Outlet />
       </main>
     </div>

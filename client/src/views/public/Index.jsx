@@ -1,46 +1,6 @@
 import { Link } from "react-router-dom";
-import { UNIVERSITY } from "../../data/mock.js";
-import DemoLink from "../../components/DemoLink.jsx";
+import { UNIVERSITY } from "../../data/initialData.js";
 import { useApp } from "../../state/AppContext.jsx";
-
-const GROUPS = [
-  {
-    title: "Faculty workspace", role: "faculty", items: [
-      ["/faculty", "Overview", "Requests, upcoming consultations, and status counts"],
-      ["/faculty/consultations", "Consultations", "Review current requests and appointment history"],
-      ["/faculty/consultations/a6", "Consultation request", "Read the student topic and accept or decline"],
-      ["/faculty/consultations/a1", "Manage consultation", "Complete or cancel a confirmed appointment"],
-      ["/faculty/availability", "Availability manager", "Weekly hours, date exceptions, and publishing"],
-      ["/faculty/availability/slots", "Published slots", "Review available and reserved consultation times"],
-      ["/faculty/availability/new", "Create availability", "Publish a one-off consultation slot"],
-      ["/faculty/availability/sl04/edit", "Edit availability", "Update an unreserved time slot"],
-      ["/faculty/availability/sl04/remove", "Remove availability", "Review and remove a published time"],
-      ["/faculty/help", "Help & support", "How to manage requests and availability"],
-    ],
-  },
-  {
-    title: "Account", role: null, items: [
-      ["/login", "Sign in", "Role-based log-in for students and faculty"],
-      ["/register", "Register", "Create a student or faculty account"],
-      ["/register/success", "Account created", "Confirmation shown after registering"],
-    ],
-  },
-  {
-    title: "Student workspace", role: "student", items: [
-      ["/student", "Overview", "Upcoming consultations and week at a glance"],
-      ["/student/faculty", "Find faculty · List", "Search by name, department, or subject"],
-      ["/student/faculty/calendar", "Find faculty · Calendar", "Weekly view of open consultation times"],
-      ["/student/faculty/f1", "Faculty profile", "Bio, courses, and every open time"],
-      ["/student/request?slot=sl03", "Request a consultation", "Choose a time and add a topic"],
-      ["/student/appointments", "My appointments", "Current and previous records by status"],
-      ["/student/appointments/a1/edit-topic", "Edit consultation topic", "Update subject, topic, and description"],
-      ["/student/appointments/a1/delete-topic", "Delete consultation topic", "Remove a topic without cancelling"],
-      ["/student/appointments/a2/cancel", "Cancel appointment", "Confirm cancellation of a pending request"],
-      ["/student/booking-conflict?slot=sl02", "Booking conflict", "What happens when a slot was just taken"],
-      ["/student/help", "Help & support", "How consultations and statuses work"],
-    ],
-  },
-];
 
 export default function Index() {
   const { user } = useApp();
@@ -61,8 +21,8 @@ export default function Index() {
         <h1>A little guidance.<br />A clearer path.</h1>
         <p className="lead">FacultyConnect brings consultation scheduling into one place. Faculty publish their available times, students find the right person and request a slot, and both sides see the same appointment status.</p>
         <div className="btn-row" style={{ marginTop: 0 }}>
-          <DemoLink role="student" to="/student" className="btn primary">Explore as a student</DemoLink>
-          <DemoLink role="faculty" to="/faculty" className="btn">Explore as faculty</DemoLink>
+          <Link to={user ? `/${user.role}` : "/login"} className="btn primary">{user ? "Open my workspace" : "Sign in to get started"}</Link>
+          {!user && <Link to="/register" className="btn">Create an account</Link>}
         </div>
         <div className="value-grid">
           <div className="card"><h3>See real availability</h3><p className="muted">Students check open slots before they ask, so there is no back-and-forth over email.</p></div>
@@ -71,21 +31,7 @@ export default function Index() {
         </div>
       </header>
 
-      <section className="directory" aria-labelledby="dir-title">
-        <h2 id="dir-title">Every view, one place</h2>
-        <p className="muted">Phase 1 prototype with hardcoded sample data. Workspace links use Alex Johnson (student) or Dr. Sarah Chen (faculty). Changes are shared during this demo and reset on page reload.</p>
-        {GROUPS.map((g) => (
-          <div className="dir-group" key={g.title}>
-            <h3>{g.title}</h3>
-            <div className="dir-grid">
-              {g.items.map(([to, label, desc]) => (
-                <DemoLink key={to} to={to} role={g.role}><strong>{label}</strong><span>{desc}</span></DemoLink>
-              ))}
-            </div>
-          </div>
-        ))}
-      </section>
-      <footer className="footer">FacultyConnect · CBAPDEV Group 2 · Phase 1 front-end prototype</footer>
+      <footer className="footer">FacultyConnect · CBAPDEV Group 2</footer>
     </div>
   );
 }

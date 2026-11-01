@@ -1,7 +1,6 @@
-import { useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { ACTIVE, useApp, useDetailed } from "../../state/AppContext.jsx";
-import { PageHead, StatusBadge, modeLabel } from "../../components/ui.jsx";
+import { AppointmentGuidance, PageHead, StatusBadge, modeLabel } from "../../components/ui.jsx";
 import { fmtLong, fmtMonthDay, fmtRange, fmtTime } from "../../utils/format.js";
 
 const STATUSES = ["pending", "confirmed", "completed", "declined", "cancelled"];
@@ -10,8 +9,14 @@ export default function Appointments() {
   const { user, appointments } = useApp();
   const detail = useDetailed();
   const [params, setParams] = useSearchParams();
-  const [scope, setScope] = useState("all");
-  const [status, setStatus] = useState("");
+  const scope = params.get("scope") || "all";
+  const status = params.get("status") || "";
+  const filter = (key, value) => {
+    const next = new URLSearchParams(params);
+    next.delete("id");
+    if (value) next.set(key, value); else next.delete(key);
+    setParams(next);
+  };
 
   const stamp = (a) => a.slot.date + a.slot.start;
   const mine = appointments.filter((a) => a.studentId === user.id).map(detail);
@@ -26,9 +31,9 @@ export default function Appointments() {
       <PageHead title="My appointments" subtitle="Review your current consultations and previous appointment records." />
       <div className="filters">
         {[["all", `All (${mine.length})`], ["current", `Current (${current.length})`], ["previous", `Previous (${previous.length})`]].map(([k, label]) => (
-          <button key={k} type="button" aria-pressed={scope === k} onClick={() => setScope(k)}>{label}</button>
+          <button key={k} type="button" aria-pressed={scope === k} onClick={() => filter("scope", k)}>{label}</button>
         ))}
-        <select aria-label="Filter by status" value={status} onChange={(e) => setStatus(e.target.value)}>
+        <select aria-label="Filter by status" value={status} onChange={(e) => filter("status", e.target.value)}>
           <option value="">All statuses</option>
           {STATUSES.map((s) => <option key={s} value={s}>{s[0].toUpperCase() + s.slice(1)}</option>)}
         </select>
@@ -37,7 +42,7 @@ export default function Appointments() {
         <div>
           {list.length === 0 && <div className="card empty"><h3>No appointments here</h3><p className="muted">Try a different filter, or <Link to="/student/faculty">find a faculty member</Link>.</p></div>}
           {list.map((a) => (
-            <button key={a.id} type="button" className={`appt-row ${sel?.id === a.id ? "selected" : ""}`} onClick={() => setParams({ id: a.id })} aria-pressed={sel?.id === a.id}>
+            <button key={a.id} type="button" className={`appt-row ${sel?.id === a.id ? "selected" : ""}`} onClick={() => { const next = new URLSearchParams(params); next.set("id", a.id); setParams(next); }} aria-pressed={sel?.id === a.id}>
               <span>
                 <strong>{a.faculty.name}</strong>
                 <span className="meta">{fmtMonthDay(a.slot.date)} · {fmtRange(a.slot.start, a.slot.end)} · {a.subject}{a.topic ? ` · ${a.topic}` : ""}</span>
@@ -55,6 +60,7 @@ export default function Appointments() {
             <div className="day">{fmtLong(sel.slot.date)}</div>
             <div className="time">{fmtTime(sel.slot.start)}–{fmtTime(sel.slot.end)}</div>
             <p className="muted">{modeLabel(sel.slot)} · {sel.slot.location}</p>
+            <AppointmentGuidance status={sel.status} />
             <hr className="divider" />
             <strong>{sel.subject}{sel.topic ? ` · ${sel.topic}` : ""}</strong>
             <p className="muted" style={{ marginTop: 8 }}>{sel.topic ? sel.description : "No topic added."}</p>

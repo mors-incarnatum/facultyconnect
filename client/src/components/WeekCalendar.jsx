@@ -1,5 +1,6 @@
-import { useMemo, useState } from "react";
-import { TODAY } from "../data/mock.js";
+import { useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
+import { TODAY } from "../data/initialData.js";
 import { addDays, fmtDayHeader, fmtRange, fmtTime, fmtWeekRange, weekStartOf, addMinutes } from "../utils/format.js";
 import { ACTIVE, useApp } from "../state/AppContext.jsx";
 
@@ -13,9 +14,16 @@ const PERIODS = {
  * appointments and slots held by other requests (not bookable).
  */
 export default function WeekCalendar({ facultyIds, studentId, onPick, pickedSlotId, title }) {
-  const { slots, appointments, getFaculty } = useApp();
+  const { slots, appointments, getFaculty, getSlot } = useApp();
   const [weekStart, setWeekStart] = useState(weekStartOf(TODAY));
   const [period, setPeriod] = useState("morning");
+  useEffect(() => {
+    const picked = getSlot(pickedSlotId);
+    if (picked) {
+      setWeekStart(weekStartOf(picked.date));
+      setPeriod(picked.start < "12:00" ? "morning" : "afternoon");
+    }
+  }, [pickedSlotId, getSlot]);
   const days = [0, 1, 2, 3, 4].map((n) => addDays(weekStart, n));
   const times = PERIODS[period].times;
 
@@ -39,9 +47,9 @@ export default function WeekCalendar({ facultyIds, studentId, onPick, pickedSlot
     if (own) {
       const f = getFaculty(own.slot.facultyId);
       return (
-        <div className={`cal-item own ${own.appt.status} static`}>
+        <Link to={`/student/appointments?id=${own.appt.id}`} className={`cal-item own ${own.appt.status}`}>
           {f.name.replace(/^(Dr\.|Prof\.)\s*/, "")}<br />{fmtTime(own.slot.start, false)} · {own.appt.status === "confirmed" ? "Confirmed" : "Pending"}
-        </div>
+        </Link>
       );
     }
     const open = items.filter((i) => i.type === "open");

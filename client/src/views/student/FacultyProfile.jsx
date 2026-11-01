@@ -1,10 +1,11 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { useApp } from "../../state/AppContext.jsx";
 import { Avatar, PageHead, modeLabel } from "../../components/ui.jsx";
 import { fmtLong, fmtRange } from "../../utils/format.js";
 
 export default function FacultyProfile() {
   const { id } = useParams();
+  const location = useLocation();
   const { getFaculty, availableSlotsFor } = useApp();
   const f = getFaculty(id);
   if (!f) return <><PageHead title="Faculty member not found" /><Link className="btn" to="/student/faculty">← Back to faculty</Link></>;
@@ -12,7 +13,7 @@ export default function FacultyProfile() {
   return (
     <>
       <PageHead title={f.name} subtitle={`${f.rank} · ${f.department}`} />
-      <p style={{ marginBottom: 16 }}><Link to="/student/faculty">← Back to faculty</Link></p>
+      <p style={{ marginBottom: 16 }}><Link to={location.state?.searchReturnTo || (location.state?.returnTo !== location.pathname && location.state?.returnTo) || "/student/faculty"} state={location.state}>← Back to faculty</Link></p>
       <div className="two-col">
         <div className="card">
           <div style={{ display: "flex", gap: 16, alignItems: "center", marginBottom: 18 }}>
@@ -34,7 +35,7 @@ export default function FacultyProfile() {
           {slots.map((s) => (
             <div key={s.id} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12, padding: "10px 0", borderTop: "1px solid var(--line)" }}>
               <div><strong>{fmtLong(s.date)}</strong><div className="muted small">{fmtRange(s.start, s.end)} · {modeLabel(s)}</div></div>
-              <Link className="btn sm" to={`/student/request?slot=${s.id}`}>Request</Link>
+              <Link className="btn sm" to={`/student/request?slot=${s.id}`} state={{ ...location.state, searchReturnTo: location.state?.searchReturnTo || location.state?.returnTo, returnTo: location.pathname }}>Request</Link>
             </div>
           ))}
         </div>

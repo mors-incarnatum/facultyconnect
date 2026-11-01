@@ -1,4 +1,4 @@
-import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useApp, useDetailed } from "../../state/AppContext.jsx";
 import { Field, PageHead, StatusBadge, modeLabel } from "../../components/ui.jsx";
 import { useState } from "react";
@@ -6,10 +6,10 @@ import { fmtLong, fmtRange } from "../../utils/format.js";
 
 function useAppt() {
   const { id } = useParams();
-  const { getAppointment } = useApp();
+  const { getAppointment, user } = useApp();
   const detail = useDetailed();
   const a = getAppointment(id);
-  return a ? detail(a) : null;
+  return a?.studentId === user.id ? detail(a) : null;
 }
 const NotFound = () => (
   <>
@@ -24,9 +24,9 @@ export function RequestSubmitted() {
   if (!a) return <NotFound />;
   return (
     <>
-      <PageHead title="Your request has been sent" subtitle="Your time is reserved while you wait for faculty approval." />
+      <PageHead title={a.status === "pending" ? "Your request has been sent" : "Your consultation request"} subtitle={a.status === "pending" ? "Your time is reserved while you wait for faculty approval." : "View the latest status and details in My appointments."} />
       <div className="card" style={{ padding: 32 }}>
-        <StatusBadge status="pending" />
+        <StatusBadge status={a.status} />
         <h2 style={{ fontSize: 38, margin: "18px 0 10px" }}>{fmtLong(a.slot.date)} · {fmtRange(a.slot.start, a.slot.end)}</h2>
         <h3 style={{ fontSize: 26, margin: "0 0 14px" }}>{a.faculty.name} · {a.faculty.department}</h3>
         <p className="muted">{modeLabel(a.slot)} · {a.slot.location}</p>
@@ -35,11 +35,11 @@ export function RequestSubmitted() {
         {a.description && <p className="muted" style={{ marginTop: 10 }}>{a.description}</p>}
         <div className="notice" style={{ margin: "20px 0", padding: 24 }}>
           <h3 style={{ fontSize: 24, marginBottom: 10 }}>What happens next</h3>
-          The selected slot is reserved. Your faculty member will review the request; the consultation remains pending until approved.
+          {a.status === "pending" ? "The selected slot is reserved. Your faculty member will review the request; the consultation remains pending until approved." : `This appointment is now ${a.status}. Open the appointment record to review its current details.`}
         </div>
         <div className="btn-row" style={{ marginTop: 0 }}>
-          <Link className="btn primary" to="/student">Back to overview</Link>
-          <Link className="btn" to={`/student/appointments?id=${a.id}`}>View my appointments</Link>
+          <Link className="btn primary" to={`/student/appointments?id=${a.id}`}>View my appointment</Link>
+          <Link className="btn" to="/student">Back to overview</Link>
         </div>
       </div>
     </>
@@ -111,7 +111,7 @@ export function DeleteTopic() {
     <>
       <PageHead title="Delete this consultation topic?" subtitle="Your appointment will remain scheduled." />
       <div className="card">
-        {a.topic ? (
+        {a.topic && ["pending", "confirmed"].includes(a.status) ? (
           <>
             <h2 style={{ fontSize: 26, marginBottom: 10 }}>{topicLine(a)}</h2>
             <p className="muted" style={{ marginBottom: 14 }}>{a.description}</p>
@@ -122,7 +122,7 @@ export function DeleteTopic() {
             </div>
           </>
         ) : (
-          <><p>This appointment has no topic to delete.</p><div className="btn-row"><Link className="btn" to={`/student/appointments?id=${a.id}`}>Back</Link></div></>
+          <><p>{a.topic ? "This appointment is in your history. Its topic can no longer be deleted." : "This appointment has no topic to delete."}</p><div className="btn-row"><Link className="btn" to={`/student/appointments?id=${a.id}`}>Back</Link></div></>
         )}
       </div>
     </>
@@ -200,6 +200,7 @@ export function AppointmentCancelled() {
 
 export function BookingConflict() {
   const [params] = useSearchParams();
+  const { state } = useLocation();
   const { getSlot, getFaculty, availableSlotsFor, setSelection } = useApp();
   const navigate = useNavigate();
   const slot = getSlot(params.get("slot"));
@@ -216,12 +217,12 @@ export function BookingConflict() {
           <>
             <strong>Other times with {f.name}</strong>
             <div className="btn-row" style={{ marginTop: 10 }}>
-              {others.map((s) => <Link key={s.id} className="btn sm" to={`/student/request?slot=${s.id}`}>{fmtLong(s.date)} · {fmtRange(s.start, s.end)}</Link>)}
+              {others.map((s) => <Link key={s.id} className="btn sm" to={`/student/request?slot=${s.id}`} state={state}>{fmtLong(s.date)} · {fmtRange(s.start, s.end)}</Link>)}
             </div>
           </>
         )}
         <div className="btn-row">
-          <button className="btn primary" onClick={() => { if (f) setSelection({ facultyId: f.id, slotId: others[0]?.id || null }); navigate("/student/faculty/calendar"); }}>Choose another time</button>
+          <button className="btn primary" onClick={() => { if (f) setSelection({ facultyId: f.id, slotId: others[0]?.id || null }); navigate(`/student/faculty/calendar${f ? `?faculty=${f.id}` : ""}`, { state }); }}>Choose another time</button>
           <Link className="btn" to="/student">Back to overview</Link>
         </div>
       </div>

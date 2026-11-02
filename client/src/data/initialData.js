@@ -2,7 +2,7 @@
 import { addMinutes } from "../utils/format.js";
 
 export const TODAY = "2026-10-26"; 
-export const UNIVERSITY = "Northbridge University";
+export const UNIVERSITY = "De La Salle University";
 export const SEMESTER = "Fall semester 2026";
 
 export const departments = ["Computer Science", "Mathematics", "Physics", "Biology", "Communication"];

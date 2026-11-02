@@ -1,17 +1,6 @@
 # FacultyConnect
 
-FacultyConnect is a consultation scheduling and appointment management web application for **Northbridge University** students and faculty, built on a decoupled MERN MVC architecture (`client/` React 19 SPA + `server/` Express 5 & Mongoose 9 API).
-
 ## Architecture Overview
-
-| Workspace / Folder | Purpose |
-|---|---|
-| `client/src/views/{public,student,faculty}/` | React 19 route views for Public, Student, and Faculty workflows |
-| `client/src/components/` | Shared layout (`Shell.jsx`), calendar (`WeekCalendar.jsx`), and UI primitives (`ui.jsx`) |
-| `client/src/state/` | `AppContext.jsx` state provider and pure scheduling/slot validation rules (`availability.js`) |
-| `client/src/data/initialData.js` | Seeded Northbridge University dataset (`TODAY = "2026-10-26"`) |
-| `server/src/{models,controllers,routes,config}/` | Express 5 REST API (`/api`) and Mongoose 9 database layer |
-| `docs/` | Architecture standard, screen inventory, feature checklist, data contracts, and phase plans |
 
 ## Quick Start
 

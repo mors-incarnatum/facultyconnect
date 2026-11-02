@@ -355,3 +355,25 @@ button.cal-item.picked { box-shadow: inset 0 0 0 2px var(--green); background: v
 .main:focus, .page-head h1:focus { outline: none; }
 .preview { scroll-margin-top: 20px; }
 .main, .card, .appt-row > *, .two-col > *, .overview-grid > *, .hero-search > *, .search-bar > * { min-width: 0; overflow-wrap: anywhere; }
+
+/* Consultation discovery and editing */
+.demo-notice { margin-bottom: 16px; font-size: 14px; }
+.feedback:not(:empty) { padding: 14px; margin-bottom: 18px; background: var(--green-100); border-radius: 10px; }
+.field-error { color: #9a2929; font-size: 13px; }
+.day-hours { min-width: 0; border: 1px solid var(--line); border-radius: 10px; padding: 14px; margin: 18px 0; }
+.day-hours legend { font-weight: 700; padding: 0 6px; }
+.interval-row { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
+.interval-row .field { flex: 1; min-width: 0; }
+.copy-days { display: flex; flex-wrap: wrap; gap: 12px; margin: 12px 0; }
+.copy-days label { display: flex; gap: 6px; align-items: center; }
+.copy-days input { width: auto; }
+.draft-controls { position: sticky; bottom: 12px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 14px; background: var(--paper, #fff); border: 1px solid var(--line); border-radius: 12px; margin-top: 20px; box-shadow: 0 3px 12px #0001; }
+.draft-guard { border: 2px solid var(--green-500, #2d5a48); margin-bottom: 20px; }
+.agenda-filters { display: flex; flex-wrap: wrap; gap: 12px; }
+.agenda-filters .field { flex: 1; min-width: 130px; }
+.agenda-slot { width: 100%; display: flex; flex-direction: column; align-items: flex-start; text-align: left; gap: 6px; padding: 14px; margin: 10px 0; border: 1px solid var(--line); border-radius: 10px; background: white; overflow-wrap: anywhere; }
+.agenda-slot.selected { background: var(--green-100); border-color: var(--green-500, #2d5a48); }
+.slot-date { margin-top: 22px; }
+.mobile-details-back { display: none; }
+@media (max-width: 1100px) { .mobile-details-back { display: inline-block; margin: 8px 0; } }
+@media (max-width: 600px) { .interval-row { flex-wrap: wrap; } .interval-row .field { flex-basis: 38%; } .agenda-filters { display: block; } .filters .field { width: 100%; } }

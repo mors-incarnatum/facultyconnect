@@ -25,8 +25,12 @@ const outcomes = {
 
 const AppointmentOutcome = ({ outcome }) => {
   const a = useAppointment();
-  if (!a) return <AppointmentNotFound />;
+  if (!a) {
+    return <AppointmentNotFound />;
+  }
+  
   const { title, subtitle, message } = outcomes[outcome];
+  
   return (
     <>
       <PageHead title={title} subtitle={subtitle} />

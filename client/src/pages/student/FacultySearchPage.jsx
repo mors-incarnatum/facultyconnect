@@ -88,7 +88,7 @@ export default function FacultySearchPage({ view }) {
         </div>
       </div>
 
-      <div className="two-col">
+      <div className={`two-col ${view === "list" ? "faculty-directory" : ""}`}>
         <div>
           {results.length === 0 ? (
             <div className="card empty">
@@ -100,7 +100,7 @@ export default function FacultySearchPage({ view }) {
             </div>
           ) : view === "list" ? (
             <>
-              <div className="list-head"><span>Faculty</span><span>Next available</span><span style={{ textAlign: "center" }}>Action</span></div>
+              <div className="list-head"><span>Faculty</span><span>Next available</span></div>
               {results.map((f) => {
                 const next = availableSlotsFor(f.id)[0];
                 const selected = selFaculty?.id === f.id;
@@ -108,12 +108,18 @@ export default function FacultySearchPage({ view }) {
                   <button key={f.id} type="button" className={`row ${selected ? "selected" : ""}`} onClick={() => pickFaculty(f)} aria-pressed={selected}>
                     <span className="who">
                       <Avatar person={f} />
-                      <span><strong>{f.name}</strong><span className="muted small">{f.department}</span></span>
+                      <span style={{ minWidth: 0 }}>
+                        <strong>
+                          {f.name}
+                          {f.pronouns && <span className="profile-pronouns" style={{ marginLeft: 6 }}>{f.pronouns}</span>}
+                        </strong>
+                        <span className="muted small">{f.department}</span>
+                        {f.specialties && <span className="muted small" style={{ display: 'block', fontSize: 11, opacity: 0.85, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{f.specialties.slice(0, 2).join(' · ')}</span>}
+                      </span>
                     </span>
                     <span className="when">
                       {next ? (<><strong>{fmtShort(next.date)} · {fmtTime(next.start)}</strong><span className="muted small">{next.mode === "online" ? "Online consultation" : next.location}</span></>) : <span className="muted small">No open times</span>}
                     </span>
-                    <span className="act">{selected ? "Selected" : "View times"}</span>
                   </button>
                 );
               })}
@@ -153,17 +159,40 @@ export default function FacultySearchPage({ view }) {
         </div>
 
         {selFaculty && (
-          <aside className="card preview" aria-label="Faculty preview" ref={preview}>
-            <div className="eyebrow">Faculty preview</div>
+          <aside className="card preview" aria-label="Faculty profile" ref={preview}>
+            <div className="eyebrow">Faculty profile</div>
             <div className="head">
               <Avatar person={selFaculty} size="lg" />
               <div>
-                <h3>{selFaculty.name}</h3>
+                <h3>
+                  {selFaculty.name}
+                  {selFaculty.pronouns && <span className="profile-pronouns" style={{ marginLeft: 6, fontSize: 11 }}>{selFaculty.pronouns}</span>}
+                </h3>
                 <div className="muted small">{selFaculty.rank}</div>
                 <strong>{selFaculty.department}</strong>
               </div>
             </div>
-            <p className="muted">{selFaculty.subjects.join(" · ")}<br />{selFaculty.courses.join(" and ")}</p>
+            {selFaculty.motto && (
+              <p className="profile-quote" style={{ fontSize: 12, padding: "8px 12px", margin: "10px 0" }}>
+                “{selFaculty.motto}”
+              </p>
+            )}
+            <p className="muted" style={{ margin: "8px 0" }}>
+              {selFaculty.subjects.join(" · ")}<br />{selFaculty.courses.join(" and ")}
+            </p>
+            {selFaculty.specialties && (
+              <div className="profile-tags" style={{ marginBottom: 10 }}>
+                {selFaculty.specialties.slice(0, 3).map((spec) => (
+                  <span key={spec} className="profile-tag highlight" style={{ fontSize: 11, padding: "2px 8px" }}>{spec}</span>
+                ))}
+              </div>
+            )}
+            {selFaculty.consultationTip && (
+              <div className="profile-tip" style={{ padding: "8px 10px", fontSize: 12, marginBottom: 12 }}>
+                <span className="profile-tip-icon" style={{ fontSize: 13 }} aria-hidden="true">💡</span>
+                <div><strong>Tip:</strong> {selFaculty.consultationTip}</div>
+              </div>
+            )}
             <hr className="divider" />
             {selSlot ? (
               <>

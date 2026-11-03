@@ -1,3 +1,5 @@
+import { canManageAppointment } from '../../state/appointments.js';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useApp } from '../../hooks/useApp.js';
 import PageHead from '../../components/PageHead.jsx';
@@ -7,12 +9,14 @@ import { topicLine } from '../../utils/presentation.js';
 
 export default function DeleteTopicPage() {
   const a = useAppointment();
-  const { deleteTopic } = useApp();
+  const { now, deleteTopic } = useApp();
   const navigate = useNavigate();
+  const [error, setError] = useState('');
   if (!a) return <AppointmentNotFound />;
 
   const handleDelete = () => {
-    deleteTopic(a.id);
+    const result = deleteTopic(a.id);
+    if (!result.ok) return setError(result.error);
     navigate(`/student/appointments?id=${a.id}`, {
       state: { feedback: 'Topic deleted. Your appointment remains scheduled in this demo.' },
     });
@@ -21,7 +25,8 @@ export default function DeleteTopicPage() {
     <>
       <PageHead title="Delete this consultation topic?" subtitle="Your appointment will remain scheduled." />
       <div className="card">
-        {a.topic && ["pending", "confirmed"].includes(a.status) ? (
+        {error && <p className="form-error" role="alert">{error}</p>}
+        {a.topic && canManageAppointment(a, a.slot, now) ? (
           <>
             <h2 style={{ fontSize: 26, marginBottom: 10 }}>{topicLine(a)}</h2>
             <p className="muted" style={{ marginBottom: 14 }}>{a.description}</p>
@@ -32,7 +37,7 @@ export default function DeleteTopicPage() {
             </div>
           </>
         ) : (
-          <><p>{a.topic ? "This appointment is in your history. Its topic can no longer be deleted." : "This appointment has no topic to delete."}</p><div className="btn-row"><Link className="btn" to={`/student/appointments?id=${a.id}`}>Back</Link></div></>
+          <><p>{a.topic ? "Topics can only be deleted before a pending or confirmed consultation starts." : "This appointment has no topic to delete."}</p><div className="btn-row"><Link className="btn" to={`/student/appointments?id=${a.id}`}>Back</Link></div></>
         )}
       </div>
     </>

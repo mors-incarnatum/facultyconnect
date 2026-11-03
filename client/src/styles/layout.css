@@ -1,0 +1,274 @@
+/* Main shell & sidebar */
+.shell {
+  display: grid;
+  grid-template-columns: 224px 1fr;
+  min-height: 100vh;
+}
+.sidebar {
+  background: var(--surface);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+.brand {
+  font-weight: 600;
+  color: var(--green);
+  font-size: 15px;
+  display: block;
+}
+.brand:hover {
+  text-decoration: none;
+}
+.brand-sub {
+  color: var(--muted);
+  font-size: 12px;
+  margin-top: 14px;
+}
+.sidebar hr {
+  border: 0;
+  border-top: 1px solid var(--line);
+  margin: 18px 0;
+}
+.nav-label {
+  font-size: 11px;
+  letter-spacing: .06em;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.nav a {
+  padding: 11px 16px;
+  border-radius: var(--radius);
+  color: var(--green);
+  font-size: 13px;
+  font-weight: 600;
+}
+.nav a:hover {
+  background: var(--green-100);
+  text-decoration: none;
+}
+.nav a.active {
+  background: var(--green-100);
+}
+.semester {
+  background: var(--green-100);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-top: 20px;
+}
+.semester strong {
+  display: block;
+  font-size: 13px;
+  color: var(--green);
+}
+.semester span {
+  color: var(--muted);
+  font-size: 12px;
+}
+.sidebar-foot {
+  margin-top: auto;
+  padding-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.sidebar-foot .who {
+  font-weight: 600;
+  font-size: 14px;
+}
+.sidebar-foot .role {
+  color: var(--muted);
+  font-size: 12px;
+  margin-bottom: 6px;
+}
+.link-btn {
+  background: none;
+  border: 0;
+  padding: 0;
+  color: var(--green);
+  font-weight: 600;
+  font-size: 13px;
+  text-align: left;
+}
+.link-btn:hover {
+  text-decoration: underline;
+}
+.link-btn.danger {
+  color: var(--red);
+}
+
+.main {
+  padding: 32px 32px 64px;
+  min-width: 0;
+}
+.topline {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+.eyebrow {
+  color: var(--green);
+  text-transform: uppercase;
+  letter-spacing: .03em;
+}
+.page-head h1 {
+  font-size: 36px;
+  line-height: 1.2;
+}
+.page-head p {
+  color: var(--muted);
+  font-size: 15px;
+  margin-top: 8px;
+}
+.page-head {
+  margin-bottom: 28px;
+}
+.mobile-bar {
+  display: none;
+}
+
+/* Grid systems & layout containers */
+.two-col {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 344px;
+  gap: 24px;
+  align-items: start;
+}
+.overview-grid {
+  display: grid;
+  grid-template-columns: 344px minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.search-bar {
+  display: grid;
+  grid-template-columns: 1fr 220px auto;
+  gap: 16px;
+  align-items: stretch;
+  margin-bottom: 20px;
+}
+.search-bar .field {
+  margin: 0;
+}
+.search-bar .btn {
+  height: 100%;
+  min-width: 116px;
+}
+.hero-search {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 16px;
+}
+.hero-search .field {
+  margin: 0;
+  background: #fff;
+}
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+
+/* Workspace orientation */
+.workspace-trail {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  color: var(--muted);
+  font-size: 13px;
+  margin: 0 0 20px;
+}
+.journey-steps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+  list-style: none;
+  padding: 16px;
+  margin: 0 0 24px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+.journey-steps li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 13px;
+}
+.journey-steps li > span {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--grey-bg);
+  flex-shrink: 0;
+}
+.journey-steps li[aria-current="step"] {
+  color: var(--green);
+  font-weight: 600;
+}
+.journey-steps li[aria-current="step"] > span {
+  background: var(--green);
+  color: var(--surface);
+}
+.section-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 24px;
+  border-bottom: 1px solid var(--line);
+}
+.section-tabs a {
+  display: block;
+  padding: 12px 16px;
+  border-bottom: 3px solid transparent;
+}
+.section-tabs a[aria-current="page"] {
+  border-color: var(--green);
+  font-weight: 600;
+}
+
+/* Accessibility & overflow boundaries */
+.skip-link {
+  position: fixed;
+  top: -100px;
+  left: 16px;
+  z-index: 10;
+  padding: 12px 20px;
+  background: var(--surface);
+  border: 2px solid var(--green);
+  border-radius: var(--radius);
+}
+.skip-link:focus {
+  top: 12px;
+}
+.main:focus, .page-head h1:focus {
+  outline: none;
+}
+.main, .card, .appt-row > *, .two-col > *, .overview-grid > *, .hero-search > *, .search-bar > * {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}

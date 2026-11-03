@@ -38,8 +38,8 @@ const RegisterPage = () => {
           <button type="button" aria-pressed={role === "faculty"} onClick={() => setRole("faculty")}>Faculty</button>
         </div>
         {error && <div className="form-error" role="alert">{error}</div>}
-        <Field label="Full name" value={form.name} name="name" onChange={handleChange} placeholder="Alex Johnson" autoComplete="name" />
-        <Field label="Email address" type="email" value={form.email} name="email" onChange={handleChange} placeholder="name@northbridge.edu" autoComplete="email" />
+        <Field label="Full name" value={form.name} name="name" onChange={handleChange} placeholder="Alex Dela Cruz" autoComplete="name" />
+        <Field label="Email address" type="email" value={form.email} name="email" onChange={handleChange} placeholder="firstname.lastname@dlsu.edu.ph" autoComplete="email" />
         {role === "faculty" && (
           <Field label="Department" as="select" value={form.department} name="department" onChange={handleChange}>
             {departments.map((d) => <option key={d}>{d}</option>)}

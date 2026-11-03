@@ -55,7 +55,6 @@ export default function PageRouter() {
         <Route path="help" element={<Help />} />
       </Route>
 
-
       <Route path="/faculty" element={<Shell role="faculty" />}>
         <Route index element={<FacultyOverview />} />
         <Route path="consultations" element={<Consultations />} />

@@ -5,6 +5,7 @@ import { SEMESTER, UNIVERSITY } from '../../data/initialData.js';
 import { todayLabel } from '../../utils/presentation.js';
 import WorkspaceTrail from './WorkspaceTrail.jsx';
 import ScheduleDraftGuard from '../ScheduleDraftGuard.jsx';
+import Avatar from '../Avatar.jsx';
 
 const NAV = {
   faculty: [
@@ -21,7 +22,7 @@ const NAV = {
 
 /** Layout route: requires a signed-in user of the given role. */
 export default function Shell({ role }) {
-  const { user, signOut, scheduleDraft, setScheduleDraft, saveFacultySchedule, feedback, setFeedback } = useApp();
+  const { now, user, signOut, scheduleDraft, setScheduleDraft, saveFacultySchedule, feedback, setFeedback } = useApp();
   const { pathname, search, state } = useLocation();
   const navigate = useNavigate();
   const [leaving, setLeaving] = useState(null);
@@ -131,9 +132,12 @@ export default function Shell({ role }) {
           <div className="semester"><strong>{SEMESTER}</strong><span>A little guidance goes a long way.</span></div>
         </div>
         <div className="sidebar-foot collapsible">
-          <div>
-            <div className="who">{user.name}</div>
-            <div className="role">{role === "student" ? "Student" : user.department}</div>
+          <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+            <Avatar person={user} size="sm" />
+            <div style={{ minWidth: 0 }}>
+              <div className="who" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{user.name}</div>
+              <div className="role">{role === "student" ? "Student" : user.department}</div>
+            </div>
           </div>
           <Link to={`/${role}/help`} aria-current={pathname === `/${role}/help` ? "page" : undefined}>Help &amp; support</Link>
           <button className="link-btn" onClick={handleSignOut}>Log out →</button>
@@ -142,7 +146,7 @@ export default function Shell({ role }) {
       <main className="main" id="workspace-content" ref={main} tabIndex={-1}>
         <div className="topline">
           <span className="eyebrow">Your academic connections</span>
-          <span>{todayLabel()}</span>
+          <span>{todayLabel(now)}</span>
         </div>
         <div className="notice demo-notice"><strong>Demo workspace.</strong> Appointment and schedule changes reset on reload. Unsaved weekly-hour drafts stay available while you navigate; reloading clears them.</div>
         <div className="feedback" role="status" aria-live="polite">{feedback}</div>

@@ -1,18 +1,17 @@
 import { useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useApp } from '../../hooks/useApp.js';
-import { TODAY } from '../../data/initialData.js';
 import Field from '../../components/Field.jsx';
 import PageHead from '../../components/PageHead.jsx';
 import MissingRecord from '../../components/MissingRecord.jsx';
 
 const SlotFormPage = () => {
   const { id } = useParams();
-  const { user, getSlot, holderOf, saveFacultySlot, setFeedback } = useApp();
+  const { today, user, getSlot, holderOf, saveFacultySlot, setFeedback } = useApp();
   const navigate = useNavigate();
   const slot = id ? getSlot(id) : null;
   const [form, setForm] = useState(() => slot ? { ...slot } : {
-    date: TODAY,
+    date: today,
     start: '14:00',
     end: '14:30',
     mode: 'in-person',
@@ -79,7 +78,7 @@ const SlotFormPage = () => {
             <div className="notice warn">This slot is reserved. <Link to={`/faculty/consultations/${occupied.id}`}>View appointment</Link></div>
           ) : (
             <>
-              <Field name="date" error={errors.date} label="Date" type="date" min={TODAY} required value={form.date} onChange={handleChange} />
+              <Field name="date" error={errors.date} label="Date" type="date" min={today} required value={form.date} onChange={handleChange} />
               <div className="field-row">
                 <Field name="start" error={errors.start} label="Start time" type="time" required value={form.start} onChange={handleChange} />
                 <Field name="end" error={errors.end} label="End time" type="time" required value={form.end} onChange={handleChange} />

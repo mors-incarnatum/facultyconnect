@@ -1,201 +1,39 @@
-import { useCallback, useMemo, useRef, useState } from 'react';
-import { TODAY, initialAppointments, initialFaculty, initialSlots, initialStudents } from '../data/initialData.js';
-import { defaultWeeklyHours, facultyTransitions, publishSchedule, validateSlot } from '../state/availability.js';
-import { ACTIVE } from '../state/appointments.js';
-import { useScheduleDrafts } from './useScheduleDrafts.js';
-
-const loadSession = () => {
-  try {
-    return JSON.parse(sessionStorage.getItem("fc-session")) || null;
-  } catch {
-    return null;
-  }
-};
-const saveSession = (value) => {
-  try {
-    if (value) sessionStorage.setItem("fc-session", JSON.stringify(value));
-    else sessionStorage.removeItem("fc-session");
-  } catch {
-    /* storage unavailable: session lasts for the page only */
-  }
-};
+import { useCallback, useRef, useState } from 'react';
+import { initialAppointments, initialSlots } from '../data/initialData.js';
+import { localDate } from '../utils/clock.js';
+import { useAccounts } from './useAccounts.js';
+import { useAppointmentActions } from './useAppointmentActions.js';
+import { useClock } from './useClock.js';
+import { useFacultyAvailability } from './useFacultyAvailability.js';
 
 export function useAppState() {
-  const [faculty, setFaculty] = useState(initialFaculty);
-  const [students, setStudents] = useState(initialStudents);
+  const now = useClock();
+  const today = localDate(now);
   const [slots, setSlots] = useState(initialSlots);
   const [appointments, setAppointments] = useState(initialAppointments);
-  const [session, setSession] = useState(loadSession);
   const [selection, setSelection] = useState({ facultyId: null, slotId: null });
-  const [schedules, setSchedules] = useState({});
-  const [feedback, setFeedback] = useState("");
-  const draftKey = session?.role === "faculty" ? session.id : "";
-  const { scheduleDraft, setScheduleDraft } = useScheduleDrafts(draftKey);
+  const [feedback, setFeedback] = useState('');
   const counter = useRef(100);
   const nextId = useCallback((prefix) => `${prefix}${++counter.current}`, []);
-
-  const user = useMemo(() => {
-    if (!session) return null;
-    const list = session.role === "student" ? students : faculty;
-    const found = list.find((u) => u.id === session.id);
-    return found ? { ...found, role: session.role } : null;
-  }, [session, students, faculty]);
-
-  const startSession = useCallback((role, id) => {
-    const value = { role, id };
-    setSession(value);
-    saveSession(value);
-  }, []);
-
-  const signIn = useCallback(
-    (email) => {
-      const normalizedEmail = email.trim().toLowerCase();
-      const student = students.find((u) => u.email.toLowerCase() === normalizedEmail);
-      const found = student || faculty.find((u) => u.email.toLowerCase() === normalizedEmail);
-      if (!found) return { ok: false, error: "No account found for that email address." };
-      const role = student ? "student" : "faculty";
-      startSession(role, found.id);
-      return { ok: true, role };
-    },
-    [students, faculty, startSession],
-  );
-  const signOut = useCallback(() => {
-    setSession(null);
-    saveSession(null);
-    setSelection({ facultyId: null, slotId: null });
-  }, []);
-
-  const register = useCallback(
-    ({ role, name, email, department }) => {
-      if ([...students, ...faculty].some((u) => u.email.toLowerCase() === email.trim().toLowerCase()))
-        return { ok: false, error: "An account with that email address already exists." };
-      if (role === "student") {
-        const student = { id: nextId('s'), name, email: email.trim(), program: 'Undeclared' };
-        setStudents((prev) => [...prev, student]);
-      } else {
-        const facultyMember = {
-          id: nextId('f'), name, email: email.trim(), rank: 'Faculty', department: department || 'Computer Science',
-          subjects: [], courses: [], office: 'To be announced', color: '#2d5a48', bio: 'Profile details coming soon.',
-        };
-        setFaculty((prev) => [...prev, facultyMember]);
-      }
-      return { ok: true };
-    },
-    [students, faculty, nextId],
-  );
-
-  // ---- lookups --------------------------------------------------------
+  const accounts = useAccounts({ nextId, setSelection });
+  const { faculty, students, user, session } = accounts;
   const getFaculty = useCallback((id) => faculty.find((f) => f.id === id), [faculty]);
   const getStudent = useCallback((id) => students.find((s) => s.id === id), [students]);
-  const getSlot = useCallback((id) => slots.find((s) => s.id === id), [slots]);
-  const getAppointment = useCallback((id) => appointments.find((a) => a.id === id), [appointments]);
+  const appointmentActions = useAppointmentActions({
+    appointments, setAppointments, slots, user, now, nextId,
+  });
+  const { getSlot, getAppointment, holderOf, setStatus } = appointmentActions;
+  const availability = useFacultyAvailability({
+    user, session, slots, setSlots, appointments, nextId,
+    getSlot, getAppointment, holderOf, setStatus,
+  });
 
-  /** The appointment currently holding a slot (pending/confirmed), if any. */
-  const holderOf = useCallback(
-    (slotId) => appointments.find((a) => a.slotId === slotId && ACTIVE.includes(a.status)) || null,
-    [appointments],
-  );
-  const isAvailable = useCallback(
-    (slot) => !!slot && slot.date >= TODAY && !holderOf(slot.id),
-    [holderOf],
-  );
-  const bySlotTime = (a, b) => (a.date + a.start).localeCompare(b.date + b.start);
-  const availableSlotsFor = useCallback(
-    (facultyId) => slots.filter((s) => s.facultyId === facultyId && isAvailable(s)).sort(bySlotTime),
-    [slots, isAvailable],
-  );
-
-  // ---- student actions ------------------------------------------------
-  const createAppointment = useCallback(
-    ({ studentId, slotId, subject, topic, description }) => {
-      const slot = slots.find((s) => s.id === slotId);
-      if (!slot || !isAvailable(slot)) return { ok: false, reason: "conflict" };
-      const id = nextId("a");
-      setAppointments((list) => [
-        ...list,
-        { id, studentId, slotId, status: "pending", subject, topic, description },
-      ]);
-      return { ok: true, id };
-    },
-    [slots, isAvailable, nextId],
-  );
-  const updateAppointment = useCallback((id, fields) => {
-    setAppointments((prev) => prev.map((appointment) => (
-      appointment.id === id ? { ...appointment, ...fields } : appointment
-    )));
-  }, []);
-  const deleteTopic = useCallback((id) => {
-    updateAppointment(id, { topic: null, description: null });
-  }, [updateAppointment]);
-  const setStatus = useCallback((id, status) => {
-    updateAppointment(id, { status });
-  }, [updateAppointment]);
-
-  const updateFacultyStatus = (id, status) => {
-    const appointment = getAppointment(id);
-    const slot = getSlot(appointment?.slotId);
-    const allowed = facultyTransitions(appointment, slot, TODAY);
-    if (user?.role !== 'faculty' || slot?.facultyId !== user.id || !allowed.includes(status)) {
-      return { ok: false, error: 'Status change unavailable. Only confirmed consultations from a previous day can be completed.' };
-    }
-    setStatus(id, status);
-    return { ok: true };
-  };
-  const saveFacultySlot = (fields, id) => {
-    if (user?.role !== 'faculty') return { ok: false, error: 'Sign in as faculty.' };
-    if (id && (getSlot(id)?.facultyId !== user.id || holderOf(id))) {
-      return { ok: false, error: 'Reserved slots cannot be edited.' };
-    }
-    const slot = { ...fields, facultyId: user.id, location: fields.location.trim() };
-    const error = slot.date < TODAY ? 'Choose a date from today onwards.' : validateSlot(slot, slots, id);
-    if (error) return { ok: false, error };
-    const slotId = id || nextId('sl');
-    // Keep historical records attached to the original schedule.
-    if (id && appointments.some((appointment) => appointment.slotId === id)) {
-      return { ok: false, error: 'This slot has appointment history. Create a new slot instead.' };
-    }
-    setSlots((prev) => id
-      ? prev.map((existing) => existing.id === id ? { ...slot, id } : existing)
-      : [...prev, { ...slot, id: slotId }]);
-    return { ok: true, id: slotId };
-  };
-  const removeFacultySlot = (id) => {
-    const slot = getSlot(id);
-    if (user?.role !== 'faculty' || slot?.facultyId !== user.id || holderOf(id)) {
-      return { ok: false, error: 'Reserved slots cannot be removed.' };
-    }
-    if (appointments.some((appointment) => appointment.slotId === id)) {
-      return { ok: false, error: 'This slot has appointment history and must be retained.' };
-    }
-    setSlots((prev) => prev.filter((existing) => existing.id !== id));
-    return { ok: true, slot };
-  };
-  const saveFacultySchedule = (schedule) => {
-    if (user?.role !== "faculty") return { ok: false, error: "Sign in as faculty." };
-    const result = publishSchedule({
-      slots,
-      appointments,
-      facultyId: user.id,
-      ...schedule,
-      today: TODAY,
-      nextId,
-    });
-    if (!result.ok) return result;
-    setSlots(result.slots);
-    setSchedules((s) => ({ ...s, [user.id]: structuredClone(schedule) }));
-    setScheduleDraft(null);
-    return { ok: true };
-  };
-  const facultySchedule = schedules[user?.id] || { weekly: defaultWeeklyHours(), exceptions: [], location: user?.office || "" };
-
-  const value = {
-    scheduleDraft, setScheduleDraft, feedback, setFeedback,
-    user, session, signIn, signOut, register,
-    faculty, students, slots, appointments,
-    getFaculty, getStudent, getSlot, getAppointment, holderOf, isAvailable, availableSlotsFor,
+  return {
+    now, today, feedback, setFeedback,
+    ...accounts,
+    slots, appointments, getFaculty, getStudent,
+    ...appointmentActions,
     selection, setSelection,
-    createAppointment, updateTopic: updateAppointment, deleteTopic, setStatus,
-    updateFacultyStatus, saveFacultySlot, removeFacultySlot, saveFacultySchedule, facultySchedule,
+    ...availability,
   };
-  return value;
 }

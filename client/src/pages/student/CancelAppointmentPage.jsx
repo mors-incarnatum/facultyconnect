@@ -1,3 +1,5 @@
+import { canManageAppointment } from '../../state/appointments.js';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useApp } from '../../hooks/useApp.js';
 import PageHead from '../../components/PageHead.jsx';
@@ -9,13 +11,15 @@ import { topicLine } from '../../utils/presentation.js';
 
 export default function CancelAppointmentPage() {
   const a = useAppointment();
-  const { setStatus } = useApp();
+  const { now, setStatus } = useApp();
   const navigate = useNavigate();
+  const [error, setError] = useState('');
   if (!a) return <AppointmentNotFound />;
-  const active = a.status === "pending" || a.status === "confirmed";
+  const active = canManageAppointment(a, a.slot, now);
 
   const handleCancel = () => {
-    setStatus(a.id, 'cancelled');
+    const result = setStatus(a.id, 'cancelled');
+    if (!result.ok) return setError(result.error);
     navigate(`/student/appointments?id=${a.id}`, {
       state: { feedback: 'Appointment cancelled in this demo. Changes reset on reload.' },
     });
@@ -24,6 +28,7 @@ export default function CancelAppointmentPage() {
     <>
       <PageHead title="Cancel this appointment?" subtitle="The time slot will become available to other students." />
       <div className="card">
+        {error && <p className="form-error" role="alert">{error}</p>}
         <StatusBadge status={a.status} />
         <h2 style={{ fontSize: 26, margin: "14px 0 6px" }}>{a.faculty.name}</h2>
         <p style={{ fontWeight: 600 }}>{fmtLong(a.slot.date)} · {fmtRange(a.slot.start, a.slot.end)}</p>
@@ -37,7 +42,7 @@ export default function CancelAppointmentPage() {
             </div>
           </>
         ) : (
-          <><p>This appointment is already {a.status} and can no longer be cancelled.</p><div className="btn-row"><Link className="btn" to={`/student/appointments?id=${a.id}`}>Back</Link></div></>
+          <><p>This appointment can no longer be cancelled. Cancellation is available before an active consultation starts.</p><div className="btn-row"><Link className="btn" to={`/student/appointments?id=${a.id}`}>Back</Link></div></>
         )}
       </div>
     </>

@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { TODAY } from '../data/initialData.js';
 import { addDays, fmtDayHeader, fmtRange, fmtTime, fmtShort, weekStartOf, addMinutes } from '../utils/format.js';
 import { ACTIVE } from '../state/appointments.js';
 import { useApp } from '../hooks/useApp.js';
@@ -15,8 +14,8 @@ const PERIODS = {
  * appointments and slots held by other requests (not bookable).
  */
 export default function WeekCalendar({ facultyIds, studentId, onPick, pickedSlotId, title }) {
-  const { slots, appointments, getFaculty, getSlot, isAvailable } = useApp();
-  const [weekStart, setWeekStart] = useState(weekStartOf(TODAY));
+  const { today, slots, appointments, getFaculty, getSlot, isAvailable } = useApp();
+  const [weekStart, setWeekStart] = useState(weekStartOf(today));
   const [view, setView] = useState(() => window.matchMedia("(max-width: 700px)").matches ? "agenda" : "calendar");
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
@@ -56,7 +55,7 @@ export default function WeekCalendar({ facultyIds, studentId, onPick, pickedSlot
   for (const slot of slots) {
     if (!facultyIds.includes(slot.facultyId) || !days.includes(slot.date)) continue;
     const holder = appointments.find((a) => a.slotId === slot.id && ACTIVE.includes(a.status));
-    if (!holder && slot.date < TODAY) continue;
+    if (!holder && !isAvailable(slot)) continue;
     const type = holder?.studentId === studentId ? 'own' : holder ? 'reserved' : 'open';
     const key = `${slot.date}|${slot.start}`;
     (cells[key] ||= []).push({ type, slot, appt: holder });
@@ -134,7 +133,7 @@ export default function WeekCalendar({ facultyIds, studentId, onPick, pickedSlot
         <h3>{title || `${fmtShort(weekStart)} – ${fmtShort(addDays(weekStart, 6))}`}</h3>
         <div className="week-nav">
           <button type="button" aria-label="Previous week" onClick={() => setWeekStart((prev) => addDays(prev, -7))}>‹</button>
-          <button type="button" onClick={() => setWeekStart(weekStartOf(TODAY))}>This week</button>
+          <button type="button" onClick={() => setWeekStart(weekStartOf(today))}>This week</button>
           <button type="button" aria-label="Next week" onClick={() => setWeekStart((prev) => addDays(prev, 7))}>›</button>
         </div>
       </div>
@@ -152,7 +151,7 @@ export default function WeekCalendar({ facultyIds, studentId, onPick, pickedSlot
       <div className="cal-scroll">
         <div className="cal" style={{ gridTemplateColumns: "65px repeat(7, minmax(110px, 1fr))" }} role="group" aria-label="Weekly availability">
           <div />
-          {days.map((d) => <div key={d} className={`dh ${d === TODAY ? "today" : ""}`} >{fmtDayHeader(d)}</div>)}
+          {days.map((d) => <div key={d} className={`dh ${d === today ? "today" : ""}`} >{fmtDayHeader(d)}</div>)}
           {times.map((t) => (
             <Row key={t} t={t} days={days} renderCell={renderCell} />
           ))}

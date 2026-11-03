@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useApp } from '../hooks/useApp.js';
 import { facultyTransitions } from '../state/availability.js';
-import { TODAY } from '../data/initialData.js';
 
 const STATUS_LABELS = {
   confirmed: 'Accept request',
@@ -11,10 +10,10 @@ const STATUS_LABELS = {
 };
 
 const StatusActions = ({ appointment, compact = false }) => {
-  const { updateFacultyStatus, getSlot, setFeedback } = useApp();
+  const { now, updateFacultyStatus, getSlot, setFeedback } = useApp();
   const [confirming, setConfirming] = useState(null);
   const [error, setError] = useState('');
-  const statuses = facultyTransitions(appointment, getSlot(appointment.slotId), TODAY);
+  const statuses = facultyTransitions(appointment, getSlot(appointment.slotId), now);
 
   const handleApply = (status) => {
     const result = updateFacultyStatus(appointment.id, status);
@@ -50,7 +49,7 @@ const StatusActions = ({ appointment, compact = false }) => {
         </button>
       ))}
       {!compact && appointment.status === 'confirmed' && !statuses.includes('completed') && (
-        <p className="muted small">Completion becomes available the day after the consultation (demo clock: {TODAY}).</p>
+        <p className="muted small">Completion becomes available when the consultation ends.</p>
       )}
     </div>
   );

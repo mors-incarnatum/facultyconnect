@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
-import { UNIVERSITY } from '../data/initialData.js';
+import { UNIVERSITY, initialFaculty } from '../data/initialData.js';
 import { useApp } from '../hooks/useApp.js';
+import Avatar from '../components/Avatar.jsx';
 
 export default function HomePage() {
   const { user } = useApp();
@@ -28,6 +29,23 @@ export default function HomePage() {
           <div className="card"><h3>See real availability</h3><p className="muted">Students check open slots before they ask, so there is no back-and-forth over email.</p></div>
           <div className="card"><h3>No double bookings</h3><p className="muted">A requested slot is held until the faculty member responds, and is re-checked on submit.</p></div>
           <div className="card"><h3>Prepared consultations</h3><p className="muted">Every request carries a topic, so faculty can prepare before the meeting.</p></div>
+        </div>
+
+        <div style={{ marginTop: 48, textAlign: 'left' }}>
+          <h2 style={{ fontSize: 22, marginBottom: 6, textAlign: 'center' }}>Meet your CCS faculty guides</h2>
+          <p className="muted" style={{ textAlign: 'center', marginBottom: 24, fontSize: 14 }}>Connect with professors across Software Technology, Computer Technology, and Information Technology.</p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 16 }}>
+            {initialFaculty.slice(0, 3).map((f) => (
+              <div key={f.id} className="card" style={{ display: 'flex', gap: 14, alignItems: 'flex-start' }}>
+                <Avatar person={f} size="lg" />
+                <div style={{ minWidth: 0, flex: 1 }}>
+                  <strong style={{ display: 'block', fontSize: 15 }}>{f.name}</strong>
+                  <div className="muted small" style={{ marginBottom: 6 }}>{f.rank} · {f.department}</div>
+                  <p className="muted small" style={{ fontStyle: 'italic', margin: 0, lineHeight: 1.4 }}>“{f.motto}”</p>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </header>
 

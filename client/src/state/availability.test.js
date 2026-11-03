@@ -1,6 +1,8 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { defaultWeeklyHours, facultyTransitions, publishSchedule, validateSlot } from "./availability.js";
+import { canManageAppointment, isCurrentAppointment } from './appointments.js';
+import { hasEnded, isFutureSlot, localDate } from '../utils/clock.js';
 
 const base = { facultyId: "f1", date: "2026-10-26", start: "13:00", end: "13:30", location: "Room 204" };
 test("slot validation rejects overlaps and invalid duration", () => {
@@ -30,10 +32,45 @@ test("republishing is idempotent and disabling a day removes generated free slot
 });
 
 test("faculty transitions reject pending completion and early completion", () => {
-  assert.deepEqual(facultyTransitions({ status: "pending" }, base, base.date), ["confirmed", "declined"]);
-  assert.deepEqual(facultyTransitions({ status: "confirmed" }, base, base.date), ["cancelled"]);
-  assert.deepEqual(facultyTransitions({ status: "confirmed" }, base, "2026-10-27"), ["completed", "cancelled"]);
-  for (const status of ["completed", "declined", "cancelled"]) assert.deepEqual(facultyTransitions({ status }, base, "2026-10-27"), []);
+  const before = new Date(2026, 9, 26, 12, 59, 59);
+  const end = new Date(2026, 9, 26, 13, 30);
+  assert.deepEqual(facultyTransitions({ status: "pending" }, base, before), ["confirmed", "declined"]);
+  assert.deepEqual(facultyTransitions({ status: "confirmed" }, base, before), ["cancelled"]);
+  assert.deepEqual(facultyTransitions({ status: "confirmed" }, base, end), ["completed"]);
+  assert.deepEqual(facultyTransitions({ status: "pending" }, base, end), ["declined"]);
+  for (const status of ["completed", "declined", "cancelled"]) assert.deepEqual(facultyTransitions({ status }, base, end), []);
+});
+
+test('booking and topic actions close at the start, history begins at the end', () => {
+  const before = new Date(2026, 9, 26, 12, 59, 59, 999);
+  const start = new Date(2026, 9, 26, 13);
+  const during = new Date(2026, 9, 26, 13, 29, 59, 999);
+  const end = new Date(2026, 9, 26, 13, 30);
+  assert.equal(isFutureSlot(base, before), true);
+  assert.equal(isFutureSlot(base, start), false);
+  for (const status of ['pending', 'confirmed']) {
+    assert.equal(canManageAppointment({ status }, base, before), true);
+    assert.equal(canManageAppointment({ status }, base, start), false);
+    assert.equal(isCurrentAppointment({ status }, base, during), true);
+    assert.equal(isCurrentAppointment({ status }, base, end), false);
+  }
+  for (const status of ['completed', 'declined', 'cancelled']) {
+    assert.equal(canManageAppointment({ status }, base, before), false);
+    assert.equal(isCurrentAppointment({ status }, base, before), false);
+  }
+  assert.equal(hasEnded(base, during), false);
+  assert.equal(hasEnded(base, end), true);
+  assert.equal(localDate(new Date(2027, 0, 1, 0, 0)), '2027-01-01');
+  assert.equal(isFutureSlot({ ...base, date: '2027-01-01', start: '00:00' }, new Date(2026, 11, 31, 23, 59, 59)), true);
+});
+
+test('publishing skips elapsed slots today while retaining reservations', () => {
+  let n = 0;
+  const held = { ...base, id: 'held', source: 'weekly' };
+  const result = publishSchedule({ slots: [held], appointments: [{ slotId: 'held', status: 'confirmed' }], facultyId: 'f1', weekly: defaultWeeklyHours(), exceptions: [], location: base.location, today: base.date, now: new Date(2026, 9, 26, 13, 30), nextId: () => `s${++n}` });
+  assert.equal(result.ok, true);
+  assert.ok(result.slots.some((slot) => slot.id === 'held'));
+  assert.deepEqual(result.slots.filter((slot) => slot.date === base.date && slot.id !== 'held').map((slot) => slot.start), ['14:00', '14:30']);
 });
 test("multiple intervals publish both periods and reject overlapping intervals", () => {
   let n = 0;

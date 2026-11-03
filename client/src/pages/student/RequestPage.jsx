@@ -70,7 +70,7 @@ const RequestPage = () => {
           <h2 style={{ marginBottom: 16 }}>What would you like to discuss?</h2>
 
           {taken && <div className="form-error" role="alert">This time is no longer available. <Link to={changeTime} state={draftState}>Choose another time</Link>; your topic will be kept.</div>}
-          <Field name="subject" required error={errors.subject} label="Subject / course" value={form.subject} onChange={handleChange} list="courses" placeholder="CS 201 · Data Structures" />
+          <Field name="subject" required error={errors.subject} label="Subject / course" value={form.subject} onChange={handleChange} list="courses" placeholder="CCDSALG · Data Structures and Algorithms" />
           <datalist id="courses">{f.courses.map((c) => <option key={c} value={c} />)}</datalist>
           <Field name="topic" required error={errors.topic} label="Consultation topic" value={form.topic} onChange={handleChange} placeholder="Help understanding recursion" />
           <Field name="description" label="Description (optional)" as="textarea" value={form.description} onChange={handleChange} placeholder="Share what you have tried and what you would like to cover." />
@@ -83,8 +83,17 @@ const RequestPage = () => {
         <aside className="card preview">
           <div className="eyebrow">Your selected time</div>
           <div style={{ margin: "14px 0" }}><Avatar person={f} size="lg" /></div>
-          <h3 style={{ fontSize: 24 }}>{f.name}</h3>
-          <p className="muted" style={{ margin: "6px 0 0" }}>{f.department}</p>
+          <h3 style={{ fontSize: 24, margin: "0 0 4px" }}>
+            {f.name}
+            {f.pronouns && <span className="profile-pronouns" style={{ marginLeft: 8, fontSize: 12 }}>{f.pronouns}</span>}
+          </h3>
+          <p className="muted" style={{ margin: "2px 0 10px" }}>{f.rank} · {f.department}</p>
+          {f.consultationTip && (
+            <div className="profile-tip" style={{ margin: "10px 0", fontSize: 12, padding: "8px 10px" }}>
+              <span className="profile-tip-icon" style={{ fontSize: 13 }} aria-hidden="true">💡</span>
+              <div><strong>Prep tip:</strong> {f.consultationTip}</div>
+            </div>
+          )}
           <hr className="divider" />
           <div className="when-big" style={{ marginTop: 0 }}>{fmtLong(slot.date)}</div>
           <div className="time-big">{fmtRange(slot.start, slot.end)}</div>

@@ -1,0 +1,250 @@
+/* Faculty directory & selection list */
+.list-head {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  padding: 8px 16px;
+  font-size: 11px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  width: 80%;
+  color: var(--muted);
+}
+.row {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 8px;
+  align-items: center;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 12px;
+  width: 70%;
+  text-align: left;
+  color: inherit;
+}
+
+.row.selected {
+  background: var(--green-100);
+  border-color: var(--green);
+}
+.row .who {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  min-width: 0;
+}
+
+.row .who strong {
+  display: block;
+  font-size: 15px;
+}
+.row .when strong {
+  color: var(--green);
+  font-size: 13px;
+  display: block;
+}
+.row .act {
+  text-align: center;
+  color: var(--green);
+  font-weight: 600;
+}
+.empty {
+  text-align: center;
+  padding: 48px 24px;
+}
+.empty h3 {
+  font-size: 22px;
+  margin-bottom: 8px;
+}
+
+/* Appointment preview card */
+.faculty-directory .row,
+.faculty-directory .list-head {
+  width: 100%;
+}
+.faculty-directory .list-head {
+  gap: 8px;
+}
+@media (min-width: 1101px) {
+  .faculty-directory,
+  .appointments-workspace {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  }
+  .faculty-directory .preview .head h3,
+  .appointments-workspace .detail h3 {
+    font-size: 32px;
+  }
+}
+.preview {
+  scroll-margin-top: 20px;
+}
+.preview .eyebrow {
+  font-size: 11px;
+  letter-spacing: .06em;
+}
+.preview .head {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  margin: 14px 0;
+}
+.preview .head h3 {
+  font-size: 24px;
+}
+.preview .when-big {
+  font-family: var(--serif);
+  font-size: 26px;
+  margin: 14px 0 6px;
+}
+.preview .time-big {
+  font-weight: 600;
+  font-size: 15px;
+  margin-bottom: 14px;
+}
+.preview ul {
+  list-style: none;
+  margin: 8px 0;
+  padding: 0;
+  font-size: 13px;
+}
+.preview li {
+  padding: 4px 0;
+}
+.preview li button {
+  background: none;
+  border: 0;
+  padding: 0;
+  color: var(--green);
+  text-align: left;
+  font-size: 12px;
+}
+.preview li button:hover {
+  text-decoration: underline;
+}
+
+/* Appointment item rows & detail */
+.appointments-workspace .appt-row {
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+.appt-row {
+  display: grid;
+  grid-template-columns: 1fr 120px 90px;
+  gap: 12px;
+  align-items: center;
+  width: 100%;
+  text-align: left;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 16px 18px;
+  margin-bottom: 12px;
+  color: inherit;
+}
+.appt-row.selected {
+  background: var(--green-100);
+  border-color: var(--green);
+}
+.appt-row strong {
+  font-size: 15px;
+  display: block;
+}
+.appt-row .meta {
+  color: var(--muted);
+  font-size: 12px;
+}
+.appt-row .act {
+  color: var(--green);
+  font-weight: 600;
+  text-align: center;
+  font-size: 13px;
+}
+.filters {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+.filters button, .filters select {
+  padding: 12px 24px;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--green);
+  font-weight: 600;
+  font-size: 13px;
+  min-height: 44px;
+  font-family: var(--sans);
+}
+.filters button[aria-pressed="true"] {
+  background: var(--green);
+  color: #fff;
+  border-color: var(--green);
+}
+.detail h3 {
+  font-size: 24px;
+  margin: 12px 0 8px;
+}
+.detail .day {
+  font-weight: 600;
+}
+.detail .time {
+  font-family: var(--serif);
+  font-size: 26px;
+  margin: 4px 0 10px;
+}
+.detail .actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 14px;
+}
+.detail .actions .link-btn {
+  text-align: center;
+  padding: 8px;
+}
+
+/* Upcoming & request cards */
+.upcoming-card {
+  margin-bottom: 16px;
+  padding: 24px;
+}
+.upcoming-card h3 {
+  font-size: 26px;
+  margin: 14px 0 12px;
+}
+.upcoming-card .when {
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.upcoming-card .muted {
+  margin-bottom: 18px;
+}
+
+.req-card {
+  margin-bottom: 14px;
+}
+.req-card .top {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+.req-card h3 {
+  font-size: 22px;
+  margin: 6px 0 4px;
+}
+.req-card .topic {
+  margin: 12px 0;
+  padding: 12px 14px;
+  background: #faf8f3;
+  border-radius: var(--radius);
+}
+.req-card .topic strong {
+  display: block;
+}
+
+.appointment-guidance {
+  margin-top: 16px;
+}

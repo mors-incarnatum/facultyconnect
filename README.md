@@ -14,13 +14,15 @@ npm run dev
 
 ### Demo Accounts (Phase 1)
 
-- **Student:** `alex.johnson@northbridge.edu` (any non-empty password)
-- **Faculty:** `sarah.chen@northbridge.edu` (any non-empty password)
+These are fictional DLSU CCS sample accounts. Names, emails, consultation rooms, and schedules are for demonstration only.
+
+- **Student:** `sample.alex.delacruz@dlsu.edu.ph` (any non-empty password)
+- **Faculty:** `sample.sofia.santos@dlsu.edu.ph` (any non-empty password)
 
 ## Scripts
 
 - `npm run dev`: Run `client` (`:3000`) and `server` (`:5000`) concurrently.
-- `npm test`: Run fast unit tests (`node --test client/src/state/availability.test.js`).
+- `npm test`: Run scheduling rule and service workflow tests.
 - `npm run build`: Build the production React bundle in `client/dist/`.
 - `npm start`: Start the Express server (`server/src/index.js`).
 - `npm run preview --workspace client`: Preview the built client bundle.

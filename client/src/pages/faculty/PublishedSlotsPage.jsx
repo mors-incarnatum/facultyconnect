@@ -1,7 +1,7 @@
+import { hasEnded, isFutureSlot } from '../../utils/clock.js';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useApp } from '../../hooks/useApp.js';
-import { TODAY } from '../../data/initialData.js';
 import Field from '../../components/Field.jsx';
 import PageHead from '../../components/PageHead.jsx';
 import StatusBadge from '../../components/StatusBadge.jsx';
@@ -9,14 +9,15 @@ import { modeLabel } from '../../utils/presentation.js';
 import { fmtShort, fmtRange } from '../../utils/format.js';
 
 const PublishedSlotsPage = () => {
-  const { user, slots, holderOf, appointments } = useApp();
+  const { now, user, slots, holderOf, appointments } = useApp();
   const [filters, setFilters] = useState({ date: '', status: '' });
   const referencedSlotIds = new Set(appointments.map((appointment) => appointment.slotId));
   const list = slots
-    .filter((slot) => slot.facultyId === user.id && slot.date >= TODAY)
+    .filter((slot) => slot.facultyId === user.id && !hasEnded(slot, now))
     .map((slot) => ({ slot, holder: holderOf(slot.id) }))
     .filter(({ slot, holder }) => (
-      (!filters.date || slot.date === filters.date)
+      (holder || isFutureSlot(slot, now))
+      && (!filters.date || slot.date === filters.date)
       && (!filters.status || (holder?.status || 'available') === filters.status)
     ))
     .sort((a, b) => (a.slot.date + a.slot.start).localeCompare(b.slot.date + b.slot.start));

@@ -1,4 +1,5 @@
 import { addDays, addMinutes, minutesBetween, parseDate, toIso } from "../utils/format.js";
+import { hasEnded, isFutureSlot } from '../utils/clock.js';
 
 export const defaultWeeklyHours = () => [
   { day: "Monday", enabled: true, start: "13:00", end: "15:00" },
@@ -19,10 +20,9 @@ export function validateSlot(slot, slots, ignoredId) {
 export const intervalsOf = (row) => row.intervals || [{ start: row.start, end: row.end }];
 export const exceptionIncludes = (exceptions, date) => exceptions.some((e) => typeof e === "string" ? e === date : e.start <= date && date <= e.end);
 
-// A fixed date has no time of day; completion opens the following day.
-export function facultyTransitions(appointment, slot, today) {
-  if (appointment?.status === "pending") return ["confirmed", "declined"];
-  if (appointment?.status === "confirmed") return slot?.date < today ? ["completed", "cancelled"] : ["cancelled"];
+export function facultyTransitions(appointment, slot, now) {
+  if (appointment?.status === "pending") return isFutureSlot(slot, now) ? ["confirmed", "declined"] : ["declined"];
+  if (appointment?.status === "confirmed") return hasEnded(slot, now) ? ["completed"] : ["cancelled"];
   return [];
 }
 
@@ -53,7 +53,7 @@ const isValidException = (exception) => {
 };
 
 // Rebuild the next four weeks, preserving occupied slots and appointment history.
-export function publishSchedule({ slots, appointments, facultyId, weekly, exceptions, location, today, nextId }) {
+export function publishSchedule({ slots, appointments, facultyId, weekly, exceptions, location, today, now = parseDate(today), nextId }) {
   if (!location.trim()) return { ok: false, error: 'Enter a location or meeting details.' };
   const error = validateWeeklyHours(weekly);
   if (error) return { ok: false, error };
@@ -73,7 +73,7 @@ export function publishSchedule({ slots, appointments, facultyId, weekly, except
           facultyId, date, start, end: addMinutes(start, 30),
           mode: 'in-person', location: location.trim(), source: 'weekly',
         };
-        if (!validateSlot(slot, result)) result.push({ ...slot, id: nextId('sl') });
+        if (isFutureSlot(slot, now) && !validateSlot(slot, result)) result.push({ ...slot, id: nextId('sl') });
       }
     }
   }

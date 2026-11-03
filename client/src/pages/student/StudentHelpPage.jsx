@@ -15,7 +15,7 @@ export default function StudentHelpPage() {
         {STEPS.map(([t, d], i) => (
           <div className="card" key={t}><span className="badge">Step {i + 1}</span><h3 style={{ fontSize: 22, margin: "10px 0 6px" }}>{t}</h3><p className="muted">{d}</p></div>
         ))}
-        <div className="notice">Need more help? Contact your program coordinator at coordinator@northbridge.edu.</div>
+        <div className="notice">Need more help? Contact your CCS program coordinator.</div>
       </div>
     </>
   );

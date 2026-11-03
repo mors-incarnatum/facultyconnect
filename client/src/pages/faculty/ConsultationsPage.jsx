@@ -1,4 +1,5 @@
 import { Link, useSearchParams } from 'react-router-dom';
+import Avatar from '../../components/Avatar.jsx';
 import PageHead from '../../components/PageHead.jsx';
 import StatusBadge from '../../components/StatusBadge.jsx';
 import { cap, fmtShort, fmtRange } from '../../utils/format.js';
@@ -30,9 +31,12 @@ const ConsultationsPage = () => {
         {!list.length && <div className="empty"><h3>No consultations here</h3><p className="muted">Try another status filter.</p></div>}
         {list.map((appointment) => (
           <div className="appt-row" key={appointment.id}>
-            <div>
-              <strong>{appointment.student.name} · {appointment.subject} · {appointment.topic || 'No topic added'}</strong>
-              <span className="meta">{fmtShort(appointment.slot.date)} · {fmtRange(appointment.slot.start, appointment.slot.end)}</span>
+            <div style={{ display: 'flex', gap: 12, alignItems: 'center', minWidth: 0 }}>
+              <Avatar person={appointment.student} size="sm" />
+              <div style={{ minWidth: 0 }}>
+                <strong>{appointment.student.name} · {appointment.subject} · {appointment.topic || 'No topic added'}</strong>
+                <span className="meta">{fmtShort(appointment.slot.date)} · {fmtRange(appointment.slot.start, appointment.slot.end)}</span>
+              </div>
             </div>
             <StatusBadge status={appointment.status} />
             <Link to={`/faculty/consultations/${appointment.id}`} state={{ returnTo: `/faculty/consultations?${params}` }}>View details</Link>

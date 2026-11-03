@@ -1,21 +1,20 @@
 import { useState } from 'react';
 import { useApp } from '../../hooks/useApp.js';
 import { intervalsOf } from '../../state/availability.js';
-import { TODAY } from '../../data/initialData.js';
 import Field from '../../components/Field.jsx';
 import PageHead from '../../components/PageHead.jsx';
 import { fmtShort, addDays } from '../../utils/format.js';
 
 const AvailabilityPage = () => {
-  const { facultySchedule, saveFacultySchedule, scheduleDraft, setScheduleDraft, setFeedback } = useApp();
-  const [date, setDate] = useState(TODAY);
-  const [endDate, setEndDate] = useState(TODAY);
+  const { today, facultySchedule, saveFacultySchedule, scheduleDraft, setScheduleDraft, setFeedback } = useApp();
+  const [date, setDate] = useState(today);
+  const [endDate, setEndDate] = useState(today);
   const [copyFrom, setCopyFrom] = useState('0');
   const [copyDays, setCopyDays] = useState([]);
   const [error, setError] = useState('');
   const draft = scheduleDraft || facultySchedule;
   const isDirty = !!scheduleDraft;
-  const lastDate = addDays(TODAY, 27);
+  const lastDate = addDays(today, 27);
 
   const changeDraft = (next) => {
     setScheduleDraft(next);
@@ -60,7 +59,7 @@ const AvailabilityPage = () => {
   };
 
   const handleAddException = () => {
-    if (!date || !endDate || date < TODAY || endDate < date || endDate > lastDate) {
+    if (!date || !endDate || date < today || endDate < date || endDate > lastDate) {
       setError('Choose an exception range within the next four weeks.');
       return;
     }
@@ -160,7 +159,7 @@ const AvailabilityPage = () => {
           <section className="card">
             <h2>Date-specific overrides</h2>
             <p className="muted faculty-spaced">Block exam weeks, holidays, or one day.</p>
-            <Field label="Exception start date" type="date" min={TODAY} max={lastDate} value={date} onChange={handleStartDateChange} />
+            <Field label="Exception start date" type="date" min={today} max={lastDate} value={date} onChange={handleStartDateChange} />
             <Field label="Exception end date" type="date" min={date} max={lastDate} value={endDate} onChange={(event) => setEndDate(event.target.value)} />
             <button className="btn block" type="button" onClick={handleAddException}>Add exception</button>
             <ul className="exception-list">

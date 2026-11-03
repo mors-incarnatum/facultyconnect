@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bg-f3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#556e9c" />
+      <stop offset="100%" stop-color="#344569" />
+    </linearGradient>
+    <linearGradient id="skin-f3" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#fbe2cb" />
+      <stop offset="100%" stop-color="#ecc6a6" />
+    </linearGradient>
+    <linearGradient id="blazer-f3" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#4a5f8a" />
+      <stop offset="100%" stop-color="#2d3c59" />
+    </linearGradient>
+  </defs>
+  <!-- Background -->
+  <rect width="160" height="160" rx="32" fill="url(#bg-f3)" />
+  <!-- Hair back -->
+  <path d="M42 65 C40 38 60 26 80 26 C100 26 120 38 118 65 C118 95 125 125 120 140 C110 140 106 120 106 110 L54 110 C54 120 50 140 40 140 C35 125 42 95 42 65 Z" fill="#212023" />
+  <!-- Neck & Blouse -->
+  <path d="M70 94 L90 94 L95 118 L65 118 Z" fill="#ecc6a6" />
+  <path d="M64 108 L96 108 L104 136 L56 136 Z" fill="#f8fafc" />
+  <!-- Pearl necklace -->
+  <circle cx="73" cy="111" r="2.2" fill="#f1f5f9" />
+  <circle cx="80" cy="113" r="2.5" fill="#f1f5f9" />
+  <circle cx="87" cy="111" r="2.2" fill="#f1f5f9" />
+  <!-- Blazer / Shoulders -->
+  <path d="M28 160 C30 126 50 114 68 112 L77 138 L83 138 L92 112 C110 114 130 126 132 160 Z" fill="url(#blazer-f3)" />
+  <path d="M68 112 L79 144 L81 144 L92 112 L84 112 L80 126 L76 112 Z" fill="#364769" />
+  <!-- Face -->
+  <path d="M54 66 C54 44 65 39 80 39 C95 39 106 44 106 66 C106 89 95 106 80 106 C65 106 54 89 54 66 Z" fill="url(#skin-f3)" />
+  <!-- Front Hair sides and bangs -->
+  <path d="M46 58 C46 36 62 28 80 28 C98 28 114 36 114 58 C108 46 96 38 80 39 C64 38 52 46 46 58 Z" fill="#2d2a2f" />
+  <path d="M46 58 C46 76 54 94 56 104 C59 90 54 75 56 64 Z" fill="#2d2a2f" />
+  <path d="M114 58 C114 76 106 94 104 104 C101 90 106 75 104 64 Z" fill="#2d2a2f" />
+  <!-- Eyes -->
+  <circle cx="68" cy="69" r="3.2" fill="#1e1e24" />
+  <circle cx="92" cy="69" r="3.2" fill="#1e1e24" />
+  <circle cx="69" cy="68" r="1" fill="#ffffff" />
+  <circle cx="93" cy="68" r="1" fill="#ffffff" />
+  <!-- Eyelashes & Brows -->
+  <path d="M63 65 Q68 62 74 65" fill="none" stroke="#212023" stroke-width="1.8" stroke-linecap="round" />
+  <path d="M86 65 Q92 62 97 65" fill="none" stroke="#212023" stroke-width="1.8" stroke-linecap="round" />
+  <path d="M58 57 Q68 53 76 57" fill="none" stroke="#212023" stroke-width="2.2" stroke-linecap="round" />
+  <path d="M84 57 Q92 53 102 57" fill="none" stroke="#212023" stroke-width="2.2" stroke-linecap="round" />
+  <!-- Nose -->
+  <path d="M80 71 L78 80 L83 80" fill="none" stroke="#cfa684" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+  <!-- Smile -->
+  <path d="M72 88 Q80 96 88 88" fill="none" stroke="#a84d5c" stroke-width="2.2" stroke-linecap="round" />
+  <!-- Pearl Earrings -->
+  <circle cx="50" cy="74" r="3" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1" />
+  <circle cx="110" cy="74" r="3" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1" />
+</svg>

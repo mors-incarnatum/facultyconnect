@@ -7,5 +7,5 @@ const STEPS = [
   ["Keep occupied slots protected", "Pending and confirmed slots cannot be edited or removed. Previous consultation records retain their original schedule."],
 ];
 export default function FacultyHelpPage() {
-  return <><PageHead title="Help & support" subtitle="A quick guide to managing consultations in FacultyConnect." /><div className="stack faculty-help">{STEPS.map(([title, description], i) => <section className="card" key={title}><span className="badge">Step {i + 1}</span><h2 className="faculty-spaced">{title}</h2><p className="muted">{description}</p></section>)}<div className="notice">Need more help? Contact your program coordinator at coordinator@northbridge.edu.</div></div></>;
+  return <><PageHead title="Help & support" subtitle="A quick guide to managing consultations in FacultyConnect." /><div className="stack faculty-help">{STEPS.map(([title, description], i) => <section className="card" key={title}><span className="badge">Step {i + 1}</span><h2 className="faculty-spaced">{title}</h2><p className="muted">{description}</p></section>)}<div className="notice">Need more help? Contact your CCS program coordinator.</div></div></>;
 }

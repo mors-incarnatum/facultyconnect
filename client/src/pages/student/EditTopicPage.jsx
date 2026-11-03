@@ -1,3 +1,4 @@
+import { canManageAppointment } from '../../state/appointments.js';
 import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useApp } from '../../hooks/useApp.js';
@@ -10,12 +11,12 @@ import AppointmentNotFound from '../../components/AppointmentNotFound.jsx';
 const EditTopicPage = () => {
   const a = useAppointment();
   const { state } = useLocation();
-  const { updateTopic } = useApp();
+  const { now, updateTopic } = useApp();
   const navigate = useNavigate();
   const [form, setForm] = useState(a ? { subject: a.subject, topic: a.topic || "", description: a.description || "" } : null);
   const [error, setError] = useState("");
   if (!a) return <AppointmentNotFound />;
-  const editable = a.status === "pending" || a.status === "confirmed";
+  const editable = canManageAppointment(a, a.slot, now);
   const handleChange = (event) => {
     const { name, value } = event.target;
     setForm((prev) => ({ ...prev, [name]: value }));
@@ -23,14 +24,15 @@ const EditTopicPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!form.subject.trim() || !form.topic.trim()) return setError("Subject and topic are required.");
-    updateTopic(a.id, { subject: form.subject.trim(), topic: form.topic.trim(), description: form.description.trim() });
+    const result = updateTopic(a.id, { subject: form.subject.trim(), topic: form.topic.trim(), description: form.description.trim() });
+    if (!result.ok) return setError(result.error);
     navigate(state?.returnTo || `/student/appointments?id=${a.id}`, { state: { returnScroll: state?.returnScroll, feedback: "Consultation topic updated for this demo. Changes reset on reload." } });
   };
   return (
     <>
       <PageHead title="Edit consultation topic" subtitle="Update what you would like to discuss before the consultation." />
       {!editable ? (
-        <div className="card"><div className="notice warn">Topics can only be changed for pending or confirmed appointments.</div>
+        <div className="card"><div className="notice warn">Topics can only be changed before a pending or confirmed consultation starts.</div>
           <div className="btn-row"><Link className="btn" to={`/student/appointments?id=${a.id}`}>Back</Link></div></div>
       ) : (
         <form className="card" onSubmit={handleSubmit} noValidate>

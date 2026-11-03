@@ -13,13 +13,14 @@ const PERIODS = {
  * Student week grid. Shows bookable slots of the given faculty, the student's own
  * appointments and slots held by other requests (not bookable).
  */
-export default function WeekCalendar({ facultyIds, studentId, onPick, pickedSlotId, title }) {
+export default function WeekCalendar({ facultyIds, studentId, onPick, pickedSlotId, title, viewActions }) {
   const { today, slots, appointments, getFaculty, getSlot, isAvailable } = useApp();
   const [weekStart, setWeekStart] = useState(weekStartOf(today));
   const [view, setView] = useState(() => window.matchMedia("(max-width: 700px)").matches ? "agenda" : "calendar");
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
   const [timeFilter, setTimeFilter] = useState("");
+  const [includeWeekend, setIncludeWeekend] = useState(false);
   const openSlots = slots.filter((s) => facultyIds.includes(s.facultyId) && isAvailable(s)).sort((a, b) => (a.date + a.start).localeCompare(b.date + b.start));
   const [period, setPeriod] = useState("morning");
   const anchorSlot = getSlot(pickedSlotId) || openSlots[0];
@@ -29,9 +30,11 @@ export default function WeekCalendar({ facultyIds, studentId, onPick, pickedSlot
     if (anchorDate) {
       setWeekStart(weekStartOf(anchorDate));
       setPeriod(anchorStart < '12:00' ? 'morning' : 'afternoon');
+      const weekday = new Date(`${anchorDate}T12:00:00`).getDay();
+      if (weekday === 0 || weekday === 6) setIncludeWeekend(true);
     }
   }, [pickedSlotId, anchorDate, anchorStart]);
-  const days = [0, 1, 2, 3, 4, 5, 6].map((n) => addDays(weekStart, n));
+  const days = Array.from({ length: includeWeekend ? 7 : 5 }, (_, n) => addDays(weekStart, n));
   const inPeriod = (s, p) => p === "morning" ? s.start < "12:00" : s.start >= "12:00";
   const count = (p) => openSlots.filter((s) => days.includes(s.date) && inPeriod(s, p)).length;
   const times = [...new Set([...PERIODS[period].times, ...slots.filter((s) => facultyIds.includes(s.facultyId) && days.includes(s.date) && inPeriod(s, period)).map((s) => s.start)])].sort();
@@ -81,11 +84,12 @@ export default function WeekCalendar({ facultyIds, studentId, onPick, pickedSlot
         <button
           type="button"
           className={`cal-item ${picked ? "picked" : ""}`}
+          aria-pressed={picked}
           aria-label={`${open.length} faculty available ${day} ${fmtTime(first.start)}`}
           onClick={() => onPick(open.map((i) => i.slot))}
         >
-          {open.length > 1 ? `${open.length} faculty available` : getFaculty(first.facultyId).name.replace(/^(Dr\.|Prof\.)\s*/, "")}
-          <br />{fmtRange(first.start, addMinutes(first.start, 30))}
+          {picked && <span aria-hidden="true">✓ </span>}{fmtRange(first.start, addMinutes(first.start, 30))}
+          {open.length > 1 && <span className="slot-faculty-count">{open.length} faculty available</span>}
         </button>
       );
     }
@@ -102,6 +106,7 @@ export default function WeekCalendar({ facultyIds, studentId, onPick, pickedSlot
             </button>
           ))}
         </div>
+        {viewActions}
         <button type="button" className="btn sm" disabled={!openSlots.length} onClick={handleJumpNext}>Next available time</button>
       </div>
       {view === 'agenda' ? (
@@ -130,7 +135,7 @@ export default function WeekCalendar({ facultyIds, studentId, onPick, pickedSlot
         </>
       ) : <>
       <div className="week-head">
-        <h3>{title || `${fmtShort(weekStart)} – ${fmtShort(addDays(weekStart, 6))}`}</h3>
+        <h3>{title || `${fmtShort(weekStart)} – ${fmtShort(addDays(weekStart, includeWeekend ? 6 : 4))}`}</h3>
         <div className="week-nav">
           <button type="button" aria-label="Previous week" onClick={() => setWeekStart((prev) => addDays(prev, -7))}>‹</button>
           <button type="button" onClick={() => setWeekStart(weekStartOf(today))}>This week</button>
@@ -149,14 +154,19 @@ export default function WeekCalendar({ facultyIds, studentId, onPick, pickedSlot
       </div>
       {count(period) === 0 && <p className="notice" role="status">{!openSlots.length ? "No available times for the current faculty search." : `No available times in this period. ${count(period === "morning" ? "afternoon" : "morning")} available in the other period this week. Use Next available time or Agenda to see more.`}</p>}
       <div className="cal-scroll">
-        <div className="cal" style={{ gridTemplateColumns: "65px repeat(7, minmax(110px, 1fr))" }} role="group" aria-label="Weekly availability">
-          <div />
-          {days.map((d) => <div key={d} className={`dh ${d === today ? "today" : ""}`} >{fmtDayHeader(d)}</div>)}
-          {times.map((t) => (
-            <Row key={t} t={t} days={days} renderCell={renderCell} />
-          ))}
+        <div className={`calendar-days ${includeWeekend ? 'full-week' : ''}`} role="group" aria-label="Weekly availability">
+          {days.map((day) => {
+            const dayTimes = times.filter((time) => cells[`${day}|${time}`]?.length);
+            return <section className="calendar-day" key={day} aria-label={fmtDayHeader(day)}>
+              <h4 className={`calendar-day-heading ${day === today ? 'today' : ''}`}>{fmtDayHeader(day)}</h4>
+              <p className="calendar-period-label">{period === 'morning' ? 'Morning' : 'Afternoon'}</p>
+              {dayTimes.map((time) => <div className="calendar-slot" key={time}>{renderCell(day, time)}</div>)}
+              {!dayTimes.length && <p className="muted small calendar-empty">No times in this period</p>}
+            </section>;
+          })}
         </div>
       </div>
+      <button type="button" className="link-btn weekend-toggle" aria-pressed={includeWeekend} onClick={() => setIncludeWeekend((previous) => !previous)}>{includeWeekend ? 'Show weekdays only' : 'Include weekend'}</button>
       </>}
       <div className="legend">
         <span><i style={{ background: "var(--green-100)" }} />Available</span>
@@ -164,14 +174,5 @@ export default function WeekCalendar({ facultyIds, studentId, onPick, pickedSlot
         <span><i style={{ background: "var(--amber-bg)" }} />Reserved / pending</span>
       </div>
     </div>
-  );
-}
-
-function Row({ t, days, renderCell }) {
-  return (
-    <>
-      <div className="th">{fmtTime(t, false)}</div>
-      {days.map((d) => <div key={d} className="cell" >{renderCell(d, t)}</div>)}
-    </>
   );
 }

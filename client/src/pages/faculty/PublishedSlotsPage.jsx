@@ -4,13 +4,16 @@ import { Link } from 'react-router-dom';
 import { useApp } from '../../hooks/useApp.js';
 import Field from '../../components/Field.jsx';
 import PageHead from '../../components/PageHead.jsx';
-import StatusBadge from '../../components/StatusBadge.jsx';
-import { modeLabel } from '../../utils/presentation.js';
-import { fmtShort, fmtRange } from '../../utils/format.js';
+import PublishedSlotDay from '../../components/PublishedSlotDay.jsx';
+import AvailabilityTabs from '../../components/AvailabilityTabs.jsx';
+import { addDays, fmtShort, weekStartOf } from '../../utils/format.js';
+
+const weekLabel = (start) => `${fmtShort(start)} – ${fmtShort(addDays(start, 6))}, ${addDays(start, 6).slice(0, 4)}`;
 
 const PublishedSlotsPage = () => {
   const { now, user, slots, holderOf, appointments } = useApp();
   const [filters, setFilters] = useState({ date: '', status: '' });
+  const [selectedWeek, setSelectedWeek] = useState('');
   const referencedSlotIds = new Set(appointments.map((appointment) => appointment.slotId));
   const list = slots
     .filter((slot) => slot.facultyId === user.id && !hasEnded(slot, now))
@@ -21,18 +24,31 @@ const PublishedSlotsPage = () => {
       && (!filters.status || (holder?.status || 'available') === filters.status)
     ))
     .sort((a, b) => (a.slot.date + a.slot.start).localeCompare(b.slot.date + b.slot.start));
+  const weeks = [...new Set(list.map(({ slot }) => weekStartOf(slot.date)))];
+  const activeWeek = weeks.includes(selectedWeek) ? selectedWeek : weeks[0];
+  const weekIndex = weeks.indexOf(activeWeek);
+  const days = new Map();
+  list.filter(({ slot }) => weekStartOf(slot.date) === activeWeek).forEach((entry) => {
+    const entries = days.get(entry.slot.date) || [];
+    entries.push(entry);
+    days.set(entry.slot.date, entries);
+  });
 
   const handleFilterChange = (event) => {
     const { name, value } = event.target;
     setFilters((prev) => ({ ...prev, [name]: value }));
+    setSelectedWeek('');
   };
 
-  const handleClearFilters = () => setFilters({ date: '', status: '' });
+  const handleClearFilters = () => {
+    setFilters({ date: '', status: '' });
+    setSelectedWeek('');
+  };
 
   return (
     <>
       <PageHead title="My consultation availability" subtitle="Create, review, edit, or remove the dates and times students can request." />
-      <div className="toolbar"><Link className="btn primary" to="/faculty/availability/new">+ Add availability</Link></div>
+      <AvailabilityTabs><Link className="btn primary" to="/faculty/availability/new">+ Add availability</Link></AvailabilityTabs>
       <div className="filters">
         <Field name="date" label="Filter slots by date" type="date" value={filters.date} onChange={handleFilterChange} />
         <Field name="status" label="Filter slot status" as="select" value={filters.status} onChange={handleFilterChange}>
@@ -41,39 +57,30 @@ const PublishedSlotsPage = () => {
         </Field>
         <button className="btn" onClick={handleClearFilters}>Clear filters</button>
       </div>
-      <section className="card">
+      <section className="card published-slots">
         <h2>Published time slots</h2>
-        <p className="muted faculty-spaced">Each slot allows one appointment. Reserved slots cannot receive another request.</p>
+        <p className="muted faculty-spaced">Browse by week and expand a day to manage its slots. Each slot allows one appointment.</p>
         {!list.length && (
           <div className="empty">
-            <h3>No published slots</h3>
-            <p className="muted">Add a time or publish weekly hours to get started.</p>
+            <h3>{filters.date || filters.status ? 'No matching slots' : 'No published slots'}</h3>
+            <p className="muted">{filters.date || filters.status ? 'Try another date or status, or clear the filters.' : 'Add a time or publish weekly hours to get started.'}</p>
           </div>
         )}
-        {list.map(({ slot, holder }, index) => (
-          <div key={slot.id}>
-            {(index === 0 || list[index - 1].slot.date !== slot.date) && <h3 className="slot-date">{fmtShort(slot.date)}</h3>}
-            <div className="appt-row">
-              <div>
-                <strong>{fmtShort(slot.date)} · {fmtRange(slot.start, slot.end)}</strong>
-                <span className="meta">{modeLabel(slot)} · {slot.location}</span>
-              </div>
-              <StatusBadge status={holder?.status || 'available'} />
-              <div className="slot-actions">
-                {holder ? (
-                  <Link to={`/faculty/consultations/${holder.id}`}>View appointment</Link>
-                ) : referencedSlotIds.has(slot.id) ? (
-                  <span className="muted small">History retained</span>
-                ) : (
-                  <>
-                    <Link to={`/faculty/availability/${slot.id}/edit`}>Edit</Link>
-                    <Link to={`/faculty/availability/${slot.id}/remove`}>Remove</Link>
-                  </>
-                )}
-              </div>
+        {weeks.length > 0 && (
+          <>
+            <div className="published-week-navigation" role="group" aria-label="Published slot weeks">
+              <button className="btn" disabled={weekIndex === 0} onClick={() => setSelectedWeek(weeks[weekIndex - 1])}>← Previous week</button>
+              <Field name="publishedWeek" label="Published week" as="select" value={activeWeek} onChange={(event) => setSelectedWeek(event.target.value)}>
+                {weeks.map((week) => <option key={week} value={week}>{weekLabel(week)}</option>)}
+              </Field>
+              <button className="btn" disabled={weekIndex === weeks.length - 1} onClick={() => setSelectedWeek(weeks[weekIndex + 1])}>Next week →</button>
             </div>
-          </div>
-        ))}
+            <p className="muted small" role="status">Week {weekIndex + 1} of {weeks.length} with matching slots · {list.length} {list.length === 1 ? 'slot' : 'slots'} total</p>
+            <div className="published-days" key={activeWeek}>
+              {[...days].map(([date, entries]) => <PublishedSlotDay key={date} date={date} entries={entries} referencedSlotIds={referencedSlotIds} />)}
+            </div>
+          </>
+        )}
       </section>
     </>
   );

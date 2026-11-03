@@ -71,6 +71,8 @@ export default function FacultySearchPage({ view }) {
         title="Find your academic guide"
         subtitle={view === "list" ? "Compare faculty, then choose a consultation time that works for you." : "Explore available times while keeping faculty details close at hand."}
       />
+      <details className={`faculty-search-options ${view === 'list' ? 'list-search-options' : ''}`} open={view === 'list'}>
+      <summary>Search and filter faculty</summary>
       <form className="search-bar" onSubmit={handleSubmit} role="search">
         <Field name="q" label="Search faculty" value={filters.q} onChange={handleChange} placeholder="Search by name, department, or subject" />
         <Field name="dept" label="Department" as="select" value={filters.dept} onChange={handleChange}>
@@ -79,16 +81,17 @@ export default function FacultySearchPage({ view }) {
         </Field>
         <button className="btn primary" type="submit">Search</button>
       </form>
+      </details>
 
-      <div className="toolbar">
+      {view === 'list' && <div className="toolbar">
         <strong className="muted small">{results.length} faculty · {dept || "All departments"}{q ? ` · “${q}”` : ""}</strong>
         <div className="toggle auto" role="group" aria-label="View">
           <button type="button" aria-pressed={view === "list"} onClick={() => navigate(`/student/faculty${location.search}`, { state: location.state })}>List</button>
           <button type="button" aria-pressed={view === "calendar"} onClick={() => navigate(`/student/faculty/calendar${location.search}`, { state: location.state })}>Calendar</button>
         </div>
-      </div>
+      </div>}
 
-      <div className={`two-col ${view === "list" ? "faculty-directory" : ""}`}>
+      <div className={`two-col ${view === "list" ? "faculty-directory" : "calendar-directory"}`}>
         <div>
           {results.length === 0 ? (
             <div className="card empty">
@@ -131,6 +134,7 @@ export default function FacultySearchPage({ view }) {
           ) : (
             <>
               <WeekCalendar
+                viewActions={<div className="toggle auto" role="group" aria-label="View"><button type="button" onClick={() => navigate(`/student/faculty${location.search}`, { state: location.state })}>List</button><button type="button" aria-pressed="true">Calendar</button></div>}
                 facultyIds={results.map((f) => f.id)}
                 studentId={user.id}
                 pickedSlotId={selSlot?.id}
@@ -146,19 +150,29 @@ export default function FacultySearchPage({ view }) {
                   </div>
                 </div>
               )}
-              <div className="next-week">
-                <strong>Coming up</strong>
+              <details className="calendar-coming-up">
+                <summary>Coming up</summary>
+                <div className="next-week">
                 {upNext.length ? upNext.map(({ s, f }) => (
                   <button key={s.id} className="link-btn" style={{ marginRight: 16 }} onClick={() => pickSlot(s)}>
                     {f.name.replace(/^(Dr\.|Prof\.)\s*/, "")} · {fmtShort(s.date)} · {fmtTime(s.start)}
                   </button>
                 )) : <span className="muted">No open times for this search.</span>}
-              </div>
+                </div>
+              </details>
             </>
           )}
         </div>
 
-        {selFaculty && (
+        {selFaculty && view === 'calendar' ? (
+          <aside className="selected-slot-summary" ref={preview} aria-label="Selected consultation time">
+            <div>
+              <strong>{selFaculty.name}{selSlot ? ` · ${fmtShort(selSlot.date)} · ${fmtRange(selSlot.start, selSlot.end)}` : ''}</strong>
+              <p>{selSlot ? `${modeLabel(selSlot)} · ${selSlot.location}` : 'No open consultation times at the moment.'}</p>
+            </div>
+            {selSlot && <Link className="btn primary" aria-label="Request consultation →" to={`/student/request?slot=${selSlot.id}`} state={onward}>Continue →</Link>}
+          </aside>
+        ) : selFaculty && (
           <aside className="card preview" aria-label="Faculty profile" ref={preview}>
             <div className="eyebrow">Faculty profile</div>
             <div className="head">

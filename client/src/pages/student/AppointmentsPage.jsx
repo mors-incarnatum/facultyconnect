@@ -1,5 +1,5 @@
 import { useApp } from '../../hooks/useApp.js';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { canManageAppointment, isCurrentAppointment, STATUSES } from '../../state/appointments.js';
 import { useStudentRecords } from '../../hooks/useAppointments.js';
@@ -7,6 +7,7 @@ import Avatar from '../../components/Avatar.jsx';
 import AppointmentGuidance from '../../components/AppointmentGuidance.jsx';
 import PageHead from '../../components/PageHead.jsx';
 import StatusBadge from '../../components/StatusBadge.jsx';
+import AppointmentDialog from '../../components/AppointmentDialog.jsx';
 import { modeLabel } from '../../utils/presentation.js';
 import { fmtLong, fmtMonthDay, fmtRange, fmtTime } from '../../utils/format.js';
 
@@ -14,6 +15,7 @@ export default function AppointmentsPage() {
   const detailHeading = useRef(null);
   const listHeading = useRef(null);
   const returnPosition = useRef(0);
+  const [dialog, setDialog] = useState(null);
   const { now } = useApp();
   const mine = useStudentRecords();
   const [params, setParams] = useSearchParams();
@@ -51,6 +53,16 @@ export default function AppointmentsPage() {
     window.scrollTo(0, returnPosition.current);
   };
 
+  const handleDialogSaved = (mode) => {
+    setDialog(null);
+    if (mode === 'cancel' && status) {
+      const next = new URLSearchParams(params);
+      next.delete('status');
+      next.set('id', sel.id);
+      setParams(next);
+    }
+  };
+
   return (
     <>
       <PageHead title="My appointments" subtitle="Review your current consultations and previous appointment records." />
@@ -81,10 +93,10 @@ export default function AppointmentsPage() {
         {sel && (
           <aside className="card detail" aria-label="Appointment details">
             <StatusBadge status={sel.status} />
-            <div style={{ display: 'flex', gap: 14, alignItems: 'center', margin: '14px 0 10px' }}>
+            <div className="appointment-faculty">
               <Avatar person={sel.faculty} size="lg" />
               <div>
-                <h3 ref={detailHeading} tabIndex={-1} style={{ margin: 0, fontSize: 20 }}>
+                <h3 ref={detailHeading} tabIndex={-1}>
                   {sel.faculty.name}
                   {sel.faculty.pronouns && <span className="profile-pronouns" style={{ marginLeft: 6, fontSize: 11 }}>{sel.faculty.pronouns}</span>}
                 </h3>
@@ -102,8 +114,8 @@ export default function AppointmentsPage() {
             <p className="muted" style={{ marginTop: 8 }}>{sel.topic ? sel.description : "No topic added."}</p>
             {canManageAppointment(sel, sel.slot, now) ? (
               <div className="actions">
-                <Link className="btn block" to={`/student/appointments/${sel.id}/edit-topic`} state={{ returnTo: `/student/appointments?${params}` }}>{sel.topic ? "Edit topic & description" : "Add a topic"}</Link>
-                <Link className="link-btn danger" style={{ textAlign: "center", fontWeight: 600 }} to={`/student/appointments/${sel.id}/cancel`}>Cancel appointment</Link>
+                <button type="button" className="btn block" onClick={() => setDialog('edit')}>{sel.topic ? 'Edit Topic' : 'Add a topic'}</button>
+                <button type="button" className="link-btn danger" onClick={() => setDialog('cancel')}>Cancel Appointment</button>
                 <p className="muted small" style={{ textAlign: "center" }}>Manage your consultation topic before the meeting.</p>
                 {sel.topic && <Link style={{ textAlign: "center" }} to={`/student/appointments/${sel.id}/delete-topic`}>Delete topic</Link>}
               </div>
@@ -113,6 +125,7 @@ export default function AppointmentsPage() {
           </aside>
         )}
       </div>
+      {dialog && sel && <AppointmentDialog key={`${sel.id}:${dialog}`} appointment={sel} mode={dialog} onClose={() => setDialog(null)} onSaved={handleDialogSaved} />}
     </>
   );
 }

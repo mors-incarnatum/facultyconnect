@@ -3,6 +3,7 @@ import { useApp } from '../../hooks/useApp.js';
 import { intervalsOf } from '../../state/availability.js';
 import Field from '../../components/Field.jsx';
 import PageHead from '../../components/PageHead.jsx';
+import AvailabilityTabs from '../../components/AvailabilityTabs.jsx';
 import { fmtShort, addDays } from '../../utils/format.js';
 
 const AvailabilityPage = () => {
@@ -85,32 +86,29 @@ const AvailabilityPage = () => {
   return (
     <>
       <PageHead title="Availability manager" subtitle="Set weekly consultation hours, manage date exceptions, and publish your availability." />
+      <AvailabilityTabs><span className={`schedule-state ${isDirty ? 'dirty' : ''}`} role="status">{isDirty ? 'Unsaved draft · retained during navigation' : 'Published schedule'}</span></AvailabilityTabs>
       <form onSubmit={handleSubmit}>
-        <div className="toolbar">
-          <span className="muted small" role="status">
-            {isDirty ? 'Unsaved draft · retained during navigation' : 'Published schedule · demo session only'}
-          </span>
-        </div>
         {error && <div className="form-error" role="alert">{error}</div>}
         <div className="faculty-manager">
-          <section className="card">
+          <section className="card recurring-hours">
             <h2>Weekly recurring hours</h2>
-            <p className="muted faculty-spaced">Monday–Friday · 30-minute consultations · Campus local time</p>
+            <p className="muted small schedule-help">Monday–Friday · 30-minute consultations · Campus local time</p>
             {draft.weekly.map((row, dayIndex) => {
               const intervals = intervalsOf(row);
               return (
-                <fieldset className="day-hours" key={row.day}>
-                  <legend>{row.day}</legend>
-                  <button className="btn sm" type="button" aria-label={`${row.day} availability`} aria-pressed={row.enabled} onClick={() => updateDay(dayIndex, { enabled: !row.enabled })}>
+                <div className="schedule-day" role="group" aria-label={`${row.day} hours`} key={row.day}>
+                  <span className="schedule-day-label">{row.day}</span>
+                  <button className={`btn day-toggle ${row.enabled ? 'primary' : ''}`} type="button" aria-label={`${row.day} availability`} aria-pressed={row.enabled} onClick={() => updateDay(dayIndex, { enabled: !row.enabled })}>
                     {row.enabled ? '● On' : '○ Off'}
                   </button>
-                  {intervals.map((interval, intervalIndex) => (
-                    <div className="interval-row" key={intervalIndex}>
+                  <div className="schedule-intervals">{intervals.map((interval, intervalIndex) => (
+                    <div className="schedule-interval" key={intervalIndex}>
                       {['start', 'end'].map((name) => (
                         <Field
                           key={name}
                           name={name}
                           label={`${row.day} ${name} ${intervalIndex + 1}`}
+                          className="time-field"
                           type="time"
                           disabled={!row.enabled}
                           required={row.enabled}
@@ -118,40 +116,40 @@ const AvailabilityPage = () => {
                           onChange={(event) => handleIntervalChange(dayIndex, intervalIndex, event)}
                         />
                       ))}
-                      <button
+                      {intervalIndex > 0 && <button
                         type="button"
-                        className="btn sm"
+                        className="btn interval-remove"
                         disabled={!row.enabled || intervals.length === 1}
                         aria-label={`Remove ${row.day} interval ${intervalIndex + 1}`}
                         onClick={() => updateDay(dayIndex, { intervals: intervals.filter((_, index) => index !== intervalIndex) })}
                       >
                         Remove
-                      </button>
+                      </button>}
                     </div>
-                  ))}
-                  <button type="button" className="btn sm" disabled={!row.enabled} onClick={() => updateDay(dayIndex, { intervals: [...intervals, { start: '15:00', end: '16:00' }] })}>
-                    Add {row.day} interval
+                  ))}</div>
+                  <button type="button" className="btn interval-add" aria-label={`Add ${row.day} interval`} disabled={!row.enabled} onClick={() => updateDay(dayIndex, { intervals: [...intervals, { start: '15:00', end: '16:00' }] })}>
+                    + Interval
                   </button>
-                </fieldset>
+                </div>
               );
             })}
-            <fieldset className="day-hours">
-              <legend>Copy hours to selected days</legend>
-              <Field label="Copy from" as="select" value={copyFrom} onChange={(event) => setCopyFrom(event.target.value)}>
-                {draft.weekly.map((row, index) => <option key={row.day} value={index}>{row.day}</option>)}
+            <fieldset className="schedule-copy">
+              <legend className="sr-only">Copy hours to selected days</legend>
+              <Field label="Copy from" className="time-field" as="select" value={copyFrom} onChange={(event) => setCopyFrom(event.target.value)}>
+                {draft.weekly.map((row, index) => <option key={row.day} value={index}>From {row.day}</option>)}
               </Field>
               <div className="copy-days">
                 {draft.weekly.map((row, index) => (
                   <label key={row.day}>
                     <input type="checkbox" checked={copyDays.includes(index)} onChange={(event) => handleCopyDayChange(index, event.target.checked)} />
-                    {row.day}
+                    {row.day.slice(0, 3)}
                   </label>
                 ))}
               </div>
               <button type="button" className="btn" disabled={!copyDays.length} onClick={handleCopyHours}>Copy hours</button>
             </fieldset>
             <Field label="Location" value={draft.location} onChange={(event) => changeDraft({ ...draft, location: event.target.value })} required />
-            <div className="notice">
+            <div className="schedule-protection muted small">
               <strong>Occupied slots stay protected</strong>
               <p>Pending, confirmed, and historical appointment slots stay unchanged, including within blocked date ranges. Exceptions remove only unreferenced times in the next four weeks.</p>
             </div>

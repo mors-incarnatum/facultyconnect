@@ -34,7 +34,7 @@ const StatusActions = ({ appointment, compact = false }) => {
     <div className={compact ? 'btn-row' : 'stack'}>
       {error && <p className="form-error" role="alert">{error}</p>}
       {confirming ? (
-        <div className="notice warn" role="group" aria-label="Confirm status change">
+        <div className="notice warn status-confirmation" role="group" aria-label="Confirm status change">
           <p>{STATUS_LABELS[confirming]}? The student's reserved time will be released.</p>
           <div className="btn-row">
             <button type="button" autoFocus className="btn" onClick={() => setConfirming(null)}>Keep request</button>

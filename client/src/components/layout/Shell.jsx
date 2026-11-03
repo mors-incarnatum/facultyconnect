@@ -108,7 +108,7 @@ export default function Shell({ role }) {
     item.end ? pathname === item.to : [item.to, ...(item.also || [])].some((p) => pathname.startsWith(p));
 
   return (
-    <div className="shell" onClickCapture={handleNavigation}>
+    <div className={`shell workspace-v2 workspace-${role}`} onClickCapture={handleNavigation}>
       <a className="skip-link" href="#workspace-content" onClick={(event) => { event.preventDefault(); main.current?.focus(); }}>Skip to content</a>
       <aside className={`sidebar ${open ? "open" : ""}`}>
         <div className="mobile-bar">
@@ -132,7 +132,7 @@ export default function Shell({ role }) {
           <div className="semester"><strong>{SEMESTER}</strong><span>A little guidance goes a long way.</span></div>
         </div>
         <div className="sidebar-foot collapsible">
-          <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+          <div className="sidebar-identity">
             <Avatar person={user} size="sm" />
             <div style={{ minWidth: 0 }}>
               <div className="who" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{user.name}</div>
@@ -141,6 +141,7 @@ export default function Shell({ role }) {
           </div>
           <Link to={`/${role}/help`} aria-current={pathname === `/${role}/help` ? "page" : undefined}>Help &amp; support</Link>
           <button className="link-btn" onClick={handleSignOut}>Log out →</button>
+          <p className="session-note">Session workspace · changes reset on reload.</p>
         </div>
       </aside>
       <main className="main" id="workspace-content" ref={main} tabIndex={-1}>
@@ -148,8 +149,7 @@ export default function Shell({ role }) {
           <span className="eyebrow">Your academic connections</span>
           <span>{todayLabel(now)}</span>
         </div>
-        <div className="notice demo-notice"><strong>Demo workspace.</strong> Appointment and schedule changes reset on reload. Unsaved weekly-hour drafts stay available while you navigate; reloading clears them.</div>
-        <div className="feedback" role="status" aria-live="polite">{feedback}</div>
+        {feedback && <div className="feedback feedback-toast" role="status" aria-live="polite"><span>{feedback}</span><button type="button" aria-label="Dismiss notification" onClick={() => setFeedback('')}>×</button></div>}
         {leaving && (
           <ScheduleDraftGuard
             error={draftError}

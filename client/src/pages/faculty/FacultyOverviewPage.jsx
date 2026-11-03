@@ -15,12 +15,12 @@ const FacultyOverviewPage = () => {
   const upcoming = records.filter((a) => a.status === "confirmed" && isCurrentAppointment(a, a.slot, now));
   return (
     <>
-      <div style={{ display: 'flex', gap: 16, alignItems: 'center', marginBottom: 24 }}>
+      <div className="faculty-welcome">
         <Avatar person={user} size="lg" />
         <div>
           <PageHead
             title={`Welcome back, ${user.name}`}
-            subtitle={`${user.rank || 'Faculty'} · ${user.department} — Your consultation schedule, requests, and appointment statuses in one place.`}
+            subtitle={`${user.rank || 'Faculty'} · ${user.department}`}
           />
         </div>
       </div>
@@ -39,10 +39,10 @@ const FacultyOverviewPage = () => {
           {pending.map((appointment) => (
             <article className="req-card" key={appointment.id}>
               <StatusBadge status={appointment.status} />
-              <div style={{ display: 'flex', gap: 12, alignItems: 'center', margin: '12px 0 8px' }}>
+              <div className="request-person">
                 <Avatar person={appointment.student} size="md" />
                 <div>
-                  <h3 style={{ margin: 0, fontSize: 18 }}>{appointment.student.name}</h3>
+                  <h3>{appointment.student.name}{appointment.student.pronouns ? ` · ${appointment.student.pronouns}` : ''}</h3>
                   <div className="muted small">{appointment.student.program || 'Student'}</div>
                 </div>
               </div>
@@ -52,7 +52,7 @@ const FacultyOverviewPage = () => {
                 <p className="muted">{appointment.description}</p>
               </div>
               <StatusActions appointment={appointment} compact />
-              <p className="faculty-spaced"><Link to={`/faculty/consultations/${appointment.id}`}>View full request →</Link></p>
+              <p className="faculty-spaced"><Link className="btn block" to={`/faculty/consultations/${appointment.id}`}>View full request →</Link></p>
             </article>
           ))}
         </section>
@@ -62,10 +62,10 @@ const FacultyOverviewPage = () => {
           {upcoming.map((appointment) => (
             <article className="req-card" key={appointment.id}>
               <StatusBadge status={appointment.status} />
-              <div style={{ display: 'flex', gap: 12, alignItems: 'center', margin: '12px 0 8px' }}>
+              <div className="request-person">
                 <Avatar person={appointment.student} size="md" />
                 <div>
-                  <h3 style={{ margin: 0, fontSize: 18 }}>{appointment.student.name} · {appointment.subject}</h3>
+                  <h3>{appointment.student.name} · {appointment.subject}</h3>
                   <div className="muted small">{appointment.student.program || 'Student'}</div>
                 </div>
               </div>

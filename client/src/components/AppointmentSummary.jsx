@@ -6,27 +6,21 @@ import { fmtLong, fmtRange } from '../utils/format.js';
 const AppointmentSummary = ({ appointment, children }) => {
   const { status, student, slot, subject, topic, description } = appointment;
   return (
-    <div className="card detail">
+    <div className="card detail consultation-summary">
       <StatusBadge status={status} />
-      <div style={{ display: 'flex', gap: 14, alignItems: 'center', margin: '14px 0 10px' }}>
+      <div className="consultation-student">
         <Avatar person={student} size="lg" />
         <div>
-          <h3 style={{ margin: 0 }}>
+          <h3>
             {student.name}
             {student.pronouns && <span className="profile-pronouns" style={{ marginLeft: 6, fontSize: 11 }}>{student.pronouns}</span>}
           </h3>
-          <p className="muted small" style={{ margin: '2px 0 0' }}>
-            {student.program || 'Student'} · {student.email}
-          </p>
-          {student.yearLevel && (
-            <span className="profile-tag" style={{ display: 'inline-block', marginTop: 4, fontSize: 11, padding: '2px 8px' }}>
-              {student.yearLevel}
-            </span>
-          )}
+          <p className="muted small">{student.program || 'Student'}</p>
+          <p className="muted small">{student.email}{student.yearLevel ? ` · ${student.yearLevel}` : ''}</p>
         </div>
       </div>
-      <hr className="divider" />
-      <h2>{fmtLong(slot.date)} · {fmtRange(slot.start, slot.end)}</h2>
+      <h2>{fmtLong(slot.date)}</h2>
+      <p className="consultation-time">{fmtRange(slot.start, slot.end)}</p>
       <p className="muted faculty-spaced">{modeLabel(slot)} · {slot.location}</p>
       <strong>{subject}{topic ? ` · ${topic}` : ''}</strong>
       <p className="muted faculty-spaced">{topic ? description : 'No topic added.'}</p>

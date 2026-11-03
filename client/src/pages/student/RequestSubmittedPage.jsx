@@ -5,6 +5,7 @@ import { modeLabel, topicLine } from '../../utils/presentation.js';
 import { fmtLong, fmtRange } from '../../utils/format.js';
 import { useAppointment } from '../../hooks/useAppointments.js';
 import AppointmentNotFound from '../../components/AppointmentNotFound.jsx';
+import BookingStepper from '../../components/BookingStepper.jsx';
 
 export default function RequestSubmittedPage() {
   const a = useAppointment();
@@ -12,6 +13,7 @@ export default function RequestSubmittedPage() {
   return (
     <>
       <PageHead title={a.status === "pending" ? "Your request has been sent" : "Your consultation request"} subtitle={a.status === "pending" ? "Your time is reserved while you wait for faculty approval." : "View the latest status and details in My appointments."} />
+      <BookingStepper current={4} />
       <div className="card" style={{ padding: 32 }}>
         <StatusBadge status={a.status} />
         <h2 style={{ fontSize: 38, margin: "18px 0 10px" }}>{fmtLong(a.slot.date)} · {fmtRange(a.slot.start, a.slot.end)}</h2>

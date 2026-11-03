@@ -21,3 +21,4 @@
 
 /* Responsive media queries */
 @import "./styles/responsive.css";
+@import "./styles/workspace-v2.css";

@@ -1,0 +1,230 @@
+/* UX improvements proposal: shared workspace geometry and interactive states. */
+.workspace-v2 h1, .workspace-v2 h2, .workspace-v2 h3, .modal-dialog h2 {
+  font-weight: 400;
+}
+.workspace-v2 .page-head { margin-bottom: 24px; }
+.workspace-v2 .page-head h1 { font-size: 32px; line-height: 1.375; }
+.workspace-v2 .page-head p { font-size: 14px; line-height: 21px; }
+.workspace-v2 .card h2, .workspace-v2 .section-title { font-size: 23px; line-height: 31px; }
+.workspace-v2 .topline .eyebrow { color: var(--muted); }
+.workspace-v2 .nav a { display: flex; align-items: center; min-height: 48px; }
+.workspace-v2 .btn, .workspace-v2 .btn.sm { min-height: 48px; }
+.workspace-v2 .sidebar-identity { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; }
+.workspace-v2 .sidebar-foot { gap: 16px; }
+.workspace-v2 .session-note { font-size: 11px; color: var(--muted); }
+.workspace-v2 .sidebar-foot .who { white-space: normal !important; }
+.workspace-v2 .workspace-trail { font-size: 12px; margin-bottom: 24px; }
+.workspace-v2 .field, .modal-dialog .field { display: flex; flex-direction: column; gap: 8px; border: 0; padding: 0; background: transparent; margin-bottom: 20px; min-width: 0; }
+.workspace-v2 .field > span:first-child, .modal-dialog .field > span:first-child { font-size: 12px; color: var(--muted); }
+.workspace-v2 .field input, .workspace-v2 .field select, .workspace-v2 .field textarea,
+.modal-dialog .field input, .modal-dialog .field select, .modal-dialog .field textarea {
+  display: block; width: 100%; min-width: 0; min-height: 48px; border: 1px solid var(--line); border-radius: 10px;
+  background: var(--surface); color: var(--ink); font: inherit; padding: 12px 16px; box-sizing: border-box;
+}
+.workspace-v2 .field textarea, .modal-dialog .field textarea { min-height: 136px; resize: vertical; }
+.workspace-v2 .field:focus-within, .modal-dialog .field:focus-within { box-shadow: none; }
+.workspace-v2 .field.invalid input, .modal-dialog .field.invalid input { border-color: var(--red); }
+.workspace-v2 .field input:disabled { color: var(--muted); background: var(--bg); }
+.feedback-toast {
+  position: fixed; right: 24px; bottom: 24px; z-index: 20; display: flex; align-items: center; gap: 12px;
+  width: max-content; max-width: min(480px, calc(100vw - 32px)); padding: 12px 16px; margin: 0;
+  border: 1px solid var(--line); border-radius: 10px; background: var(--green-100); color: var(--green);
+  box-shadow: 0 6px 24px rgb(38 51 44 / 12%);
+}
+.feedback-toast button { flex: 0 0 48px; height: 48px; border: 0; background: transparent; color: inherit; font-size: 22px; }
+.workspace-v2 .feedback-toast:not(:empty) { margin: 0; padding: 12px 16px; }
+
+/* The request journey keeps progress visible without adding another route. */
+.booking-stepper { display: flex; align-items: center; list-style: none; min-height: 80px; margin: 0 0 24px; padding: 20px 24px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+.booking-stepper li { flex: 1; display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 13px; }
+.booking-stepper li:not(:last-child)::after { content: ''; flex: 1; min-width: 16px; height: 3px; margin: 0 16px; background: var(--line); }
+.booking-stepper li.complete::after { background: var(--green); }
+.step-indicator { display: grid; place-items: center; flex: 0 0 32px; height: 32px; border-radius: 50%; color: var(--muted); background: var(--green-100); }
+.booking-stepper .complete, .booking-stepper [aria-current="step"] { color: var(--green); font-weight: 600; }
+.booking-stepper .complete .step-indicator, .booking-stepper [aria-current="step"] .step-indicator { color: var(--surface); background: var(--green); }
+.request-workspace { grid-template-columns: minmax(0, 650fr) minmax(0, 460fr); gap: 42px; }
+.request-form h2 { margin-bottom: 24px; }
+.request-form .btn-row { margin-top: 24px; }
+.request-preview { display: flex; flex-direction: column; gap: 20px; }
+.request-preview > * { margin: 0 !important; }
+.request-preview .eyebrow { color: var(--muted); font-size: 12px; }
+.request-preview .avatar.lg { width: 56px; height: 56px; }
+.request-preview .profile-tip { background: var(--green-100); color: var(--muted); border: 0; padding: 16px !important; font-size: 12px !important; }
+.request-preview .when-big { font-size: 23px; }
+.workspace-v2 .filters button { min-height: 48px; }
+.workspace-v2 .filters button[aria-pressed="true"] { color: var(--green); background: var(--green-100); border-color: var(--line); }
+.workspace-v2 .appointments-workspace .detail .actions button { min-height: 48px; }
+.workspace-v2 .appointment-guidance { padding: 12px; background: var(--green-100); border: 0; font-size: 12px; }
+
+/* Five weekday columns match the proposal; weekends remain available on demand. */
+.calendar-directory { display: block; }
+.faculty-search-options { margin-bottom: 16px; }
+.faculty-search-options > summary, .calendar-coming-up > summary { min-height: 32px; color: var(--muted); font-size: 12px; cursor: pointer; }
+.faculty-search-options[open] > summary { margin-bottom: 12px; }
+.list-search-options > summary { display: none; }
+.workspace-v2 .search-bar { align-items: end; }
+.workspace-v2 .search-bar .field { margin-bottom: 0; }
+.workspace-v2 .search-bar .btn { height: 48px; }
+.calendar-coming-up { margin-top: 16px; }
+.calendar-directory .calendar-days { min-height: 300px; }
+.workspace-v2 .toggle { width: auto; }
+.workspace-v2 .toggle button { min-width: 80px; white-space: nowrap; }
+.calendar-directory .next-week { margin-bottom: 20px; }
+.calendar-days { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 16px; min-height: 460px; }
+.calendar-days.full-week { grid-template-columns: repeat(7, minmax(128px, 1fr)); min-width: 1000px; }
+.calendar-day { min-width: 0; display: flex; flex-direction: column; align-items: stretch; gap: 16px; }
+.calendar-day-heading { display: grid; place-items: center; min-height: 52px; background: var(--bg); border-radius: 8px; font: 600 15px var(--sans); }
+.calendar-day-heading.today { background: var(--green-100); color: var(--green); }
+.calendar-period-label { font-size: 11px; color: var(--muted); text-transform: uppercase; }
+.calendar-empty { padding: 8px; }
+.workspace-v2 .cal-item { min-height: 48px; height: auto; padding: 12px 8px; border: 1px solid var(--line); background: var(--surface); text-align: center; }
+.workspace-v2 button.cal-item.picked { background: var(--green); color: var(--surface); box-shadow: none; border-color: var(--green); }
+.workspace-v2 .cal-item.own { background: var(--grey-bg); }
+.workspace-v2 .cal-item.own.pending, .workspace-v2 .cal-item.reserved { background: var(--amber-bg); color: var(--amber); }
+.slot-faculty-count { display: block; font-size: 11px; margin-top: 4px; }
+.workspace-v2 .week-nav button { min-width: 48px; min-height: 48px; border: 1px solid var(--line); background: var(--surface); }
+.workspace-v2 .period-toggle button, .workspace-v2 .toggle button { min-height: 48px; }
+.weekend-toggle { min-height: 48px; margin-top: 8px; }
+.selected-slot-summary { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-top: 24px; padding: 24px; border-radius: 10px; background: var(--green-100); }
+.selected-slot-summary strong { color: var(--green); font-size: 15px; }
+.selected-slot-summary p { margin-top: 8px; font-size: 13px; }
+.selected-slot-summary .btn { flex: 0 0 236px; }
+
+/* Faculty overview, records, and status controls use the existing domain actions. */
+.faculty-welcome { display: flex; gap: 16px; align-items: center; margin-bottom: 24px; }
+.faculty-welcome .page-head { margin: 0; }
+.workspace-v2 .faculty-stats { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 16px; }
+.workspace-v2 .faculty-stats .stat { min-height: 100px; padding: 20px; }
+.workspace-v2 .faculty-stats .stat b { margin-top: 8px; font: 400 23px var(--serif); color: var(--green); }
+.workspace-v2 .faculty-stats .stat span { font-size: 12px; }
+.workspace-v2 .faculty-dashboard .section-title { margin-bottom: 16px; }
+.request-person { display: flex; gap: 12px; align-items: center; margin: 16px 0; }
+.request-person > div { min-width: 0; }
+.workspace-v2 .request-person h3 { font: 600 15px/22px var(--sans); margin: 0 0 4px; }
+.workspace-v2 .req-card .topic { background: transparent; padding: 0; margin: 16px 0; }
+.workspace-v2 .req-card .topic p { margin-top: 12px; }
+.workspace-v2 .req-card .when { font-size: 15px; font-weight: 600; }
+.workspace-v2 .req-card .faculty-spaced:last-child { margin-bottom: 0; }
+.consultation-detail-grid { grid-template-columns: minmax(0, 720fr) minmax(0, 408fr); }
+.consultation-student { display: flex; gap: 16px; align-items: center; margin: 16px 0 24px; }
+.consultation-student > div { min-width: 0; }
+.workspace-v2 .consultation-student h3 { margin: 0 0 8px; font-size: 23px; }
+.consultation-time { font-weight: 600; color: var(--green); margin-top: 16px; }
+.appointment-faculty { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; margin: 16px 0; }
+.workspace-v2 .appointment-faculty h3 { margin: 0 0 8px; font-size: 26px; }
+.consultation-detail-grid > aside > .btn-row { margin-top: 16px; }
+.consultation-detail-grid .stack > .btn { width: 100%; }
+.workspace-v2 .status-confirmation { padding: 16px; background: var(--green-100); }
+.status-confirmation .btn-row { flex-direction: column; align-items: stretch; margin-top: 16px; }
+.workspace-v2 .consultation-records .appt-row, .workspace-v2 .published-slots .appt-row { min-height: 88px; border: 0; background: transparent; padding: 12px; margin: 0; gap: 16px; }
+.workspace-v2 .consultation-records .appt-row { grid-template-columns: minmax(0, 1fr) 100px 232px; }
+.workspace-v2 .published-slots .appt-row { grid-template-columns: minmax(0, 1fr) 100px minmax(200px, 250px); }
+.consultation-records .appt-row .btn, .published-slots .slot-actions > .btn:only-child { width: 100%; }
+.workspace-v2 .consultation-records .appt-row strong { font-size: 15px; }
+.published-slots .slot-date { font-size: 18px; margin-top: 20px; }
+.published-slots .slot-actions { justify-content: flex-end; }
+.published-week-navigation { display: flex; align-items: flex-end; gap: 12px; margin: 20px 0 12px; }
+.published-week-navigation .field { flex: 1; min-width: 0; margin: 0; }
+.published-week-navigation > .btn { flex-shrink: 0; }
+.published-days { display: grid; gap: 12px; margin-top: 16px; }
+.published-day { border: 1px solid var(--line); border-radius: var(--radius); }
+.published-day > summary { cursor: pointer; padding: 16px; min-height: 56px; }
+.published-day > summary::marker { color: var(--green); }
+.published-day > summary:focus-visible { outline: 2px solid var(--green); outline-offset: 3px; border-radius: var(--radius); }
+.published-day-title { font-weight: 600; margin-left: 8px; }
+.published-day-counts { color: var(--muted); font-size: 13px; margin-left: 16px; }
+.published-day[open] > summary { background: var(--green-100); border-bottom: 1px solid var(--line); }
+.published-day-slots { padding: 0 8px; }
+.published-day-slots .appt-row + .appt-row { border-top: 1px solid var(--line); }
+
+/* Compact scheduling controls keep labels available to assistive technology. */
+.availability-tabs { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 20px; }
+.availability-tabs .btn:first-child { min-width: 260px; }
+.availability-tabs .btn:nth-child(2) { min-width: 190px; }
+.schedule-state { font-size: 13px; color: var(--muted); }
+.schedule-state.dirty { color: var(--amber); }
+.workspace-v2 .faculty-manager { grid-template-columns: minmax(0, 640fr) minmax(0, 488fr); }
+.schedule-help { margin: 12px 0 16px; }
+.schedule-day { display: grid; grid-template-columns: 84px 64px minmax(0, 1fr) 96px; align-items: start; gap: 8px; margin-bottom: 8px; }
+.schedule-day-label { align-self: start; display: flex; align-items: center; min-height: 48px; font-size: 13px; font-weight: 600; }
+.schedule-intervals { min-width: 0; display: grid; gap: 8px; }
+.schedule-interval { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.schedule-interval:has(.interval-remove) { grid-template-columns: repeat(2, minmax(0, 1fr)) 56px; }
+.workspace-v2 .schedule-day .btn { padding: 8px; font-size: 12px; }
+.workspace-v2 .schedule-interval .interval-remove { font-size: 11px; padding: 4px; }
+.workspace-v2 .time-field { position: relative; margin: 0; gap: 0; }
+.workspace-v2 .time-field > span:first-child { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.workspace-v2 .time-field input, .workspace-v2 .time-field select { padding: 10px 8px; font-size: 12px; }
+.schedule-copy { border: 0; padding: 0; margin: 16px 0; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; min-width: 0; }
+.schedule-copy > .field { width: 136px; }
+.schedule-copy > .btn { padding: 10px; }
+.schedule-copy .copy-days { display: flex; flex-wrap: wrap; gap: 4px; margin: 0; }
+.schedule-copy .copy-days label { position: relative; display: flex; align-items: center; justify-content: center; min-width: 40px; min-height: 48px; padding: 4px; border: 1px solid var(--line); border-radius: 8px; font-size: 11px; color: var(--green); cursor: pointer; }
+.schedule-copy .copy-days input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+.schedule-copy .copy-days label:has(:checked) { background: var(--green-100); border-color: var(--green); }
+.schedule-copy .copy-days label:has(:focus-visible) { outline: 2px solid var(--green); outline-offset: 2px; }
+.schedule-protection strong { font-weight: 500; }
+.schedule-protection p { display: inline; margin-left: 4px; }
+.workspace-v2 .draft-controls { padding: 12px; margin-top: 20px; }
+
+/* Native dialogs provide focus containment, Escape, and an inert background. */
+.modal-dialog { width: min(520px, calc(100vw - 32px)); max-height: calc(100dvh - 32px); padding: 0; border: 0; border-radius: 12px; background: var(--surface); color: var(--ink); box-shadow: 0 10px 30px rgb(0 0 0 / 15%); }
+.modal-dialog::backdrop { background: rgb(38 51 44 / 45%); backdrop-filter: blur(2px); }
+.modal-panel { padding: 32px; display: flex; flex-direction: column; gap: 24px; }
+.modal-panel h2 { font: 400 22px/31px var(--serif); }
+.modal-panel form { margin: 0; }
+.modal-actions { display: flex; justify-content: flex-end; gap: 12px; margin-top: 24px; }
+.modal-actions .btn { min-height: 48px; }
+.topic-dialog .modal-panel { min-height: 360px; }
+.cancel-dialog { width: min(480px, calc(100vw - 32px)); }
+.cancel-dialog .modal-panel { min-height: 280px; }
+.cancel-dialog h2 { color: var(--red); }
+.cancel-dialog .modal-actions .btn { padding: 12px; font-size: 12px; }
+.draft-dialog { width: min(560px, calc(100vw - 32px)); }
+.draft-dialog .modal-panel { padding: 24px; gap: 16px; }
+.draft-dialog .modal-actions .btn { flex: 1; }
+.additional-notes { color: var(--muted); font-size: 12px; }
+.additional-notes summary { cursor: pointer; min-height: 24px; }
+.additional-notes[open] summary { margin-bottom: 16px; }
+
+@media (max-width: 1200px) and (min-width: 1101px) {
+  .schedule-day { grid-template-columns: 72px 60px minmax(0, 1fr); }
+  .schedule-day .interval-add { grid-column: 3; }
+}
+@media (max-width: 1100px) {
+  .request-workspace, .consultation-detail-grid, .workspace-v2 .faculty-manager { grid-template-columns: 1fr; }
+  .workspace-v2 .faculty-stats { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .workspace-v2 .consultation-records .appt-row { grid-template-columns: minmax(0, 1fr) auto; }
+  .consultation-records .appt-row > .btn { grid-column: 1 / -1; }
+}
+@media (max-width: 700px) {
+  .published-week-navigation { flex-wrap: wrap; justify-content: space-between; }
+  .published-week-navigation .field { flex-basis: 100%; order: -1; }
+  .published-week-navigation > .btn { flex: 1; font-size: 12px; }
+  .published-day-counts { display: block; margin: 6px 0 0 24px; }
+  .workspace-v2 .page-head h1 { font-size: 28px; line-height: 1.25; }
+  .workspace-v2 .faculty-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .faculty-welcome { align-items: flex-start; }
+  .faculty-welcome .avatar { flex-shrink: 0; }
+  .booking-stepper { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; padding: 16px; }
+  .booking-stepper li { font-size: 11px; gap: 6px; }
+  .booking-stepper li:not(:last-child)::after { display: none; }
+  .calendar-days { min-width: 720px; }
+  .selected-slot-summary { align-items: stretch; flex-direction: column; padding: 20px; }
+  .selected-slot-summary .btn { flex: auto; }
+  .workspace-v2 .published-slots .appt-row { grid-template-columns: minmax(0, 1fr) auto; }
+  .published-slots .slot-actions { grid-column: 1 / -1; justify-content: flex-start; }
+  .availability-tabs .btn:first-child, .availability-tabs .btn:nth-child(2) { min-width: 0; }
+  .schedule-day { grid-template-columns: 1fr 64px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+  .schedule-intervals { grid-column: 1 / -1; }
+  .schedule-day .interval-add { grid-column: 1 / -1; }
+  .workspace-v2 .card { padding: 20px; }
+  .modal-panel { padding: 24px; }
+  .modal-actions { flex-wrap: wrap; }
+  .cancel-dialog .modal-actions { flex-direction: column; }
+  .feedback-toast { right: 16px; bottom: 16px; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .feedback-toast { animation: feedback-enter 160ms ease-out; }
+  @keyframes feedback-enter { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+}

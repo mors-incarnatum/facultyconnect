@@ -18,7 +18,7 @@ const ConsultationDetailsPage = () => {
         title={appointment.status === 'pending' ? 'Consultation request' : 'Consultation details'}
         subtitle="Review the student’s topic and update the appointment status."
       />
-      <div className="two-col">
+      <div className="two-col consultation-detail-grid">
         <AppointmentSummary appointment={appointment} />
         <aside className="card">
           <h2>Update status</h2>
@@ -27,7 +27,7 @@ const ConsultationDetailsPage = () => {
           </p>
           {isActive && <StatusActions appointment={appointment} />}
           <div className="btn-row">
-            <Link to={state?.returnTo || '/faculty/consultations'} state={{ returnScroll: state?.returnScroll }}>Back to consultations</Link>
+            <Link className="btn block" to={state?.returnTo || '/faculty/consultations'} state={{ returnScroll: state?.returnScroll }}>Back to consultations</Link>
           </div>
         </aside>
       </div>

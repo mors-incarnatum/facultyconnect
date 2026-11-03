@@ -25,7 +25,7 @@ const ConsultationsPage = () => {
           {STATUSES.map((value) => <option key={value} value={value}>{cap(value)}</option>)}
         </select>
       </div>
-      <section className="card">
+      <section className="card consultation-records">
         <h2>All consultation records</h2>
         <p className="muted faculty-spaced">Pending, confirmed, completed, declined, and cancelled appointments.</p>
         {!list.length && <div className="empty"><h3>No consultations here</h3><p className="muted">Try another status filter.</p></div>}
@@ -39,7 +39,7 @@ const ConsultationsPage = () => {
               </div>
             </div>
             <StatusBadge status={appointment.status} />
-            <Link to={`/faculty/consultations/${appointment.id}`} state={{ returnTo: `/faculty/consultations?${params}` }}>View details</Link>
+            <Link className="btn" to={`/faculty/consultations/${appointment.id}`} state={{ returnTo: `/faculty/consultations?${params}` }}>View details</Link>
           </div>
         ))}
       </section>

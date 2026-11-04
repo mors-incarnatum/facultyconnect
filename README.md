@@ -53,3 +53,7 @@ These are fictional DLSU CCS sample accounts. Names, emails, consultation rooms,
 | `vite` | `^8.3.5` | `client` | Frontend dev server, HMR, production build, and preview |
 | `@vitejs/plugin-react` | `^6.1.2` | `client` | React Fast Refresh and JSX compilation |
 | `concurrently` | `^10.0.6` | Root | Runs `client` and `server` dev servers together |
+
+## 24-hour automatic decline rule 
+
+A pending consultation request must be accepted at least 24 hours before the slot starts. Students cannot request a slot less than 24 hours away. After the deadline, a pending request is automatically declined, its Accept and Decline buttons are disabled, and the slot is released. The rule is derived from the appointment, slot and current time (`client/src/state/appointments.js`), so it needs no stored state.

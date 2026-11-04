@@ -571,6 +571,78 @@
       "end": "15:30",
       "mode": "in-person",
       "location": "CCS consultation room 6 (sample)"
+    },
+    {
+      "id": "sl35",
+      "facultyId": "f1",
+      "date": "2026-11-05",
+      "start": "09:00",
+      "end": "09:30",
+      "mode": "in-person",
+      "location": "CCS consultation room 1 (sample)"
+    },
+    {
+      "id": "sl36",
+      "facultyId": "f2",
+      "date": "2026-11-06",
+      "start": "13:00",
+      "end": "13:30",
+      "mode": "online",
+      "location": "Online consultation"
+    },
+    {
+      "id": "sl37",
+      "facultyId": "f1",
+      "date": "2026-11-09",
+      "start": "10:00",
+      "end": "10:30",
+      "mode": "in-person",
+      "location": "CCS consultation room 1 (sample)"
+    },
+    {
+      "id": "sl38",
+      "facultyId": "f2",
+      "date": "2026-11-10",
+      "start": "14:30",
+      "end": "15:00",
+      "mode": "in-person",
+      "location": "CCS consultation room 2 (sample)"
+    },
+    {
+      "id": "sl39",
+      "facultyId": "f3",
+      "date": "2026-11-11",
+      "start": "09:30",
+      "end": "10:00",
+      "mode": "in-person",
+      "location": "CCS consultation room 3 (sample)"
+    },
+    {
+      "id": "sl40",
+      "facultyId": "f4",
+      "date": "2026-11-12",
+      "start": "13:30",
+      "end": "14:00",
+      "mode": "in-person",
+      "location": "CCS consultation room 4 (sample)"
+    },
+    {
+      "id": "sl41",
+      "facultyId": "f5",
+      "date": "2026-11-13",
+      "start": "10:00",
+      "end": "10:30",
+      "mode": "in-person",
+      "location": "CCS consultation room 5 (sample)"
+    },
+    {
+      "id": "sl42",
+      "facultyId": "f1",
+      "date": "2026-11-13",
+      "start": "15:00",
+      "end": "15:30",
+      "mode": "in-person",
+      "location": "CCS consultation room 1 (sample)"
     }
   ],
   "initialAppointments": [
@@ -699,6 +771,60 @@
       "subject": "CCPROG3",
       "topic": "Object-oriented design review",
       "description": "Clarify when to use interfaces, abstract classes, and composition in Java."
+    },
+    {
+      "id": "a15",
+      "studentId": "s2",
+      "slotId": "sl35",
+      "status": "pending",
+      "subject": "CCDSALG",
+      "topic": "Sorting algorithm comparison",
+      "description": "Request to review the time complexity of merge sort and quicksort before the quiz."
+    },
+    {
+      "id": "a16",
+      "studentId": "s3",
+      "slotId": "sl36",
+      "status": "pending",
+      "subject": "CCINFOM",
+      "topic": "ER diagram review",
+      "description": "Need feedback on the entity relationship diagram for the term project."
+    },
+    {
+      "id": "a17",
+      "studentId": "s4",
+      "slotId": "sl37",
+      "status": "pending",
+      "subject": "CCPROG3",
+      "topic": "Inheritance design",
+      "description": "Questions about structuring class hierarchies for the machine project."
+    },
+    {
+      "id": "a18",
+      "studentId": "s5",
+      "slotId": "sl38",
+      "status": "pending",
+      "subject": "CSARCH2",
+      "topic": "Cache mapping",
+      "description": "Would like to go over direct and set associative cache mapping examples."
+    },
+    {
+      "id": "a19",
+      "studentId": "s1",
+      "slotId": "sl39",
+      "status": "confirmed",
+      "subject": "CCAPDEV",
+      "topic": "Project proposal feedback",
+      "description": "Confirmed consultation about the scope of our web application project."
+    },
+    {
+      "id": "a20",
+      "studentId": "s2",
+      "slotId": "sl40",
+      "status": "pending",
+      "subject": "CSINTSY",
+      "topic": "Search heuristics",
+      "description": "Request to discuss heuristic design for the A* search assignment."
     }
   ]
 }

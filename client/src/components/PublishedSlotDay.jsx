@@ -1,9 +1,13 @@
 import { Link } from 'react-router-dom';
+import { useApp } from '../hooks/useApp.js';
+import { isRequestOpen } from '../state/appointments.js';
+import { isFutureSlot } from '../utils/clock.js';
 import StatusBadge from './StatusBadge.jsx';
 import { modeLabel } from '../utils/presentation.js';
 import { fmtShort, fmtRange } from '../utils/format.js';
 
 const PublishedSlotDay = ({ date, entries, referencedSlotIds }) => {
+  const { now } = useApp();
   const reservedCount = entries.filter(({ holder }) => holder).length;
 
   return (
@@ -19,7 +23,7 @@ const PublishedSlotDay = ({ date, entries, referencedSlotIds }) => {
           <div className="appt-row" key={slot.id}>
             <div>
               <strong>{fmtRange(slot.start, slot.end)}</strong>
-              <span className="meta">{modeLabel(slot)} · {slot.location}</span>
+              <span className="meta">{modeLabel(slot)} · {slot.location}{!holder && isFutureSlot(slot, now) && !isRequestOpen(slot, now) ? ' · Closed to requests (less than 24 hours away)' : ''}</span>
             </div>
             <StatusBadge status={holder?.status || 'available'} />
             <div className="slot-actions">

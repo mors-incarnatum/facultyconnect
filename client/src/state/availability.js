@@ -1,5 +1,6 @@
 import { addDays, addMinutes, minutesBetween, parseDate, toIso } from "../utils/format.js";
 import { hasEnded, isFutureSlot } from '../utils/clock.js';
+import { isRequestOpen } from './appointments.js';
 
 export const defaultWeeklyHours = () => [
   { day: "Monday", enabled: true, start: "13:00", end: "15:00" },
@@ -21,7 +22,8 @@ export const intervalsOf = (row) => row.intervals || [{ start: row.start, end: r
 export const exceptionIncludes = (exceptions, date) => exceptions.some((e) => typeof e === "string" ? e === date : e.start <= date && date <= e.end);
 
 export function facultyTransitions(appointment, slot, now) {
-  if (appointment?.status === "pending") return isFutureSlot(slot, now) ? ["confirmed", "declined"] : ["declined"];
+  // Pending requests can be accepted or declined only until 24 hours before the slot.
+  if (appointment?.status === "pending") return isRequestOpen(slot, now) ? ["confirmed", "declined"] : [];
   if (appointment?.status === "confirmed") return hasEnded(slot, now) ? ["completed"] : ["cancelled"];
   return [];
 }

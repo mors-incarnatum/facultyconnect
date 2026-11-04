@@ -1,3 +1,5 @@
+import { REQUEST_CLOSED_MESSAGE, isRequestOpen } from '../../state/appointments.js';
+import { isFutureSlot } from '../../utils/clock.js';
 import { useState } from 'react';
 import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { useApp } from '../../hooks/useApp.js';
@@ -12,7 +14,7 @@ const RequestPage = () => {
   const [params] = useSearchParams();
   const navigate = useNavigate();
   const { state } = useLocation();
-  const { user, getSlot, getFaculty, isAvailable, createAppointment } = useApp();
+  const { now, user, getSlot, getFaculty, isAvailable, createAppointment } = useApp();
   const slot = getSlot(params.get("slot"));
   const f = slot && getFaculty(slot.facultyId);
   const [form, setForm] = useState(() => state?.draft || { subject: "", topic: "", description: "" });
@@ -31,6 +33,7 @@ const RequestPage = () => {
       </>
     );
   }
+  const closed = isFutureSlot(slot, now) && !isRequestOpen(slot, now);
   const taken = !isAvailable(slot);
   const changeTime = `/student/faculty/calendar?faculty=${slot.facultyId}&slot=${slot.id}`;
   const backTo = state?.returnTo || `/student/faculty/${slot.facultyId}`;
@@ -51,6 +54,7 @@ const RequestPage = () => {
       requestAnimationFrame(() => formElement.querySelector('[aria-invalid="true"]')?.focus());
       return;
     }
+    if (closed) return;
     const res = createAppointment({
       studentId: user.id,
       slotId: slot.id,
@@ -58,6 +62,7 @@ const RequestPage = () => {
       topic: form.topic.trim(),
       description: form.description.trim(),
     });
+    if (res.reason === 'closed') return;
     if (!res.ok) return navigate(`/student/booking-conflict?slot=${slot.id}`, { state: draftState });
     navigate(`/student/request/submitted/${res.id}`);
   };
@@ -70,12 +75,13 @@ const RequestPage = () => {
         <form className="card request-form" onSubmit={handleSubmit} noValidate>
           <h2>What would you like to discuss?</h2>
 
-          {taken && <div className="form-error" role="alert">This time is no longer available. <Link to={changeTime} state={draftState}>Choose another time</Link>; your topic will be kept.</div>}
+          {closed && <div className="form-error" role="alert">{REQUEST_CLOSED_MESSAGE} <Link to={changeTime} state={draftState}>Choose another time</Link>; your topic will be kept.</div>}
+          {taken && !closed && <div className="form-error" role="alert">This time is no longer available. <Link to={changeTime} state={draftState}>Choose another time</Link>; your topic will be kept.</div>}
           <Field name="subject" required error={errors.subject} label="Subject / course" value={form.subject} onChange={handleChange} list="courses" placeholder="CCDSALG · Data Structures and Algorithms" />
           <datalist id="courses">{f.courses.map((c) => <option key={c} value={c} />)}</datalist>
           <Field name="topic" required error={errors.topic} label="Consultation topic" value={form.topic} onChange={handleChange} placeholder="Help understanding recursion" />
           <Field name="description" label="Preparation notes (optional)" as="textarea" value={form.description} onChange={handleChange} placeholder="Share what you have tried and what you would like to cover." />
-          <p className="muted small">Submitting reserves this slot. Your meeting is confirmed after the faculty approves your request.</p>
+          <p className="muted small">Submitting reserves this slot. Your meeting is confirmed after the faculty approves your request, which must happen at least 24 hours before the consultation, or the request is automatically declined.</p>
           <div className="btn-row">
             <button className="btn primary" type="submit" disabled={taken}>Submit request →</button>
             <Link className="btn" to={backTo} state={draftState}>Back to Availability</Link>

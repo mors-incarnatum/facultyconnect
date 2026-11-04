@@ -1,5 +1,6 @@
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { initialAppointments, initialSlots } from '../data/initialData.js';
+import { applyAutoDecline } from '../state/appointments.js';
 import { localDate } from '../utils/clock.js';
 import { useAccounts } from './useAccounts.js';
 import { useAppointmentActions } from './useAppointmentActions.js';
@@ -10,7 +11,9 @@ export function useAppState() {
   const now = useClock();
   const today = localDate(now);
   const [slots, setSlots] = useState(initialSlots);
-  const [appointments, setAppointments] = useState(initialAppointments);
+  const [rawAppointments, setAppointments] = useState(initialAppointments);
+  // Overdue pending requests are labeled as declined, which also frees their slots.
+  const appointments = useMemo(() => applyAutoDecline(rawAppointments, slots, now), [rawAppointments, slots, now]);
   const [selection, setSelection] = useState({ facultyId: null, slotId: null });
   const [feedback, setFeedback] = useState('');
   const counter = useRef(100);

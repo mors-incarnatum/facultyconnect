@@ -34,10 +34,12 @@ test("republishing is idempotent and disabling a day removes generated free slot
 test("faculty transitions reject pending completion and early completion", () => {
   const before = new Date(2026, 9, 26, 12, 59, 59);
   const end = new Date(2026, 9, 26, 13, 30);
-  assert.deepEqual(facultyTransitions({ status: "pending" }, base, before), ["confirmed", "declined"]);
+  const earlier = new Date(2026, 9, 25, 12, 59, 59);
+  assert.deepEqual(facultyTransitions({ status: "pending" }, base, earlier), ["confirmed", "declined"]);
+  assert.deepEqual(facultyTransitions({ status: "pending" }, base, before), []);
   assert.deepEqual(facultyTransitions({ status: "confirmed" }, base, before), ["cancelled"]);
   assert.deepEqual(facultyTransitions({ status: "confirmed" }, base, end), ["completed"]);
-  assert.deepEqual(facultyTransitions({ status: "pending" }, base, end), ["declined"]);
+  assert.deepEqual(facultyTransitions({ status: "pending" }, base, end), []);
   for (const status of ["completed", "declined", "cancelled"]) assert.deepEqual(facultyTransitions({ status }, base, end), []);
 });
 

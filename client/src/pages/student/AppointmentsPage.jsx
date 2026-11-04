@@ -108,7 +108,7 @@ export default function AppointmentsPage() {
             <div className="day">{fmtLong(sel.slot.date)}</div>
             <div className="time">{fmtTime(sel.slot.start)}–{fmtTime(sel.slot.end)}</div>
             <p className="muted">{sel.slot.mode === 'online' ? sel.slot.location || modeLabel(sel.slot) : `${modeLabel(sel.slot)} · ${sel.slot.location}`}</p>
-            <AppointmentGuidance status={sel.status} />
+            <AppointmentGuidance status={sel.status} autoDeclined={sel.autoDeclined} slot={sel.slot} />
             <hr className="divider" />
             <strong>{sel.subject}{sel.topic ? ` · ${sel.topic}` : ""}</strong>
             <p className="muted" style={{ marginTop: 8 }}>{sel.topic ? sel.description : "No topic added."}</p>

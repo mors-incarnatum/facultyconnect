@@ -1,4 +1,4 @@
-import { ACTIVE, canManageAppointment } from '../state/appointments.js';
+import { ACTIVE, canManageAppointment, isRequestOpen } from '../state/appointments.js';
 import { isFutureSlot } from '../utils/clock.js';
 
 // Each instance reads one React state snapshot; writes go through React setters.
@@ -12,13 +12,16 @@ export class AppointmentService {
   holderOf = (slotId) => this.appointments.find((appointment) => (
     appointment.slotId === slotId && ACTIVE.includes(appointment.status)
   )) || null;
-  isAvailable = (slot) => isFutureSlot(slot, this.now) && !this.holderOf(slot.id);
+  isAvailable = (slot) => isFutureSlot(slot, this.now) && isRequestOpen(slot, this.now) && !this.holderOf(slot.id);
   availableSlotsFor = (facultyId) => this.slots
     .filter((slot) => slot.facultyId === facultyId && this.isAvailable(slot))
     .sort((a, b) => (a.date + a.start).localeCompare(b.date + b.start));
 
   createAppointment = ({ studentId, slotId, subject, topic, description }) => {
     const slot = this.getSlot(slotId);
+    if (slot && isFutureSlot(slot, new Date()) && !isRequestOpen(slot, new Date())) {
+      return { ok: false, reason: 'closed' };
+    }
     if (!slot || !isFutureSlot(slot, new Date()) || this.holderOf(slot.id)) {
       return { ok: false, reason: 'conflict' };
     }

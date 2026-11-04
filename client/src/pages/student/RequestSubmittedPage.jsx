@@ -24,7 +24,7 @@ export default function RequestSubmittedPage() {
         {a.description && <p className="muted" style={{ marginTop: 10 }}>{a.description}</p>}
         <div className="notice" style={{ margin: "20px 0", padding: 24 }}>
           <h3 style={{ fontSize: 24, marginBottom: 10 }}>What happens next</h3>
-          {a.status === "pending" ? "The selected slot is reserved. Your faculty member will review the request; the consultation remains pending until approved." : `This appointment is now ${a.status}. Open the appointment record to review its current details.`}
+          {a.status === "pending" ? "The selected slot is reserved. Your faculty member will review the request; the consultation remains pending until approved. Faculty must accept it at least 24 hours before the consultation, or it is automatically declined." : `This appointment is now ${a.status}. Open the appointment record to review its current details.`}
         </div>
         <div className="btn-row" style={{ marginTop: 0 }}>
           <Link className="btn primary" to={`/student/appointments?id=${a.id}`}>View my appointment</Link>

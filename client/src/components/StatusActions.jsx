@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useApp } from '../hooks/useApp.js';
+import { AUTO_DECLINED_FACULTY_MESSAGE, formatDeadline } from '../state/appointments.js';
 import { facultyTransitions } from '../state/availability.js';
 
 const STATUS_LABELS = {
@@ -13,7 +14,8 @@ const StatusActions = ({ appointment, compact = false }) => {
   const { now, updateFacultyStatus, getSlot, setFeedback } = useApp();
   const [confirming, setConfirming] = useState(null);
   const [error, setError] = useState('');
-  const statuses = facultyTransitions(appointment, getSlot(appointment.slotId), now);
+  const slot = getSlot(appointment.slotId);
+  const statuses = facultyTransitions(appointment, slot, now);
 
   const handleApply = (status) => {
     const result = updateFacultyStatus(appointment.id, status);
@@ -29,6 +31,18 @@ const StatusActions = ({ appointment, compact = false }) => {
     }
     handleApply(status);
   };
+
+  if (appointment.autoDeclined) {
+    return (
+      <div className={compact ? 'stack' : 'stack'}>
+        <p className="notice warn" role="status">{AUTO_DECLINED_FACULTY_MESSAGE}</p>
+        <div className={compact ? 'btn-row' : 'stack'}>
+          <button type="button" className="btn primary" disabled>{STATUS_LABELS.confirmed}</button>
+          <button type="button" className="btn" disabled>{STATUS_LABELS.declined}</button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={compact ? 'btn-row' : 'stack'}>
@@ -48,6 +62,9 @@ const StatusActions = ({ appointment, compact = false }) => {
           {STATUS_LABELS[status]}
         </button>
       ))}
+      {!compact && appointment.status === 'pending' && statuses.length > 0 && (
+        <p className="muted small">Accept or decline by {formatDeadline(slot)}. After that the request is automatically declined.</p>
+      )}
       {!compact && appointment.status === 'confirmed' && !statuses.includes('completed') && (
         <p className="muted small">Completion becomes available when the consultation ends.</p>
       )}

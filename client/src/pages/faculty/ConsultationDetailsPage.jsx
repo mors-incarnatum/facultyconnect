@@ -11,6 +11,7 @@ const ConsultationDetailsPage = () => {
   const appointment = useAppointment();
   if (!appointment) return <MissingRecord />;
   const isActive = ACTIVE.includes(appointment.status);
+  const showActions = isActive || appointment.autoDeclined;
 
   return (
     <>
@@ -23,9 +24,9 @@ const ConsultationDetailsPage = () => {
         <aside className="card">
           <h2>Update status</h2>
           <p className="muted faculty-spaced">
-            {isActive ? 'Choose the status that reflects this consultation.' : `This consultation is ${appointment.status}. The record is retained in your history.`}
+            {isActive ? 'Choose the status that reflects this consultation.' : appointment.autoDeclined ? 'The record is retained in your history.' : `This consultation is ${appointment.status}. The record is retained in your history.`}
           </p>
-          {isActive && <StatusActions appointment={appointment} />}
+          {showActions && <StatusActions appointment={appointment} />}
           <div className="btn-row">
             <Link className="btn block" to={state?.returnTo || '/faculty/consultations'} state={{ returnScroll: state?.returnScroll }}>Back to consultations</Link>
           </div>

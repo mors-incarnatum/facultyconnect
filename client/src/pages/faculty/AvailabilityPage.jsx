@@ -37,6 +37,12 @@ const AvailabilityPage = () => {
     updateDay(dayIndex, { intervals });
   };
 
+  const handleCopyFromChange = (event) => {
+    const { value } = event.target;
+    setCopyFrom(value);
+    setCopyDays((prev) => prev.filter((day) => day !== Number(value)));
+  };
+
   const handleCopyDayChange = (dayIndex, isChecked) => {
     setCopyDays((prev) => isChecked ? [...prev, dayIndex] : prev.filter((day) => day !== dayIndex));
   };
@@ -45,7 +51,7 @@ const AvailabilityPage = () => {
     const source = draft.weekly[Number(copyFrom)];
     changeDraft({
       ...draft,
-      weekly: draft.weekly.map((row, index) => copyDays.includes(index) ? {
+      weekly: draft.weekly.map((row, index) => index !== Number(copyFrom) && copyDays.includes(index) ? {
         ...row,
         enabled: source.enabled,
         intervals: structuredClone(intervalsOf(source)),
@@ -116,7 +122,15 @@ const AvailabilityPage = () => {
                           onChange={(event) => handleIntervalChange(dayIndex, intervalIndex, event)}
                         />
                       ))}
-                      {intervalIndex > 0 && <button
+                      {intervalIndex === 0 ? <button
+                        type="button"
+                        className="btn interval-add"
+                        aria-label={`Add ${row.day} interval`}
+                        disabled={!row.enabled}
+                        onClick={() => updateDay(dayIndex, { intervals: [...intervals, { start: '15:00', end: '16:00' }] })}
+                      >
+                        + Interval
+                      </button> : <button
                         type="button"
                         className="btn interval-remove"
                         disabled={!row.enabled || intervals.length === 1}
@@ -127,24 +141,24 @@ const AvailabilityPage = () => {
                       </button>}
                     </div>
                   ))}</div>
-                  <button type="button" className="btn interval-add" aria-label={`Add ${row.day} interval`} disabled={!row.enabled} onClick={() => updateDay(dayIndex, { intervals: [...intervals, { start: '15:00', end: '16:00' }] })}>
-                    + Interval
-                  </button>
                 </div>
               );
             })}
             <fieldset className="schedule-copy">
               <legend className="sr-only">Copy hours to selected days</legend>
-              <Field label="Copy from" className="time-field" as="select" value={copyFrom} onChange={(event) => setCopyFrom(event.target.value)}>
-                {draft.weekly.map((row, index) => <option key={row.day} value={index}>From {row.day}</option>)}
+              <Field label="Copy from" className="copy-source" as="select" value={copyFrom} onChange={handleCopyFromChange}>
+                {draft.weekly.map((row, index) => <option key={row.day} value={index}>{row.day}</option>)}
               </Field>
-              <div className="copy-days">
+              <div className="copy-targets">
+                <span id="copy-days-label" className="copy-days-label">Copy to</span>
+                <div className="copy-days" role="group" aria-labelledby="copy-days-label">
                 {draft.weekly.map((row, index) => (
                   <label key={row.day}>
-                    <input type="checkbox" checked={copyDays.includes(index)} onChange={(event) => handleCopyDayChange(index, event.target.checked)} />
+                    <input type="checkbox" aria-label={row.day} disabled={index === Number(copyFrom)} checked={copyDays.includes(index)} onChange={(event) => handleCopyDayChange(index, event.target.checked)} />
                     {row.day.slice(0, 3)}
                   </label>
                 ))}
+                </div>
               </div>
               <button type="button" className="btn" disabled={!copyDays.length} onClick={handleCopyHours}>Copy hours</button>
             </fieldset>

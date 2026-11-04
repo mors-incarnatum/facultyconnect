@@ -65,6 +65,34 @@
 .workspace-v2 .search-bar { align-items: end; }
 .workspace-v2 .search-bar .field { margin-bottom: 0; }
 .workspace-v2 .search-bar .btn { height: 48px; }
+/* Keep the overview headings and cards aligned when one heading wraps. */
+.student-overview-grid { gap: 24px 32px; }
+.student-overview-grid > section { display: grid; grid-template-rows: subgrid; grid-row: span 2; gap: 24px; }
+.workspace-v2 .student-overview-grid .section-title { margin: 0; }
+.student-overview-grid .overview-section-content { align-self: start; }
+.workspace-v2 .overview-calendar { padding: 32px; align-self: start; }
+.overview-calendar > .toolbar { justify-content: space-between; gap: 24px; margin-bottom: 32px; padding-bottom: 24px; border-bottom: 1px solid var(--line); }
+.overview-calendar .toggle, .overview-calendar .week-nav, .overview-calendar .period-toggle { gap: 12px; }
+.overview-calendar .period-toggle { flex-wrap: wrap; }
+.workspace-v2 .overview-calendar .toggle button,
+.overview-calendar .period-toggle button,
+.overview-calendar .week-nav button,
+.overview-calendar .toolbar > .btn { height: 48px; padding: 12px 20px; font-size: 13px; border-radius: 8px; }
+.workspace-v2 .overview-calendar .toggle button { min-width: 104px; }
+.overview-calendar .week-nav button { min-width: 48px; }
+.overview-calendar .week-nav button[aria-label] { width: 48px; padding: 12px; }
+.overview-calendar .week-head { justify-content: space-between; gap: 24px; margin-bottom: 24px; }
+.overview-calendar .week-period { justify-content: space-between; gap: 24px; margin-bottom: 32px; }
+.overview-calendar .notice { width: 100%; margin-bottom: 24px; padding: 20px; font-size: 13px; line-height: 1.6; }
+.overview-calendar .calendar-days { min-height: 0; min-width: 840px; gap: 20px; }
+.overview-calendar .calendar-days.full-week { min-width: 1200px; }
+.overview-calendar .calendar-day { min-height: 184px; gap: 20px; padding: 16px; border: 1px solid var(--line); border-radius: 10px; }
+.overview-calendar .calendar-day-heading { min-height: 48px; font-size: 14px; }
+.workspace-v2 .overview-calendar .cal-item { min-height: 56px; padding: 16px 8px; }
+.overview-calendar .calendar-period-label { display: none; }
+.overview-calendar .calendar-empty { padding: 12px 0; text-align: center; line-height: 1.6; }
+.overview-calendar .weekend-toggle { margin-top: 20px; }
+.overview-calendar .legend { gap: 16px 24px; margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--line); }
 .calendar-coming-up { margin-top: 16px; }
 .calendar-directory .calendar-days { min-height: 300px; }
 .workspace-v2 .toggle { width: auto; }
@@ -145,27 +173,39 @@
 .schedule-state.dirty { color: var(--amber); }
 .workspace-v2 .faculty-manager { grid-template-columns: minmax(0, 640fr) minmax(0, 488fr); }
 .schedule-help { margin: 12px 0 16px; }
-.schedule-day { display: grid; grid-template-columns: 84px 64px minmax(0, 1fr) 96px; align-items: start; gap: 8px; margin-bottom: 8px; }
+.recurring-hours { container-type: inline-size; }
+.schedule-day { display: grid; grid-template-columns: 84px 64px minmax(0, 1fr); align-items: start; gap: 8px; margin-bottom: 8px; }
 .schedule-day-label { align-self: start; display: flex; align-items: center; min-height: 48px; font-size: 13px; font-weight: 600; }
 .schedule-intervals { min-width: 0; display: grid; gap: 8px; }
-.schedule-interval { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
-.schedule-interval:has(.interval-remove) { grid-template-columns: repeat(2, minmax(0, 1fr)) 56px; }
+.schedule-interval { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)) 96px; gap: 8px; }
 .workspace-v2 .schedule-day .btn { padding: 8px; font-size: 12px; }
-.workspace-v2 .schedule-interval .interval-remove { font-size: 11px; padding: 4px; }
 .workspace-v2 .time-field { position: relative; margin: 0; gap: 0; }
 .workspace-v2 .time-field > span:first-child { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .workspace-v2 .time-field input, .workspace-v2 .time-field select { padding: 10px 8px; font-size: 12px; }
-.schedule-copy { border: 0; padding: 0; margin: 16px 0; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; min-width: 0; }
-.schedule-copy > .field { width: 136px; }
+.schedule-copy { border: 0; padding: 0; margin: 16px 0; display: flex; flex-wrap: wrap; align-items: flex-end; gap: 12px; min-width: 0; }
+.workspace-v2 .schedule-copy > .field { width: 156px; margin: 0; }
+.copy-targets { display: grid; gap: 8px; }
+.copy-days-label { color: var(--muted); font-size: 12px; }
 .schedule-copy > .btn { padding: 10px; }
 .schedule-copy .copy-days { display: flex; flex-wrap: wrap; gap: 4px; margin: 0; }
-.schedule-copy .copy-days label { position: relative; display: flex; align-items: center; justify-content: center; min-width: 40px; min-height: 48px; padding: 4px; border: 1px solid var(--line); border-radius: 8px; font-size: 11px; color: var(--green); cursor: pointer; }
+.schedule-copy .copy-days label { position: relative; display: flex; align-items: center; justify-content: center; min-width: 40px; min-height: 48px; padding: 4px; border: 1px solid var(--line); border-radius: 8px; font-size: 11px; color: var(--ink); background: var(--surface); cursor: pointer; }
 .schedule-copy .copy-days input { position: absolute; width: 1px; height: 1px; opacity: 0; }
-.schedule-copy .copy-days label:has(:checked) { background: var(--green-100); border-color: var(--green); }
+.schedule-copy .copy-days label:has(:checked) { background: var(--green); color: var(--surface); border-color: var(--green); }
+.schedule-copy .copy-days label:has(:disabled) { background: var(--bg); color: var(--muted); cursor: default; }
 .schedule-copy .copy-days label:has(:focus-visible) { outline: 2px solid var(--green); outline-offset: 2px; }
 .schedule-protection strong { font-weight: 500; }
 .schedule-protection p { display: inline; margin-left: 4px; }
 .workspace-v2 .draft-controls { padding: 12px; margin-top: 20px; }
+
+/* Adapt to the card width, including when the overrides panel sits beside it. */
+@container (max-width: 560px) {
+  .schedule-day { grid-template-columns: minmax(0, 1fr) 64px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+  .schedule-intervals { grid-column: 1 / -1; }
+}
+@container (max-width: 360px) {
+  .schedule-interval { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .schedule-interval > .btn { grid-column: 1 / -1; }
+}
 
 /* Native dialogs provide focus containment, Escape, and an inert background. */
 .modal-dialog { width: min(520px, calc(100vw - 32px)); max-height: calc(100dvh - 32px); padding: 0; border: 0; border-radius: 12px; background: var(--surface); color: var(--ink); box-shadow: 0 10px 30px rgb(0 0 0 / 15%); }
@@ -187,17 +227,17 @@
 .additional-notes summary { cursor: pointer; min-height: 24px; }
 .additional-notes[open] summary { margin-bottom: 16px; }
 
-@media (max-width: 1200px) and (min-width: 1101px) {
-  .schedule-day { grid-template-columns: 72px 60px minmax(0, 1fr); }
-  .schedule-day .interval-add { grid-column: 3; }
-}
 @media (max-width: 1100px) {
+  .student-overview-grid { row-gap: 24px; }
+  .student-overview-grid > section { grid-row: auto; grid-template-rows: auto auto; }
   .request-workspace, .consultation-detail-grid, .workspace-v2 .faculty-manager { grid-template-columns: 1fr; }
   .workspace-v2 .faculty-stats { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .workspace-v2 .consultation-records .appt-row { grid-template-columns: minmax(0, 1fr) auto; }
   .consultation-records .appt-row > .btn { grid-column: 1 / -1; }
 }
 @media (max-width: 700px) {
+  .workspace-v2 .card.overview-calendar { padding: 24px; }
+  .overview-calendar .week-head, .overview-calendar .week-period { gap: 20px; }
   .published-week-navigation { flex-wrap: wrap; justify-content: space-between; }
   .published-week-navigation .field { flex-basis: 100%; order: -1; }
   .published-week-navigation > .btn { flex: 1; font-size: 12px; }
@@ -217,7 +257,8 @@
   .availability-tabs .btn:first-child, .availability-tabs .btn:nth-child(2) { min-width: 0; }
   .schedule-day { grid-template-columns: 1fr 64px; padding: 12px 0; border-bottom: 1px solid var(--line); }
   .schedule-intervals { grid-column: 1 / -1; }
-  .schedule-day .interval-add { grid-column: 1 / -1; }
+  .schedule-interval { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .schedule-interval > .btn { grid-column: 1 / -1; }
   .workspace-v2 .card { padding: 20px; }
   .modal-panel { padding: 24px; }
   .modal-actions { flex-wrap: wrap; }

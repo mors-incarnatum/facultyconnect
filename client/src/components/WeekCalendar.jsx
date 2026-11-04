@@ -13,7 +13,7 @@ const PERIODS = {
  * Student week grid. Shows bookable slots of the given faculty, the student's own
  * appointments and slots held by other requests (not bookable).
  */
-export default function WeekCalendar({ facultyIds, studentId, onPick, pickedSlotId, title, viewActions }) {
+export default function WeekCalendar({ facultyIds, studentId, onPick, pickedSlotId, title, viewActions, className = '' }) {
   const { today, slots, appointments, getFaculty, getSlot, isAvailable } = useApp();
   const [weekStart, setWeekStart] = useState(weekStartOf(today));
   const [view, setView] = useState(() => window.matchMedia("(max-width: 700px)").matches ? "agenda" : "calendar");
@@ -97,7 +97,7 @@ export default function WeekCalendar({ facultyIds, studentId, onPick, pickedSlot
   };
 
   return (
-    <div className="card week">
+    <div className={`card week ${className}`}>
       <div className="toolbar">
         <div className="toggle" role="group" aria-label="Availability display">
           {['calendar', 'agenda'].map((value) => (

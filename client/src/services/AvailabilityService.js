@@ -1,3 +1,4 @@
+import { AUTO_DECLINED_FACULTY_MESSAGE, shouldAutoDecline } from '../state/appointments.js';
 import { facultyTransitions, publishSchedule, validateSlot } from '../state/availability.js';
 import { isFutureSlot, localDate } from '../utils/clock.js';
 
@@ -11,6 +12,7 @@ export class AvailabilityService {
     const slot = this.getSlot(appointment?.slotId);
     const allowed = facultyTransitions(appointment, slot, new Date());
     if (this.user?.role !== 'faculty' || slot?.facultyId !== this.user.id || !allowed.includes(status)) {
+      if (appointment?.autoDeclined || shouldAutoDecline(appointment, slot, new Date())) return { ok: false, error: AUTO_DECLINED_FACULTY_MESSAGE };
       return { ok: false, error: 'Status change unavailable. Only confirmed consultations that have ended can be completed.' };
     }
     this.setStatus(id, status);

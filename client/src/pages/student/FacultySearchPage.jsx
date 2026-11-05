@@ -134,6 +134,7 @@ export default function FacultySearchPage({ view }) {
           ) : (
             <>
               <WeekCalendar
+                className="availability-calendar"
                 viewActions={<div className="toggle auto" role="group" aria-label="View"><button type="button" onClick={() => navigate(`/student/faculty${location.search}`, { state: location.state })}>List</button><button type="button" aria-pressed="true">Calendar</button></div>}
                 facultyIds={results.map((f) => f.id)}
                 studentId={user.id}

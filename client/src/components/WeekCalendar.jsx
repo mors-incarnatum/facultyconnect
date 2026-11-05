@@ -99,14 +99,16 @@ export default function WeekCalendar({ facultyIds, studentId, onPick, pickedSlot
   return (
     <div className={`card week ${className}`}>
       <div className="toolbar">
-        <div className="toggle" role="group" aria-label="Availability display">
-          {['calendar', 'agenda'].map((value) => (
-            <button key={value} type="button" aria-pressed={view === value} onClick={() => setView(value)}>
-              {value === 'agenda' ? 'Agenda' : 'Week grid'}
-            </button>
-          ))}
+        <div className="calendar-view-controls">
+          {viewActions}
+          <div className="toggle" role="group" aria-label="Availability display">
+            {['calendar', 'agenda'].map((value) => (
+              <button key={value} type="button" aria-pressed={view === value} onClick={() => setView(value)}>
+                {value === 'agenda' ? 'Agenda' : 'Week grid'}
+              </button>
+            ))}
+          </div>
         </div>
-        {viewActions}
         <button type="button" className="btn sm" disabled={!openSlots.length} onClick={handleJumpNext}>Next available time</button>
       </div>
       {view === 'agenda' ? (

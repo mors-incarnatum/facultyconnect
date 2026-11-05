@@ -114,8 +114,7 @@
   width: auto;
 }
 .draft-controls {
-  position: sticky;
-  bottom: 12px;
+  position: static;
   display: flex;
   flex-wrap: wrap;
   align-items: center;

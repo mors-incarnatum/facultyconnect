@@ -1,6 +1,9 @@
 .week {
   padding: 20px 16px 16px;
 }
+.calendar-view-controls {
+  display: contents;
+}
 .week-head {
   display: flex;
   justify-content: space-between;

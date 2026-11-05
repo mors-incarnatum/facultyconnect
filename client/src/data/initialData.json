@@ -269,380 +269,380 @@
     {
       "id": "sl01",
       "facultyId": "f1",
-      "date": "2026-10-30",
       "start": "09:00",
       "end": "09:30",
       "mode": "in-person",
-      "location": "CCS consultation room 1 (sample)"
+      "location": "CCS consultation room 1 (sample)",
+      "dayOffset": 3
     },
     {
       "id": "sl02",
       "facultyId": "f1",
-      "date": "2026-10-30",
       "start": "09:30",
       "end": "10:00",
       "mode": "in-person",
-      "location": "CCS consultation room 1 (sample)"
+      "location": "CCS consultation room 1 (sample)",
+      "dayOffset": 3
     },
     {
       "id": "sl03",
       "facultyId": "f1",
-      "date": "2026-10-30",
       "start": "10:00",
       "end": "10:30",
       "mode": "in-person",
-      "location": "CCS consultation room 1 (sample)"
+      "location": "CCS consultation room 1 (sample)",
+      "dayOffset": 3
     },
     {
       "id": "sl04",
       "facultyId": "f1",
-      "date": "2026-10-30",
       "start": "10:30",
       "end": "11:00",
       "mode": "in-person",
-      "location": "CCS consultation room 1 (sample)"
+      "location": "CCS consultation room 1 (sample)",
+      "dayOffset": 3
     },
     {
       "id": "sl05",
       "facultyId": "f1",
-      "date": "2026-11-02",
       "start": "13:00",
       "end": "13:30",
       "mode": "in-person",
-      "location": "CCS consultation room 1 (sample)"
+      "location": "CCS consultation room 1 (sample)",
+      "dayOffset": 6
     },
     {
       "id": "sl06",
       "facultyId": "f1",
-      "date": "2026-11-03",
       "start": "10:00",
       "end": "10:30",
       "mode": "in-person",
-      "location": "CCS consultation room 1 (sample)"
+      "location": "CCS consultation room 1 (sample)",
+      "dayOffset": 7
     },
     {
       "id": "sl07",
       "facultyId": "f1",
-      "date": "2026-10-28",
       "start": "14:00",
       "end": "14:30",
       "mode": "in-person",
-      "location": "CCS consultation room 1 (sample)"
+      "location": "CCS consultation room 1 (sample)",
+      "dayOffset": -1
     },
     {
       "id": "sl08",
       "facultyId": "f1",
-      "date": "2026-10-19",
       "start": "09:00",
       "end": "09:30",
       "mode": "in-person",
-      "location": "CCS consultation room 1 (sample)"
+      "location": "CCS consultation room 1 (sample)",
+      "dayOffset": -8
     },
     {
       "id": "sl09",
       "facultyId": "f1",
-      "date": "2026-10-20",
       "start": "11:00",
       "end": "11:30",
       "mode": "in-person",
-      "location": "CCS consultation room 1 (sample)"
+      "location": "CCS consultation room 1 (sample)",
+      "dayOffset": -7
     },
     {
       "id": "sl10",
       "facultyId": "f2",
-      "date": "2026-11-02",
       "start": "14:00",
       "end": "14:30",
       "mode": "online",
-      "location": "Online consultation"
+      "location": "Online consultation",
+      "dayOffset": 6
     },
     {
       "id": "sl11",
       "facultyId": "f2",
-      "date": "2026-11-02",
       "start": "14:30",
       "end": "15:00",
       "mode": "online",
-      "location": "Online consultation"
+      "location": "Online consultation",
+      "dayOffset": 6
     },
     {
       "id": "sl12",
       "facultyId": "f2",
-      "date": "2026-10-27",
       "start": "14:00",
       "end": "14:30",
       "mode": "online",
-      "location": "Online consultation"
+      "location": "Online consultation",
+      "dayOffset": -1
     },
     {
       "id": "sl13",
       "facultyId": "f2",
-      "date": "2026-10-27",
       "start": "14:30",
       "end": "15:00",
       "mode": "online",
-      "location": "Online consultation"
+      "location": "Online consultation",
+      "dayOffset": -1
     },
     {
       "id": "sl14",
       "facultyId": "f2",
-      "date": "2026-11-04",
       "start": "15:00",
       "end": "15:30",
       "mode": "in-person",
-      "location": "CCS consultation room 2 (sample)"
+      "location": "CCS consultation room 2 (sample)",
+      "dayOffset": 8
     },
     {
       "id": "sl15",
       "facultyId": "f3",
-      "date": "2026-10-28",
       "start": "11:00",
       "end": "11:30",
       "mode": "in-person",
-      "location": "CCS consultation room 3 (sample)"
+      "location": "CCS consultation room 3 (sample)",
+      "dayOffset": 1
     },
     {
       "id": "sl16",
       "facultyId": "f3",
-      "date": "2026-10-30",
       "start": "10:00",
       "end": "10:30",
       "mode": "in-person",
-      "location": "CCS consultation room 3 (sample)"
+      "location": "CCS consultation room 3 (sample)",
+      "dayOffset": 3
     },
     {
       "id": "sl17",
       "facultyId": "f3",
-      "date": "2026-11-05",
       "start": "10:30",
       "end": "11:00",
       "mode": "in-person",
-      "location": "CCS consultation room 3 (sample)"
+      "location": "CCS consultation room 3 (sample)",
+      "dayOffset": 9
     },
     {
       "id": "sl18",
       "facultyId": "f3",
-      "date": "2026-10-21",
       "start": "10:00",
       "end": "10:30",
       "mode": "in-person",
-      "location": "CCS consultation room 3 (sample)"
+      "location": "CCS consultation room 3 (sample)",
+      "dayOffset": -6
     },
     {
       "id": "sl19",
       "facultyId": "f3",
-      "date": "2026-11-04",
       "start": "09:30",
       "end": "10:00",
       "mode": "in-person",
-      "location": "CCS consultation room 3 (sample)"
+      "location": "CCS consultation room 3 (sample)",
+      "dayOffset": 8
     },
     {
       "id": "sl20",
       "facultyId": "f4",
-      "date": "2026-11-02",
       "start": "09:30",
       "end": "10:00",
       "mode": "in-person",
-      "location": "CCS consultation room 4 (sample)"
+      "location": "CCS consultation room 4 (sample)",
+      "dayOffset": 6
     },
     {
       "id": "sl21",
       "facultyId": "f4",
-      "date": "2026-10-27",
       "start": "09:00",
       "end": "09:30",
       "mode": "in-person",
-      "location": "CCS consultation room 4 (sample)"
+      "location": "CCS consultation room 4 (sample)",
+      "dayOffset": 0
     },
     {
       "id": "sl22",
       "facultyId": "f4",
-      "date": "2026-10-29",
       "start": "11:00",
       "end": "11:30",
       "mode": "in-person",
-      "location": "CCS consultation room 4 (sample)"
+      "location": "CCS consultation room 4 (sample)",
+      "dayOffset": 2
     },
     {
       "id": "sl23",
       "facultyId": "f4",
-      "date": "2026-10-22",
       "start": "09:30",
       "end": "10:00",
       "mode": "in-person",
-      "location": "CCS consultation room 4 (sample)"
+      "location": "CCS consultation room 4 (sample)",
+      "dayOffset": -5
     },
     {
       "id": "sl24",
       "facultyId": "f4",
-      "date": "2026-11-03",
       "start": "09:00",
       "end": "09:30",
       "mode": "in-person",
-      "location": "CCS consultation room 4 (sample)"
+      "location": "CCS consultation room 4 (sample)",
+      "dayOffset": 7
     },
     {
       "id": "sl25",
       "facultyId": "f5",
-      "date": "2026-10-28",
       "start": "09:30",
       "end": "10:00",
       "mode": "in-person",
-      "location": "CCS consultation room 5 (sample)"
+      "location": "CCS consultation room 5 (sample)",
+      "dayOffset": 1
     },
     {
       "id": "sl26",
       "facultyId": "f5",
-      "date": "2026-10-29",
       "start": "13:30",
       "end": "14:00",
       "mode": "in-person",
-      "location": "CCS consultation room 5 (sample)"
+      "location": "CCS consultation room 5 (sample)",
+      "dayOffset": 2
     },
     {
       "id": "sl27",
       "facultyId": "f5",
-      "date": "2026-10-27",
       "start": "10:00",
       "end": "10:30",
       "mode": "in-person",
-      "location": "CCS consultation room 5 (sample)"
+      "location": "CCS consultation room 5 (sample)",
+      "dayOffset": 0
     },
     {
       "id": "sl28",
       "facultyId": "f5",
-      "date": "2026-11-05",
       "start": "14:00",
       "end": "14:30",
       "mode": "in-person",
-      "location": "CCS consultation room 5 (sample)"
+      "location": "CCS consultation room 5 (sample)",
+      "dayOffset": 9
     },
     {
       "id": "sl29",
       "facultyId": "f5",
-      "date": "2026-10-14",
       "start": "10:00",
       "end": "10:30",
       "mode": "in-person",
-      "location": "CCS consultation room 5 (sample)"
+      "location": "CCS consultation room 5 (sample)",
+      "dayOffset": -13
     },
     {
       "id": "sl30",
       "facultyId": "f6",
-      "date": "2026-10-29",
       "start": "10:30",
       "end": "11:00",
       "mode": "in-person",
-      "location": "CCS consultation room 6 (sample)"
+      "location": "CCS consultation room 6 (sample)",
+      "dayOffset": 2
     },
     {
       "id": "sl31",
       "facultyId": "f6",
-      "date": "2026-10-30",
       "start": "14:00",
       "end": "14:30",
       "mode": "in-person",
-      "location": "CCS consultation room 6 (sample)"
+      "location": "CCS consultation room 6 (sample)",
+      "dayOffset": 3
     },
     {
       "id": "sl32",
       "facultyId": "f6",
-      "date": "2026-11-03",
       "start": "15:30",
       "end": "16:00",
       "mode": "in-person",
-      "location": "CCS consultation room 6 (sample)"
+      "location": "CCS consultation room 6 (sample)",
+      "dayOffset": 7
     },
     {
       "id": "sl33",
       "facultyId": "f6",
-      "date": "2026-11-06",
       "start": "11:00",
       "end": "11:30",
       "mode": "online",
-      "location": "Online consultation"
+      "location": "Online consultation",
+      "dayOffset": 10
     },
     {
       "id": "sl34",
       "facultyId": "f6",
-      "date": "2026-10-27",
       "start": "15:00",
       "end": "15:30",
       "mode": "in-person",
-      "location": "CCS consultation room 6 (sample)"
+      "location": "CCS consultation room 6 (sample)",
+      "dayOffset": 0
     },
     {
       "id": "sl35",
       "facultyId": "f1",
-      "date": "2026-11-05",
       "start": "09:00",
       "end": "09:30",
       "mode": "in-person",
-      "location": "CCS consultation room 1 (sample)"
+      "location": "CCS consultation room 1 (sample)",
+      "dayOffset": 9
     },
     {
       "id": "sl36",
       "facultyId": "f2",
-      "date": "2026-11-06",
       "start": "13:00",
       "end": "13:30",
       "mode": "online",
-      "location": "Online consultation"
+      "location": "Online consultation",
+      "dayOffset": 10
     },
     {
       "id": "sl37",
       "facultyId": "f1",
-      "date": "2026-11-09",
       "start": "10:00",
       "end": "10:30",
       "mode": "in-person",
-      "location": "CCS consultation room 1 (sample)"
+      "location": "CCS consultation room 1 (sample)",
+      "dayOffset": 13
     },
     {
       "id": "sl38",
       "facultyId": "f2",
-      "date": "2026-11-10",
       "start": "14:30",
       "end": "15:00",
       "mode": "in-person",
-      "location": "CCS consultation room 2 (sample)"
+      "location": "CCS consultation room 2 (sample)",
+      "dayOffset": 14
     },
     {
       "id": "sl39",
       "facultyId": "f3",
-      "date": "2026-11-11",
       "start": "09:30",
       "end": "10:00",
       "mode": "in-person",
-      "location": "CCS consultation room 3 (sample)"
+      "location": "CCS consultation room 3 (sample)",
+      "dayOffset": 15
     },
     {
       "id": "sl40",
       "facultyId": "f4",
-      "date": "2026-11-12",
       "start": "13:30",
       "end": "14:00",
       "mode": "in-person",
-      "location": "CCS consultation room 4 (sample)"
+      "location": "CCS consultation room 4 (sample)",
+      "dayOffset": 16
     },
     {
       "id": "sl41",
       "facultyId": "f5",
-      "date": "2026-11-13",
       "start": "10:00",
       "end": "10:30",
       "mode": "in-person",
-      "location": "CCS consultation room 5 (sample)"
+      "location": "CCS consultation room 5 (sample)",
+      "dayOffset": 17
     },
     {
       "id": "sl42",
       "facultyId": "f1",
-      "date": "2026-11-13",
       "start": "15:00",
       "end": "15:30",
       "mode": "in-person",
-      "location": "CCS consultation room 1 (sample)"
+      "location": "CCS consultation room 1 (sample)",
+      "dayOffset": 17
     }
   ],
   "initialAppointments": [
@@ -786,45 +786,54 @@
       "studentId": "s3",
       "slotId": "sl36",
       "status": "pending",
-      "subject": "CCINFOM",
-      "topic": "ER diagram review",
-      "description": "Need feedback on the entity relationship diagram for the term project."
+      "subject": "CCPROG2",
+      "topic": "Struct and pointer review",
+      "description": "Review passing structures to functions and allocating memory for linked records."
     },
     {
       "id": "a17",
       "studentId": "s4",
       "slotId": "sl37",
       "status": "pending",
-      "subject": "CCPROG3",
-      "topic": "Inheritance design",
-      "description": "Questions about structuring class hierarchies for the machine project."
+      "subject": "CSALGCM",
+      "topic": "Greedy algorithm correctness",
+      "description": "Review an exchange argument and compare greedy and dynamic programming solutions."
     },
     {
       "id": "a18",
       "studentId": "s5",
       "slotId": "sl38",
       "status": "pending",
-      "subject": "CSARCH2",
-      "topic": "Cache mapping",
-      "description": "Would like to go over direct and set associative cache mapping examples."
+      "subject": "CCPROG2",
+      "topic": "File processing in C",
+      "description": "Review reading records from a file and updating a dynamically allocated array."
     },
     {
       "id": "a19",
       "studentId": "s1",
       "slotId": "sl39",
       "status": "confirmed",
-      "subject": "CCAPDEV",
-      "topic": "Project proposal feedback",
-      "description": "Confirmed consultation about the scope of our web application project."
+      "subject": "CSNETWK",
+      "topic": "Network design proposal",
+      "description": "Review subnet allocation and routing for our campus network design."
     },
     {
       "id": "a20",
       "studentId": "s2",
       "slotId": "sl40",
       "status": "pending",
-      "subject": "CSINTSY",
-      "topic": "Search heuristics",
-      "description": "Request to discuss heuristic design for the A* search assignment."
+      "subject": "CCAPDEV",
+      "topic": "Route and form validation",
+      "description": "Review Express routes and error handling for our web application project."
+    },
+    {
+      "id": "a21",
+      "studentId": "s5",
+      "slotId": "sl07",
+      "status": "confirmed",
+      "subject": "CCDSALG",
+      "topic": "Graph traversal follow-up",
+      "description": "Review our breadth-first traversal trace. This past consultation is ready to mark completed."
     }
   ]
 }

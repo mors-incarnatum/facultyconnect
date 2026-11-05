@@ -254,7 +254,9 @@
 /* Accessibility & overflow boundaries */
 .skip-link {
   position: fixed;
-  top: -100px;
+  top: 12px;
+  opacity: 0;
+  pointer-events: none;
   left: 16px;
   z-index: 10;
   padding: 12px 20px;
@@ -263,7 +265,8 @@
   border-radius: var(--radius);
 }
 .skip-link:focus {
-  top: 12px;
+  opacity: 1;
+  pointer-events: auto;
 }
 .main:focus, .page-head h1:focus {
   outline: none;

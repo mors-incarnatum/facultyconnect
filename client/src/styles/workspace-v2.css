@@ -26,13 +26,13 @@
 .workspace-v2 .field.invalid input, .modal-dialog .field.invalid input { border-color: var(--red); }
 .workspace-v2 .field input:disabled { color: var(--muted); background: var(--bg); }
 .feedback-toast {
-  position: fixed; right: 24px; bottom: 24px; z-index: 20; display: flex; align-items: center; gap: 12px;
-  width: max-content; max-width: min(480px, calc(100vw - 32px)); padding: 12px 16px; margin: 0;
+  position: static; display: flex; align-items: center; gap: 12px;
+  width: 100%; padding: 12px 16px; margin: 0 0 24px;
   border: 1px solid var(--line); border-radius: 10px; background: var(--green-100); color: var(--green);
   box-shadow: 0 6px 24px rgb(38 51 44 / 12%);
 }
 .feedback-toast button { flex: 0 0 48px; height: 48px; border: 0; background: transparent; color: inherit; font-size: 22px; }
-.workspace-v2 .feedback-toast:not(:empty) { margin: 0; padding: 12px 16px; }
+.workspace-v2 .feedback-toast:not(:empty) { margin: 0 0 24px; padding: 12px 16px; }
 
 /* The request journey keeps progress visible without adding another route. */
 .booking-stepper { display: flex; align-items: center; list-style: none; min-height: 80px; margin: 0 0 24px; padding: 20px 24px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
@@ -84,8 +84,8 @@
 .overview-calendar .week-head { justify-content: space-between; gap: 24px; margin-bottom: 24px; }
 .overview-calendar .week-period { justify-content: space-between; gap: 24px; margin-bottom: 32px; }
 .overview-calendar .notice { width: 100%; margin-bottom: 24px; padding: 20px; font-size: 13px; line-height: 1.6; }
-.overview-calendar .calendar-days { min-height: 0; min-width: 840px; gap: 20px; }
-.overview-calendar .calendar-days.full-week { min-width: 1200px; }
+.overview-calendar .calendar-days { min-height: 0; min-width: 0; gap: 20px; }
+.overview-calendar .calendar-days.full-week { min-width: 0; }
 .overview-calendar .calendar-day { min-height: 184px; gap: 20px; padding: 16px; border: 1px solid var(--line); border-radius: 10px; }
 .overview-calendar .calendar-day-heading { min-height: 48px; font-size: 14px; }
 .workspace-v2 .overview-calendar .cal-item { min-height: 56px; padding: 16px 8px; }
@@ -98,8 +98,8 @@
 .workspace-v2 .toggle { width: auto; }
 .workspace-v2 .toggle button { min-width: 80px; white-space: nowrap; }
 .calendar-directory .next-week { margin-bottom: 20px; }
-.calendar-days { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 16px; min-height: 460px; }
-.calendar-days.full-week { grid-template-columns: repeat(7, minmax(128px, 1fr)); min-width: 1000px; }
+.calendar-days { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 16px; min-height: 460px; }
+.calendar-days.full-week { grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); min-width: 0; }
 .calendar-day { min-width: 0; display: flex; flex-direction: column; align-items: stretch; gap: 16px; }
 .calendar-day-heading { display: grid; place-items: center; min-height: 52px; background: var(--bg); border-radius: 8px; font: 600 15px var(--sans); }
 .calendar-day-heading.today { background: var(--green-100); color: var(--green); }
@@ -113,6 +113,43 @@
 .workspace-v2 .week-nav button { min-width: 48px; min-height: 48px; border: 1px solid var(--line); background: var(--surface); }
 .workspace-v2 .period-toggle button, .workspace-v2 .toggle button { min-height: 48px; }
 .weekend-toggle { min-height: 48px; margin-top: 8px; }
+.availability-calendar { min-width: 0; align-self: start; }
+.availability-calendar > .toolbar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid var(--line); }
+.availability-calendar .calendar-view-controls { display: flex; align-items: center; flex-wrap: wrap; gap: 16px; }
+.availability-calendar .toggle { gap: 4px; padding: 4px; border: 1px solid var(--line); border-radius: 10px; background: var(--bg); }
+.availability-calendar .toggle button { border: 0; min-height: 40px; padding: 8px 16px; }
+.availability-calendar .toolbar > .btn { min-height: 48px; }
+.availability-calendar .week-head { margin-bottom: 16px; }
+.availability-calendar .week-head h3 { margin: 0; font-size: clamp(20px, 2vw, 26px); }
+.availability-calendar .week-period { margin-bottom: 20px; }
+.availability-calendar > .notice { width: 100%; margin-bottom: 20px; line-height: 1.6; }
+.availability-calendar .calendar-days { grid-template-columns: repeat(5, minmax(110px, 1fr)); gap: 12px; min-height: 0; }
+.availability-calendar .calendar-days.full-week { grid-template-columns: repeat(7, minmax(110px, 1fr)); }
+.availability-calendar .calendar-day { gap: 12px; padding: 12px; min-height: 180px; border: 1px solid var(--line); border-radius: 10px; }
+.availability-calendar .calendar-day-heading { min-height: 44px; font-size: 14px; }
+.availability-calendar .calendar-period-label { text-align: center; }
+.availability-calendar .calendar-empty { padding: 12px 0; text-align: center; line-height: 1.6; }
+.availability-calendar > .weekend-toggle { display: block; margin: 16px 0 0; }
+.availability-calendar > .legend { margin-top: 12px; padding-top: 16px; border-top: 1px solid var(--line); gap: 12px 24px; }
+@media (max-width: 1100px) and (min-width: 701px) {
+  .availability-calendar .cal-scroll { padding-bottom: 8px; }
+  .availability-calendar .calendar-days.full-week { min-width: 900px; }
+}
+@media (max-width: 700px) {
+  .availability-calendar .calendar-view-controls { width: 100%; gap: 12px; }
+  .availability-calendar .calendar-view-controls .toggle { flex: 1 1 100%; }
+  .availability-calendar .toggle button { flex: 1; min-width: 0; }
+  .availability-calendar .toolbar > .btn { width: 100%; }
+  .availability-calendar .week-head { align-items: stretch; gap: 12px; }
+  .availability-calendar .week-nav { width: 100%; }
+  .availability-calendar .week-nav button:nth-child(2) { flex: 1; }
+  .availability-calendar .week-period { align-items: stretch; gap: 12px; }
+  .availability-calendar .period-toggle { width: 100%; }
+  .availability-calendar .period-toggle button { flex: 1; }
+  .availability-calendar .calendar-days,
+  .availability-calendar .calendar-days.full-week { grid-template-columns: 1fr; }
+  .availability-calendar .calendar-day { min-height: 0; }
+}
 .selected-slot-summary { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-top: 24px; padding: 24px; border-radius: 10px; background: var(--green-100); }
 .selected-slot-summary strong { color: var(--green); font-size: 15px; }
 .selected-slot-summary p { margin-top: 8px; font-size: 13px; }
@@ -249,7 +286,7 @@
   .booking-stepper { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; padding: 16px; }
   .booking-stepper li { font-size: 11px; gap: 6px; }
   .booking-stepper li:not(:last-child)::after { display: none; }
-  .calendar-days { min-width: 720px; }
+  .calendar-days, .calendar-days.full-week { min-width: 0; grid-template-columns: 1fr; }
   .selected-slot-summary { align-items: stretch; flex-direction: column; padding: 20px; }
   .selected-slot-summary .btn { flex: auto; }
   .workspace-v2 .published-slots .appt-row { grid-template-columns: minmax(0, 1fr) auto; }

@@ -25,6 +25,21 @@ const Modal = ({ title, description, children, onClose, className = '' }) => {
     if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) onClose();
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key !== 'Tab') return;
+    const controls = [...event.currentTarget.querySelectorAll('a[href], button, input, select, textarea, summary, [tabindex]')]
+      .filter((element) => !element.disabled && element.tabIndex >= 0 && element.getClientRects().length);
+    const first = controls[0];
+    const last = controls.at(-1);
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last?.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first?.focus();
+    }
+  };
+
   return createPortal(
     <dialog
       ref={dialog}
@@ -32,6 +47,7 @@ const Modal = ({ title, description, children, onClose, className = '' }) => {
       aria-labelledby={titleId}
       aria-describedby={description ? descriptionId : undefined}
       onClick={handleBackdrop}
+      onKeyDown={handleKeyDown}
       onCancel={(event) => { event.preventDefault(); onClose(); }}
     >
       <div className="modal-panel">

@@ -1,0 +1,21 @@
+:root {
+  --bg: #f5f2eb;
+  --surface: #ffffff;
+  --paper: var(--surface);
+  --green: #2d5a48;
+  --green-500: var(--green);
+  --green-dark: #234a3a;
+  --green-100: #e8eee4;
+  --green-200: #dcebe1;
+  --ink: #26332c;
+  --muted: #66726b;
+  --line: #e3e0d6;
+  --amber-bg: #fdf1cf;
+  --amber: #8a5a00;
+  --red-bg: #f6e3df;
+  --red: #8a3b2e;
+  --grey-bg: #ece9e1;
+  --radius: 8px;
+  --serif: "Lora", Georgia, serif;
+  --sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+}

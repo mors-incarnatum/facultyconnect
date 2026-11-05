@@ -1,51 +1,42 @@
-# FacultyConnect — MERN setup
+# FacultyConnect
 
-Setup only: blank React client, Express/Node server, and Mongoose connection configuration. No pages, API routes, models, authentication, or application features.
+## Architecture Overview
 
-## MVC structure
-
-```text
-client/src/
-  views/                React screens (View layer; empty)
-  App.jsx               Blank application root
-  main.jsx              React entry point
-server/src/
-  config/
-    env.js              Environment configuration
-    database.js         MongoDB connection
-  models/               Mongoose schemas and models (empty)
-  controllers/          Request handlers (empty)
-  routes/
-    index.js            Empty router mounted at /api
-  app.js                Express middleware and route mounting
-  index.js              Database initialization and server startup
-```
-
-Future requests follow routes → controllers → models. React provides the View
-layer in this MERN project; server-side templates are not needed.
-The empty folders contain `.gitkeep` files so Git can preserve the scaffold.
-No feature models, controllers, endpoints, or screens are implemented.
-
-## Run
+## Quick Start
 
 ```sh
 npm install
 npm run dev
 ```
 
-Client: http://localhost:3000. Server: http://localhost:5000.
-The client is intentionally blank; the server has no routes, so requests return 404.
+- **Frontend (Vite + React 19):** `http://localhost:3000`
 
-## MongoDB
+### Demo Accounts (Phase 1)
 
-Provide a running local MongoDB instance or a MongoDB Atlas connection string.
-Copy `server/.env.example` to `server/.env` and set `MONGODB_URI`.
-Restart the server after changing environment variables.
-Without `server/.env`, the server starts without a database connection.
+- **Student:** `sample.alex.delacruz@dlsu.edu.ph` (any non-empty password)
+- **Faculty:** `sample.sofia.santos@dlsu.edu.ph` (any non-empty password)
 
 ## Scripts
 
-- `npm run dev`: run client and server together.
-- `npm run build`: build the client.
-- `npm start`: run the server.
-- `npm run preview --workspace client`: preview the built client.
+- `npm run dev`: Run `client` (`:3000`) and `server` (`:5000`) concurrently.
+- `npm run build`: Build the production React bundle in `client/dist/`.
+- `npm start`: Start the Express server (`server/src/index.js`).
+- `npm run preview --workspace client`: Preview the built client bundle.
+
+## Packages Used
+
+### Frontend (`client/package.json`)
+
+| Package | Version range | Purpose |
+|---|---|---|
+| `react` | `^19.3.1` | UI components, hooks, and application state |
+| `react-dom` | `^19.3.1` | Browser DOM rendering |
+| `react-router-dom` | `^7.1.1` | Client-side routing (`HashRouter`) across public, student, and faculty screens |
+
+### Development Tools
+
+| Package | Version range | Workspace | Purpose |
+|---|---|---|---|
+| `vite` | `^8.3.5` | `client` | Frontend dev server, HMR, production build, and preview |
+| `@vitejs/plugin-react` | `^6.1.2` | `client` | React Fast Refresh and JSX compilation |
+| `concurrently` | `^10.0.6` | Root | Runs `client` and `server` dev servers together |

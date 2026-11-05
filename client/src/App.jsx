@@ -1,3 +1,5 @@
-export default function App() {
-  return null;
-}
+import FacultyConnectApp from './pages/FacultyConnectApp.jsx';
+
+const App = () => <FacultyConnectApp />;
+
+export default App;

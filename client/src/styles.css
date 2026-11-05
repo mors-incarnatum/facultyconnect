@@ -1,0 +1,24 @@
+/* ==========================================================================
+   FacultyConnect Stylesheet Manifest
+   ========================================================================== */
+
+/* Design tokens & CSS reset */
+@import "./styles/tokens.css";
+@import "./styles/base.css";
+
+/* Application layout & navigation */
+@import "./styles/layout.css";
+
+/* Shared reusable primitives */
+@import "./styles/primitives.css";
+
+/* Feature-specific styling */
+@import "./styles/auth.css";
+@import "./styles/landing.css";
+@import "./styles/appointments.css";
+@import "./styles/calendar.css";
+@import "./styles/faculty.css";
+
+/* Responsive media queries */
+@import "./styles/responsive.css";
+@import "./styles/workspace-v2.css";

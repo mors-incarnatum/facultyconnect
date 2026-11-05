@@ -1,0 +1,839 @@
+{
+  "UNIVERSITY": "De La Salle University",
+  "SEMESTER": "Term 1, AY 2026–2027",
+  "departments": [
+    "Software Technology",
+    "Information Technology",
+    "Computer Technology"
+  ],
+  "initialFaculty": [
+    {
+      "id": "f1",
+      "name": "Dr. Sofia Santos",
+      "email": "sample.sofia.santos@dlsu.edu.ph",
+      "rank": "Associate Professor",
+      "department": "Software Technology",
+      "pronouns": "she/her",
+      "avatar": "/avatars/sofia-santos.svg",
+      "motto": "Demystifying algorithms one whiteboard trace at a time. Never fear recursion!",
+      "subjects": [
+        "Data Structures and Algorithms",
+        "Algorithms and Complexity"
+      ],
+      "courses": [
+        "CCDSALG",
+        "CSALGCM"
+      ],
+      "specialties": [
+        "Data Structures & Algorithms",
+        "Algorithmic Complexity",
+        "Graph Theory",
+        "Competitive Programming"
+      ],
+      "education": "Ph.D. in Computer Science, De La Salle University; M.S. Computer Science, UP Diliman",
+      "consultationStyle": "Interactive problem solving, whiteboard state tracing, high patience, and warm Earl Grey tea.",
+      "consultationTip": "Bring your pseudocode or a failing edge-case test. We'll trace the call stack step-by-step together!",
+      "office": "CCS consultation room 1 (sample)",
+      "color": "#2d5a48",
+      "bio": "Algorithms enthusiast, competitive programming mentor, and big-O notation purist. Dr. Santos has guided hundreds of students through complex graph traversals, dynamic programming hurdles, and the dreaded CCDSALG machine project. Her consultations are collaborative problem-solving sessions where students are encouraged to draw out memory states and question edge cases."
+    },
+    {
+      "id": "f2",
+      "name": "Dr. Miguel Reyes",
+      "email": "sample.miguel.reyes@dlsu.edu.ph",
+      "rank": "Assistant Professor",
+      "department": "Software Technology",
+      "pronouns": "he/him",
+      "avatar": "/avatars/miguel-reyes.svg",
+      "motto": "Pointers aren't scary once you can picture memory. Let's conquer the segfaults together.",
+      "subjects": [
+        "Logic Formulation and Introductory Programming",
+        "Programming with Structured Data Types"
+      ],
+      "courses": [
+        "CCPROG1",
+        "CCPROG2"
+      ],
+      "specialties": [
+        "Introductory Programming (C)",
+        "Memory Management",
+        "Structured Data Types",
+        "CS Education"
+      ],
+      "education": "Ph.D. in Information Technology, University of Melbourne; B.S. Computer Science, DLSU (Magna Cum Laude)",
+      "consultationStyle": "Live code tracing, visual memory layout sketches, and friendly step-by-step GDB debugging.",
+      "consultationTip": "Segfault? Bring your GDB backtrace or terminal output and we'll hunt down that dangling pointer in minutes.",
+      "office": "CCS consultation room 2 (sample)",
+      "color": "#8a5a1f",
+      "bio": "Dedicated mentor for novice programmers navigating the foundational leap into C programming. Dr. Reyes believes that wrestling with memory allocation and structs is a rite of passage, not a roadblock. Renowned for his patient debugging style, terminal workflows, and relatable analogies (like explaining linked lists using Manila train cars)."
+    },
+    {
+      "id": "f3",
+      "name": "Prof. Andrea Cruz",
+      "email": "sample.andrea.cruz@dlsu.edu.ph",
+      "rank": "Professor",
+      "department": "Computer Technology",
+      "pronouns": "she/her",
+      "avatar": "/avatars/andrea-cruz.svg",
+      "motto": "From silicon gates to global packets—understanding the physical heartbeat of computing.",
+      "subjects": [
+        "Introduction to Computer Organization and Architecture 1",
+        "Computer Networks"
+      ],
+      "courses": [
+        "CSARCH1",
+        "CSNETWK"
+      ],
+      "specialties": [
+        "Computer Architecture",
+        "Network Routing & Protocols",
+        "Packet Analysis (Wireshark)",
+        "Embedded Systems"
+      ],
+      "education": "Ph.D. in Electrical & Computer Engineering, NTU Singapore; B.S. Computer Engineering, DLSU",
+      "consultationStyle": "Hardware block diagrams, packet trace reviews, subnetting drills, and calm, authoritative guidance.",
+      "consultationTip": "Stuck on Wireshark captures or pipeline stalls? Grab your lab sheets and packet capture files.",
+      "office": "CCS consultation room 3 (sample)",
+      "color": "#4a5f8a",
+      "bio": "Veteran computer architect and networking researcher with 15+ years in high-performance computing and packet-switched topologies. Prof. Cruz makes deep hardware concepts tangible, whether you're calculating subnet masks, deciphering CPU pipeline hazards, or configuring VLANs. Fiercely supportive of undergraduate research and women in systems engineering."
+    },
+    {
+      "id": "f4",
+      "name": "Dr. Paolo Mendoza",
+      "email": "sample.paolo.mendoza@dlsu.edu.ph",
+      "rank": "Lecturer",
+      "department": "Information Technology",
+      "pronouns": "he/him",
+      "avatar": "/avatars/paolo-mendoza.svg",
+      "motto": "Building scalable, resilient web systems that withstand real human traffic.",
+      "subjects": [
+        "Web Application Development",
+        "Information Management"
+      ],
+      "courses": [
+        "CCAPDEV",
+        "CCINFOM"
+      ],
+      "specialties": [
+        "Full-Stack Web Architecture",
+        "RESTful API Design",
+        "Relational Database Modeling",
+        "Modern JavaScript/TypeScript"
+      ],
+      "education": "Doctor of Information Technology, DLSU; Former Principal Engineer at FinTech SEA",
+      "consultationStyle": "Live architecture review, REST API contract inspection, DevTools network debugging, and agile code reviews.",
+      "consultationTip": "Have your repository branch pulled and database migrations ready. We'll inspect network requests and query latency together.",
+      "office": "CCS consultation room 4 (sample)",
+      "color": "#7a4a6a",
+      "bio": "Practicing engineering consultant by day and passionate tech lecturer by night. Dr. Mendoza bridges academic theory with high-growth startup practices. He reviews student web architecture, RESTful API contracts, and schema designs with the eye of a veteran tech lead. A vocal champion of clean Git discipline, automated testing, and snappy frontend performance."
+    },
+    {
+      "id": "f5",
+      "name": "Dr. Camille Garcia",
+      "email": "sample.camille.garcia@dlsu.edu.ph",
+      "rank": "Associate Professor",
+      "department": "Software Technology",
+      "pronouns": "she/her",
+      "avatar": "/avatars/camille-garcia.svg",
+      "motto": "Clean architecture is kindness to your future self. Design software crafted to last.",
+      "subjects": [
+        "Object Oriented Programming",
+        "Software Engineering"
+      ],
+      "courses": [
+        "CCPROG3",
+        "CSSWENG"
+      ],
+      "specialties": [
+        "Object-Oriented Design (Java)",
+        "Software Architecture & SOLID",
+        "Unit Testing & Refactoring",
+        "Agile Team Dynamics"
+      ],
+      "education": "Ph.D. in Software Engineering, Carnegie Mellon (Visiting Scholar) / DLSU; B.S. CS-ST",
+      "consultationStyle": "UML refactoring sessions, design pattern walkthroughs, code smell diagnosis, and supportive team mentorship.",
+      "consultationTip": "Bring your class diagrams or git commit log. We can refactor any tangled inheritance hierarchy!",
+      "office": "CCS consultation room 5 (sample)",
+      "color": "#3f7a5a",
+      "bio": "Software engineering craftsman and OOP evangelist. Dr. Garcia champions SOLID principles, modular patterns, and comprehensive unit testing. Her consultations are celebrated for transforming messy, monolithic God objects into elegant, extensible class hierarchies. She also coaches capstone teams on agile velocity, conflict resolution, and PR etiquette."
+    },
+    {
+      "id": "f6",
+      "name": "Prof. Rafael Domingo",
+      "email": "sample.rafael.domingo@dlsu.edu.ph",
+      "rank": "Professor",
+      "department": "Information Technology",
+      "pronouns": "he/him",
+      "avatar": "/avatars/rafael-domingo.svg",
+      "motto": "Data always tells a story—if your schemas, indexes, and queries respect its integrity.",
+      "subjects": [
+        "Information Management",
+        "Web Application Development"
+      ],
+      "courses": [
+        "CCINFOM",
+        "CCAPDEV"
+      ],
+      "specialties": [
+        "Database Normalization (3NF/BCNF)",
+        "SQL Query Optimization",
+        "Transaction Concurrency & ACID",
+        "Data Warehousing"
+      ],
+      "education": "Ph.D. in Computer Science, Tokyo Institute of Technology; M.S. Information Systems, DLSU",
+      "consultationStyle": "ERD auditing, SQL EXPLAIN plan dissection, database riddle challenges, and storytelling with a warm smile.",
+      "consultationTip": "Bring your ER diagram and slow SQL queries. We'll turn full table scans into lightning-fast index seeks!",
+      "office": "CCS consultation room 6 (sample)",
+      "color": "#9a5a3a",
+      "bio": "Database guru and data modeling specialist with three decades of experience consulting on national enterprise database projects. Prof. Domingo is renowned for his humor, infectious love for 3NF normalization, and uncanny ability to spot an N+1 query problem from ten feet away. He loves helping students optimize complex SQL queries and architect robust data pipelines."
+    }
+  ],
+  "initialStudents": [
+    {
+      "id": "s1",
+      "name": "Alex Dela Cruz",
+      "email": "sample.alex.delacruz@dlsu.edu.ph",
+      "pronouns": "he/him",
+      "avatar": "/avatars/alex-delacruz.svg",
+      "program": "BS Computer Science major in Software Technology",
+      "yearLevel": "3rd Year",
+      "motto": "Building automated tools to catch bugs before they reach production.",
+      "interests": [
+        "Compiler Design",
+        "Automated Testing",
+        "Systems Programming"
+      ]
+    },
+    {
+      "id": "s2",
+      "name": "Maya Reyes",
+      "email": "sample.maya.reyes@dlsu.edu.ph",
+      "pronouns": "she/her",
+      "avatar": "/avatars/maya-reyes.svg",
+      "program": "BS Information Technology",
+      "yearLevel": "2nd Year",
+      "motto": "Designing digital interfaces that empower everyone in our university community.",
+      "interests": [
+        "UI/UX Design",
+        "Accessible Frontend",
+        "Design Systems"
+      ]
+    },
+    {
+      "id": "s3",
+      "name": "Daniel Tan",
+      "email": "sample.daniel.tan@dlsu.edu.ph",
+      "pronouns": "he/him",
+      "avatar": "/avatars/daniel-tan.svg",
+      "program": "BS Computer Science major in Computer Systems Engineering",
+      "yearLevel": "4th Year",
+      "motto": "Exploring the intersection of embedded microcontrollers and robotics.",
+      "interests": [
+        "Computer Architecture",
+        "FPGA",
+        "Robotics & IoT"
+      ]
+    },
+    {
+      "id": "s4",
+      "name": "Isabella Navarro",
+      "email": "sample.isabella.navarro@dlsu.edu.ph",
+      "pronouns": "she/her",
+      "avatar": "/avatars/isabella-navarro.svg",
+      "program": "BS Information Systems",
+      "yearLevel": "3rd Year",
+      "motto": "Connecting data insights with product decisions to solve real campus problems.",
+      "interests": [
+        "Product Management",
+        "Information Architecture",
+        "Data Analytics"
+      ]
+    },
+    {
+      "id": "s5",
+      "name": "Jacob Lim",
+      "email": "sample.jacob.lim@dlsu.edu.ph",
+      "pronouns": "he/him",
+      "avatar": "/avatars/jacob-lim.svg",
+      "program": "BS Computer Science major in Network and Information Security",
+      "yearLevel": "2nd Year",
+      "motto": "Defending web protocols and uncovering vulnerabilities before the bad actors do.",
+      "interests": [
+        "Network Security",
+        "CTF Challenges",
+        "Cryptographic Protocols"
+      ]
+    }
+  ],
+  "initialSlots": [
+    {
+      "id": "sl01",
+      "facultyId": "f1",
+      "start": "09:00",
+      "end": "09:30",
+      "mode": "in-person",
+      "location": "CCS consultation room 1 (sample)",
+      "dayOffset": 3
+    },
+    {
+      "id": "sl02",
+      "facultyId": "f1",
+      "start": "09:30",
+      "end": "10:00",
+      "mode": "in-person",
+      "location": "CCS consultation room 1 (sample)",
+      "dayOffset": 3
+    },
+    {
+      "id": "sl03",
+      "facultyId": "f1",
+      "start": "10:00",
+      "end": "10:30",
+      "mode": "in-person",
+      "location": "CCS consultation room 1 (sample)",
+      "dayOffset": 3
+    },
+    {
+      "id": "sl04",
+      "facultyId": "f1",
+      "start": "10:30",
+      "end": "11:00",
+      "mode": "in-person",
+      "location": "CCS consultation room 1 (sample)",
+      "dayOffset": 3
+    },
+    {
+      "id": "sl05",
+      "facultyId": "f1",
+      "start": "13:00",
+      "end": "13:30",
+      "mode": "in-person",
+      "location": "CCS consultation room 1 (sample)",
+      "dayOffset": 6
+    },
+    {
+      "id": "sl06",
+      "facultyId": "f1",
+      "start": "10:00",
+      "end": "10:30",
+      "mode": "in-person",
+      "location": "CCS consultation room 1 (sample)",
+      "dayOffset": 7
+    },
+    {
+      "id": "sl07",
+      "facultyId": "f1",
+      "start": "14:00",
+      "end": "14:30",
+      "mode": "in-person",
+      "location": "CCS consultation room 1 (sample)",
+      "dayOffset": -1
+    },
+    {
+      "id": "sl08",
+      "facultyId": "f1",
+      "start": "09:00",
+      "end": "09:30",
+      "mode": "in-person",
+      "location": "CCS consultation room 1 (sample)",
+      "dayOffset": -8
+    },
+    {
+      "id": "sl09",
+      "facultyId": "f1",
+      "start": "11:00",
+      "end": "11:30",
+      "mode": "in-person",
+      "location": "CCS consultation room 1 (sample)",
+      "dayOffset": -7
+    },
+    {
+      "id": "sl10",
+      "facultyId": "f2",
+      "start": "14:00",
+      "end": "14:30",
+      "mode": "online",
+      "location": "Online consultation",
+      "dayOffset": 6
+    },
+    {
+      "id": "sl11",
+      "facultyId": "f2",
+      "start": "14:30",
+      "end": "15:00",
+      "mode": "online",
+      "location": "Online consultation",
+      "dayOffset": 6
+    },
+    {
+      "id": "sl12",
+      "facultyId": "f2",
+      "start": "14:00",
+      "end": "14:30",
+      "mode": "online",
+      "location": "Online consultation",
+      "dayOffset": -1
+    },
+    {
+      "id": "sl13",
+      "facultyId": "f2",
+      "start": "14:30",
+      "end": "15:00",
+      "mode": "online",
+      "location": "Online consultation",
+      "dayOffset": -1
+    },
+    {
+      "id": "sl14",
+      "facultyId": "f2",
+      "start": "15:00",
+      "end": "15:30",
+      "mode": "in-person",
+      "location": "CCS consultation room 2 (sample)",
+      "dayOffset": 8
+    },
+    {
+      "id": "sl15",
+      "facultyId": "f3",
+      "start": "11:00",
+      "end": "11:30",
+      "mode": "in-person",
+      "location": "CCS consultation room 3 (sample)",
+      "dayOffset": 1
+    },
+    {
+      "id": "sl16",
+      "facultyId": "f3",
+      "start": "10:00",
+      "end": "10:30",
+      "mode": "in-person",
+      "location": "CCS consultation room 3 (sample)",
+      "dayOffset": 3
+    },
+    {
+      "id": "sl17",
+      "facultyId": "f3",
+      "start": "10:30",
+      "end": "11:00",
+      "mode": "in-person",
+      "location": "CCS consultation room 3 (sample)",
+      "dayOffset": 9
+    },
+    {
+      "id": "sl18",
+      "facultyId": "f3",
+      "start": "10:00",
+      "end": "10:30",
+      "mode": "in-person",
+      "location": "CCS consultation room 3 (sample)",
+      "dayOffset": -6
+    },
+    {
+      "id": "sl19",
+      "facultyId": "f3",
+      "start": "09:30",
+      "end": "10:00",
+      "mode": "in-person",
+      "location": "CCS consultation room 3 (sample)",
+      "dayOffset": 8
+    },
+    {
+      "id": "sl20",
+      "facultyId": "f4",
+      "start": "09:30",
+      "end": "10:00",
+      "mode": "in-person",
+      "location": "CCS consultation room 4 (sample)",
+      "dayOffset": 6
+    },
+    {
+      "id": "sl21",
+      "facultyId": "f4",
+      "start": "09:00",
+      "end": "09:30",
+      "mode": "in-person",
+      "location": "CCS consultation room 4 (sample)",
+      "dayOffset": 0
+    },
+    {
+      "id": "sl22",
+      "facultyId": "f4",
+      "start": "11:00",
+      "end": "11:30",
+      "mode": "in-person",
+      "location": "CCS consultation room 4 (sample)",
+      "dayOffset": 2
+    },
+    {
+      "id": "sl23",
+      "facultyId": "f4",
+      "start": "09:30",
+      "end": "10:00",
+      "mode": "in-person",
+      "location": "CCS consultation room 4 (sample)",
+      "dayOffset": -5
+    },
+    {
+      "id": "sl24",
+      "facultyId": "f4",
+      "start": "09:00",
+      "end": "09:30",
+      "mode": "in-person",
+      "location": "CCS consultation room 4 (sample)",
+      "dayOffset": 7
+    },
+    {
+      "id": "sl25",
+      "facultyId": "f5",
+      "start": "09:30",
+      "end": "10:00",
+      "mode": "in-person",
+      "location": "CCS consultation room 5 (sample)",
+      "dayOffset": 1
+    },
+    {
+      "id": "sl26",
+      "facultyId": "f5",
+      "start": "13:30",
+      "end": "14:00",
+      "mode": "in-person",
+      "location": "CCS consultation room 5 (sample)",
+      "dayOffset": 2
+    },
+    {
+      "id": "sl27",
+      "facultyId": "f5",
+      "start": "10:00",
+      "end": "10:30",
+      "mode": "in-person",
+      "location": "CCS consultation room 5 (sample)",
+      "dayOffset": 0
+    },
+    {
+      "id": "sl28",
+      "facultyId": "f5",
+      "start": "14:00",
+      "end": "14:30",
+      "mode": "in-person",
+      "location": "CCS consultation room 5 (sample)",
+      "dayOffset": 9
+    },
+    {
+      "id": "sl29",
+      "facultyId": "f5",
+      "start": "10:00",
+      "end": "10:30",
+      "mode": "in-person",
+      "location": "CCS consultation room 5 (sample)",
+      "dayOffset": -13
+    },
+    {
+      "id": "sl30",
+      "facultyId": "f6",
+      "start": "10:30",
+      "end": "11:00",
+      "mode": "in-person",
+      "location": "CCS consultation room 6 (sample)",
+      "dayOffset": 2
+    },
+    {
+      "id": "sl31",
+      "facultyId": "f6",
+      "start": "14:00",
+      "end": "14:30",
+      "mode": "in-person",
+      "location": "CCS consultation room 6 (sample)",
+      "dayOffset": 3
+    },
+    {
+      "id": "sl32",
+      "facultyId": "f6",
+      "start": "15:30",
+      "end": "16:00",
+      "mode": "in-person",
+      "location": "CCS consultation room 6 (sample)",
+      "dayOffset": 7
+    },
+    {
+      "id": "sl33",
+      "facultyId": "f6",
+      "start": "11:00",
+      "end": "11:30",
+      "mode": "online",
+      "location": "Online consultation",
+      "dayOffset": 10
+    },
+    {
+      "id": "sl34",
+      "facultyId": "f6",
+      "start": "15:00",
+      "end": "15:30",
+      "mode": "in-person",
+      "location": "CCS consultation room 6 (sample)",
+      "dayOffset": 0
+    },
+    {
+      "id": "sl35",
+      "facultyId": "f1",
+      "start": "09:00",
+      "end": "09:30",
+      "mode": "in-person",
+      "location": "CCS consultation room 1 (sample)",
+      "dayOffset": 9
+    },
+    {
+      "id": "sl36",
+      "facultyId": "f2",
+      "start": "13:00",
+      "end": "13:30",
+      "mode": "online",
+      "location": "Online consultation",
+      "dayOffset": 10
+    },
+    {
+      "id": "sl37",
+      "facultyId": "f1",
+      "start": "10:00",
+      "end": "10:30",
+      "mode": "in-person",
+      "location": "CCS consultation room 1 (sample)",
+      "dayOffset": 13
+    },
+    {
+      "id": "sl38",
+      "facultyId": "f2",
+      "start": "14:30",
+      "end": "15:00",
+      "mode": "in-person",
+      "location": "CCS consultation room 2 (sample)",
+      "dayOffset": 14
+    },
+    {
+      "id": "sl39",
+      "facultyId": "f3",
+      "start": "09:30",
+      "end": "10:00",
+      "mode": "in-person",
+      "location": "CCS consultation room 3 (sample)",
+      "dayOffset": 15
+    },
+    {
+      "id": "sl40",
+      "facultyId": "f4",
+      "start": "13:30",
+      "end": "14:00",
+      "mode": "in-person",
+      "location": "CCS consultation room 4 (sample)",
+      "dayOffset": 16
+    },
+    {
+      "id": "sl41",
+      "facultyId": "f5",
+      "start": "10:00",
+      "end": "10:30",
+      "mode": "in-person",
+      "location": "CCS consultation room 5 (sample)",
+      "dayOffset": 17
+    },
+    {
+      "id": "sl42",
+      "facultyId": "f1",
+      "start": "15:00",
+      "end": "15:30",
+      "mode": "in-person",
+      "location": "CCS consultation room 1 (sample)",
+      "dayOffset": 17
+    }
+  ],
+  "initialAppointments": [
+    {
+      "id": "a1",
+      "studentId": "s1",
+      "slotId": "sl01",
+      "status": "confirmed",
+      "subject": "CCDSALG",
+      "topic": "Recursion and linked lists",
+      "description": "Review recursive list traversal and the linked-list machine project."
+    },
+    {
+      "id": "a2",
+      "studentId": "s1",
+      "slotId": "sl10",
+      "status": "pending",
+      "subject": "CCPROG1",
+      "topic": "Practical exam preparation",
+      "description": "Practice tracing loops, writing functions, and checking C program output."
+    },
+    {
+      "id": "a3",
+      "studentId": "s1",
+      "slotId": "sl08",
+      "status": "completed",
+      "subject": "CCDSALG",
+      "topic": "Sorting algorithm analysis",
+      "description": "Walk through Big-O analysis for insertion sort and merge sort."
+    },
+    {
+      "id": "a4",
+      "studentId": "s1",
+      "slotId": "sl18",
+      "status": "declined",
+      "subject": "CSARCH1",
+      "topic": "Number representation review",
+      "description": "Ask about binary arithmetic, hexadecimal conversion, and signed integers."
+    },
+    {
+      "id": "a5",
+      "studentId": "s1",
+      "slotId": "sl23",
+      "status": "cancelled",
+      "subject": "CCAPDEV",
+      "topic": "Web application project planning",
+      "description": "Discuss dividing the FacultyConnect routes, views, and form validation tasks."
+    },
+    {
+      "id": "a6",
+      "studentId": "s2",
+      "slotId": "sl02",
+      "status": "pending",
+      "subject": "CCDSALG",
+      "topic": "Binary tree traversal",
+      "description": "I keep mixing up preorder and postorder results and want to practice with examples."
+    },
+    {
+      "id": "a7",
+      "studentId": "s3",
+      "slotId": "sl06",
+      "status": "pending",
+      "subject": "CSALGCM",
+      "topic": "Dynamic programming review",
+      "description": "Need help defining the subproblems and recurrence for the knapsack problem."
+    },
+    {
+      "id": "a8",
+      "studentId": "s4",
+      "slotId": "sl09",
+      "status": "completed",
+      "subject": "CSALGCM",
+      "topic": "Algorithm design feedback",
+      "description": "Review the correctness proof and time complexity of our proposed solution."
+    },
+    {
+      "id": "a9",
+      "studentId": "s5",
+      "slotId": "sl20",
+      "status": "pending",
+      "subject": "CCAPDEV",
+      "topic": "Sprint retrospective",
+      "description": "Our team wants advice on handling uneven workload before the next project milestone."
+    },
+    {
+      "id": "a10",
+      "studentId": "s2",
+      "slotId": "sl25",
+      "status": "confirmed",
+      "subject": "CCPROG3",
+      "topic": "Java machine project review",
+      "description": "Check our class responsibilities, inheritance hierarchy, and event handlers."
+    },
+    {
+      "id": "a11",
+      "studentId": "s3",
+      "slotId": "sl12",
+      "status": "confirmed",
+      "subject": "CCPROG1",
+      "topic": "Programming quiz review",
+      "description": "Go over the nested-loop and function-call questions I missed on the quiz."
+    },
+    {
+      "id": "a12",
+      "studentId": "s4",
+      "slotId": "sl30",
+      "status": "pending",
+      "subject": "CCINFOM",
+      "topic": "Database schema feedback",
+      "description": "Discuss primary keys, foreign keys, and normalization for our consultation database."
+    },
+    {
+      "id": "a13",
+      "studentId": "s5",
+      "slotId": "sl15",
+      "status": "confirmed",
+      "subject": "CSARCH1",
+      "topic": "Instruction cycle walkthrough",
+      "description": "Walk through how registers and memory are used during instruction execution."
+    },
+    {
+      "id": "a14",
+      "studentId": "s5",
+      "slotId": "sl29",
+      "status": "completed",
+      "subject": "CCPROG3",
+      "topic": "Object-oriented design review",
+      "description": "Clarify when to use interfaces, abstract classes, and composition in Java."
+    },
+    {
+      "id": "a15",
+      "studentId": "s2",
+      "slotId": "sl35",
+      "status": "pending",
+      "subject": "CCDSALG",
+      "topic": "Sorting algorithm comparison",
+      "description": "Request to review the time complexity of merge sort and quicksort before the quiz."
+    },
+    {
+      "id": "a16",
+      "studentId": "s3",
+      "slotId": "sl36",
+      "status": "pending",
+      "subject": "CCPROG2",
+      "topic": "Struct and pointer review",
+      "description": "Review passing structures to functions and allocating memory for linked records."
+    },
+    {
+      "id": "a17",
+      "studentId": "s4",
+      "slotId": "sl37",
+      "status": "pending",
+      "subject": "CSALGCM",
+      "topic": "Greedy algorithm correctness",
+      "description": "Review an exchange argument and compare greedy and dynamic programming solutions."
+    },
+    {
+      "id": "a18",
+      "studentId": "s5",
+      "slotId": "sl38",
+      "status": "pending",
+      "subject": "CCPROG2",
+      "topic": "File processing in C",
+      "description": "Review reading records from a file and updating a dynamically allocated array."
+    },
+    {
+      "id": "a19",
+      "studentId": "s1",
+      "slotId": "sl39",
+      "status": "confirmed",
+      "subject": "CSNETWK",
+      "topic": "Network design proposal",
+      "description": "Review subnet allocation and routing for our campus network design."
+    },
+    {
+      "id": "a20",
+      "studentId": "s2",
+      "slotId": "sl40",
+      "status": "pending",
+      "subject": "CCAPDEV",
+      "topic": "Route and form validation",
+      "description": "Review Express routes and error handling for our web application project."
+    },
+    {
+      "id": "a21",
+      "studentId": "s5",
+      "slotId": "sl07",
+      "status": "confirmed",
+      "subject": "CCDSALG",
+      "topic": "Graph traversal follow-up",
+      "description": "Review our breadth-first traversal trace. This past consultation is ready to mark completed."
+    }
+  ]
+}

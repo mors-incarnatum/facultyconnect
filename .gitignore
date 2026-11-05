@@ -7,20 +7,12 @@ dist/
 *.log
 
 /client/tests
-
+/client/verification
 /docs
 /server
 /tools
 
-# Keep the grading guide and reproducible browser checks with the frontend.
-!/tools/
-/tools/*
-!/tools/verify-faculty.cjs
-!/tools/verify-ui-ux.cjs
-!/tools/verify-clock.cjs
-!/docs/
-/docs/*
-!/docs/grading-demonstration.md
-
 .agents
 AGENTS.md
+
+

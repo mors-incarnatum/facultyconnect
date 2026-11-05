@@ -8,11 +8,5 @@ dist/
 
 /client/tests
 /client/verification
-/docs
-/server
-/tools
-
-.agents
-AGENTS.md
 
 

@@ -21,6 +21,8 @@ npm install
 
 ## Scripts
 
+- `npm run dev --workspace client`: Run `client` (`:3000`).
+- `npm run build`: Build the production React bundle in `client/dist/`.
 - `npm run preview --workspace client`: Preview the built client bundle.
 
 ## Packages Used

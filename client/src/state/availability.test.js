@@ -101,3 +101,34 @@ test("slot discovery boundaries remain supported and invalid dates rejected", ()
   for (const [date, start, end] of [["2026-10-31", "00:00", "00:30"], ["2026-11-01", "23:29", "23:59"], [base.date, "12:15", "12:45"]]) assert.equal(validateSlot({ ...base, date, start, end }, []), "");
   assert.match(validateSlot({ ...base, date: "2026-02-30" }, []), /valid calendar date/);
 });
+
+test("publishing respects custom week horizon and prunes unreferenced slots when reduced", () => {
+  let n = 0;
+  const args = { slots: [], appointments: [], facultyId: "f1", weekly: defaultWeeklyHours(), exceptions: [], location: base.location, today: "2026-10-26", nextId: () => `s${++n}` };
+  
+  // Publish for 2 weeks (until 2026-11-08)
+  const twoWeeks = publishSchedule({ ...args, weeks: 2 });
+  assert.equal(twoWeeks.ok, true);
+  const maxDateTwo = twoWeeks.slots.reduce((max, s) => s.date > max ? s.date : max, "");
+  assert.ok(maxDateTwo <= "2026-11-08");
+
+  // Publish for 6 weeks (until 2026-12-06)
+  const sixWeeks = publishSchedule({ ...args, weeks: 6 });
+  assert.equal(sixWeeks.ok, true);
+  const maxDateSix = sixWeeks.slots.reduce((max, s) => s.date > max ? s.date : max, "");
+  assert.ok(maxDateSix > "2026-11-08");
+  assert.ok(maxDateSix <= "2026-12-06");
+
+  // Reduce back to 2 weeks with one slot booked in week 3
+  const week3Slot = sixWeeks.slots.find((s) => s.date > "2026-11-08");
+  assert.ok(week3Slot);
+  const bookedAppointment = [{ slotId: week3Slot.id, status: "confirmed" }];
+  const reduced = publishSchedule({ ...args, slots: sixWeeks.slots, appointments: bookedAppointment, weeks: 2 });
+  assert.equal(reduced.ok, true);
+  // The booked slot in week 3 is retained
+  assert.ok(reduced.slots.some((s) => s.id === week3Slot.id));
+  // All other slots beyond 2 weeks were pruned
+  const beyondTwoWeeks = reduced.slots.filter((s) => s.date > "2026-11-08");
+  assert.equal(beyondTwoWeeks.length, 1);
+  assert.equal(beyondTwoWeeks[0].id, week3Slot.id);
+});

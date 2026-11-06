@@ -55,16 +55,17 @@ const isValidException = (exception) => {
 };
 
 // Rebuild the next four weeks, preserving occupied slots and appointment history.
-export function publishSchedule({ slots, appointments, facultyId, weekly, exceptions, location, today, now = parseDate(today), nextId }) {
+export function publishSchedule({ slots, appointments, facultyId, weekly, exceptions, location, today, now = parseDate(today), nextId, weeks = 4 }) {
   if (!location.trim()) return { ok: false, error: 'Enter a location or meeting details.' };
   const error = validateWeeklyHours(weekly);
   if (error) return { ok: false, error };
   if (!exceptions.every(isValidException)) return { ok: false, error: 'Choose a valid exception date range.' };
-  const until = addDays(today, 27);
+  const numWeeks = Math.max(1, Math.min(16, Number(weeks) || 4));
+  const until = addDays(today, numWeeks * 7 - 1);
   const referenced = new Set(appointments.map((a) => a.slotId));
-  const retained = slots.filter((s) => s.facultyId !== facultyId || s.date < today || s.date > until || referenced.has(s.id) || s.source !== "weekly");
+  const retained = slots.filter((s) => s.facultyId !== facultyId || s.date < today || referenced.has(s.id) || s.source !== "weekly");
   const blocked = (date) => exceptionIncludes(exceptions, date);
-  const result = retained.filter((s) => s.facultyId !== facultyId || !blocked(s.date) || referenced.has(s.id) || s.date < today || s.date > until);
+  const result = retained.filter((s) => s.facultyId !== facultyId || !blocked(s.date) || referenced.has(s.id) || s.date < today);
   for (let date = today; date <= until; date = addDays(date, 1)) {
     const day = parseDate(date).getDay();
     const row = weekly[day - 1];

@@ -136,3 +136,36 @@
     width: 100%;
   }
 }
+
+
+@media (max-width: 700px) {
+  .agenda-scope-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .agenda-filters-card {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .agenda-filter-field {
+    min-width: 100%;
+  }
+  .agenda-reset-btn {
+    align-self: stretch;
+  }
+}
+
+
+@media (max-width: 700px) {
+  .agenda-day-strip {
+    display: flex;
+    overflow-x: auto;
+    padding-bottom: 6px;
+    gap: 6px;
+    scrollbar-width: thin;
+  }
+  .agenda-day-tab {
+    min-width: 58px;
+    flex-shrink: 0;
+  }
+}

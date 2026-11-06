@@ -15,7 +15,7 @@ export function useFacultyAvailability({
     setSchedules, setScheduleDraft,
   }), [user, slots, setSlots, appointments, nextId, getSlot, getAppointment, holderOf, setStatus, setScheduleDraft]);
   const { updateFacultyStatus, saveFacultySlot, removeFacultySlot, saveFacultySchedule } = service;
-  const facultySchedule = schedules[user?.id] || { weekly: defaultWeeklyHours(), exceptions: [], location: user?.office || '' };
+  const facultySchedule = schedules[user?.id] || { weekly: defaultWeeklyHours(), exceptions: [], location: user?.office || '', weeks: 4 };
 
   return {
     scheduleDraft, setScheduleDraft, facultySchedule,

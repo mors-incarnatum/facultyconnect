@@ -1,7 +1,7 @@
 import PageHead from '../../components/PageHead.jsx';
 
 const STEPS = [
-  ["Publish your availability", "Set weekly hours and date exceptions in the availability manager, or add a one-off 30-minute slot. Save changes publishes the next four weeks."],
+  ["Publish your availability", "Set weekly hours, publication horizon (1–16 weeks), and date exceptions in the availability manager, or add a one-off 30-minute slot. Save changes publishes your selected weeks."],
   ["Review requests", "Open a pending request to read the student’s course, topic, and description. Accept or decline it from the overview or consultation details."],
   ["Manage consultations", "Mark consultations completed or cancelled. The shared appointment status appears in both workspaces."],
   ["Keep occupied slots protected", "Pending and confirmed slots cannot be edited or removed. Previous consultation records retain their original schedule."],

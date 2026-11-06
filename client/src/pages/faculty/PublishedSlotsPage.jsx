@@ -48,7 +48,7 @@ const PublishedSlotsPage = () => {
   return (
     <>
       <PageHead title="My consultation availability" subtitle="Create, review, edit, or remove the dates and times students can request." />
-      <AvailabilityTabs><Link className="btn primary" to="/faculty/availability/new">+ Add availability</Link></AvailabilityTabs>
+      <AvailabilityTabs><Link className="btn primary" to="/faculty/availability?add=1">+ Add availability</Link></AvailabilityTabs>
       <div className="filters">
         <Field name="date" label="Filter slots by date" type="date" value={filters.date} onChange={handleFilterChange} />
         <Field name="status" label="Filter slot status" as="select" value={filters.status} onChange={handleFilterChange}>

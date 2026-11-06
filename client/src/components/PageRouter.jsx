@@ -62,7 +62,7 @@ export default function PageRouter() {
         <Route path="consultations/:id/updated" element={<ConsultationUpdated />} />
         <Route path="availability" element={<Availability />} />
         <Route path="availability/slots" element={<PublishedSlots />} />
-        <Route path="availability/new" element={<SlotForm />} />
+        <Route path="availability/new" element={<Navigate to="/faculty/availability#add-slot" replace />} />
         <Route path="availability/:id/edit" element={<SlotForm />} />
         <Route path="availability/:id/remove" element={<RemoveSlot />} />
         <Route path="availability/saved" element={<AvailabilityOutcome />} />

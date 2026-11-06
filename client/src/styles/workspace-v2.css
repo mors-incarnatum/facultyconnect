@@ -214,11 +214,80 @@
 .schedule-day { display: grid; grid-template-columns: 84px 64px minmax(0, 1fr); align-items: start; gap: 8px; margin-bottom: 8px; }
 .schedule-day-label { align-self: start; display: flex; align-items: center; min-height: 48px; font-size: 13px; font-weight: 600; }
 .schedule-intervals { min-width: 0; display: grid; gap: 8px; }
-.schedule-interval { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)) 96px; gap: 8px; }
+.schedule-interval { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)) auto; gap: 8px; }
+.interval-actions { display: flex; gap: 6px; align-items: stretch; }
+.interval-actions .btn { padding: 8px 10px; font-size: 12px; white-space: nowrap; }
+.interval-actions .copy-btn { border-color: var(--line); }
+.interval-actions .copy-btn:hover { border-color: var(--green); color: var(--green); }
+.interval-actions .copy-btn.active { background: var(--green); color: var(--surface); border-color: var(--green); }
 .workspace-v2 .schedule-day .btn { padding: 8px; font-size: 12px; }
 .workspace-v2 .time-field { position: relative; margin: 0; gap: 0; }
 .workspace-v2 .time-field > span:first-child { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .workspace-v2 .time-field input, .workspace-v2 .time-field select { padding: 10px 8px; font-size: 12px; }
+.inline-copy-drawer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  margin-top: 4px;
+  font-size: 12px;
+}
+.inline-copy-drawer .copy-prompt {
+  font-weight: 600;
+  color: var(--ink);
+  font-size: 12px;
+}
+.inline-copy-drawer .copy-target-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.inline-copy-drawer .copy-target-pills label {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  height: 32px;
+  padding: 2px 8px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  font-size: 11px;
+  color: var(--ink);
+  background: var(--surface);
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.15s ease;
+}
+.inline-copy-drawer .copy-target-pills input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+.inline-copy-drawer .copy-target-pills label:has(:checked) {
+  background: var(--green);
+  color: var(--surface);
+  border-color: var(--green);
+}
+.inline-copy-drawer .copy-target-pills label:has(:focus-visible) {
+  outline: 2px solid var(--green);
+  outline-offset: 2px;
+}
+.inline-copy-drawer .copy-drawer-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+}
+.inline-copy-drawer .copy-drawer-actions .btn {
+  padding: 6px 10px;
+  font-size: 11px;
+}
 .schedule-copy { border: 0; padding: 0; margin: 16px 0; display: flex; flex-wrap: wrap; align-items: flex-end; gap: 12px; min-width: 0; }
 .workspace-v2 .schedule-copy > .field { width: 156px; margin: 0; }
 .copy-targets { display: grid; gap: 8px; }
@@ -241,7 +310,8 @@
 }
 @container (max-width: 360px) {
   .schedule-interval { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .schedule-interval > .btn { grid-column: 1 / -1; }
+  .schedule-interval > .btn, .schedule-interval > .interval-actions { grid-column: 1 / -1; }
+  .inline-copy-drawer .copy-drawer-actions { width: 100%; margin-left: 0; justify-content: flex-end; }
 }
 
 /* Native dialogs provide focus containment, Escape, and an inert background. */

@@ -30,7 +30,7 @@ We confirm that Generative AI was used strictly as an assistive tool during the 
 
 | Area | How AI Assisted | Human Work / Adjustments |
 | :--- | :--- | :--- |
-| **React Components & JSX** | Helped sort and structure the program's views into seperate components and folders with defined roles | Adjusted and gave it a reference to our preferred structure|
+| **HTML, CSS, JS & jQuery** | Helped convert the UI views and hash router into modular static ES modules with jQuery | Reviewed, adapted, and tested all routes and DOM interactions in the browser |
 | **Styling & Layout (CSS)** | Helped with the color values and certain design element per component | Checked it's output against our designs |
 | **Client Logic & Mock Data** | Structuring initial mock appointment records and date helper ideas | Verified edge cases |
 | **Debugging** | Explaining design alignment quirks and undefined behavior | Tested fixes directly in the browser |

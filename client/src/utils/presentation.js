@@ -1,6 +1,16 @@
-import { fmtShort } from './format.js';
-import { toIso } from './format.js';
+(function (FC) {
+  'use strict';
 
-export const modeLabel = (slot) => (slot.mode === "online" ? "Online" : "In person");
-export const todayLabel = (now) => `${fmtShort(toIso(now))}, ${now.getFullYear()} · ${now.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })} · Local time`;
-export const topicLine = (a) => (a.topic ? `${a.subject} · ${a.topic}` : "No topic added");
+  const { fmtShort, toIso } = FC;
+
+  const modeLabel = (slot) => (slot.mode === 'online' ? 'Online' : 'In person');
+  const todayLabel = (now) =>
+    `${fmtShort(toIso(now))}, ${now.getFullYear()} · ${now.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })} · Local time`;
+  const topicLine = (a) => (a.topic ? `${a.subject} · ${a.topic}` : 'No topic added');
+
+  Object.assign(FC, {
+    modeLabel,
+    todayLabel,
+    topicLine,
+  });
+})(globalThis.FC = globalThis.FC || {});

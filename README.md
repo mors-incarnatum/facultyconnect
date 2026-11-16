@@ -8,36 +8,22 @@
 ---
 ## Quick Start
 
-```sh
-npm install
-```
+No server, build step, or `npm install` is required. Open either HTML entry point directly in any web browser (`file://`):
 
-- **Frontend (Vite + React 19):** `http://localhost:3000`
+- **Root entry point:** `index.html` (automatically redirects to `./client/index.html` while preserving `#/...` hash routes)
+- **Main entry point:** `client/index.html` (loads all stylesheets, jQuery, and static JavaScript modules directly)
 
 ### Demo Accounts (Phase 1)
 
 - **Student:** `sample.alex.delacruz@dlsu.edu.ph` (any non-empty password)
 - **Faculty:** `sample.sofia.santos@dlsu.edu.ph` (any non-empty password)
 
-## Scripts
-
-- `npm run dev --workspace client`: Run `client` (`:3000`).
-- `npm run build`: Build the production React bundle in `client/dist/`.
-- `npm run preview --workspace client`: Preview the built client bundle.
-
 ## Packages Used
 
-### Frontend (`client/package.json`)
+### Frontend (`client/`)
 
-| Package | Version range | Purpose |
-|---|---|---|
-| `react` | `^19.3.1` | UI components, hooks, and application state |
-| `react-dom` | `^19.3.1` | Browser DOM rendering |
-| `react-router-dom` | `^7.1.1` | Client-side routing (`HashRouter`) across public, student, and faculty screens |
-
-### Development Tools
-
-| Package | Version range | Workspace | Purpose |
+| Package | Version | Location | Purpose |
 |---|---|---|---|
-| `vite` | `^8.3.5` | `client` | Frontend dev server, HMR, production build, and preview |
-| `@vitejs/plugin-react` | `^6.1.2` | `client` | React Fast Refresh and JSX compilation |
+| `jquery` | `3.7.1` | `client/public/vendor/jquery.min.js` | Bundled locally for DOM rendering, event handling, and UI updates over `file://` |
+
+*(No server, bundler, or npm runtime/dev packages are required.)*

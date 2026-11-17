@@ -154,11 +154,6 @@ button.cal-item.picked {
   color: var(--green);
 }
 
-
-/* ==========================================================================
-   Agenda View: Clean, sorted, grouped & responsive
-   ========================================================================== */
-
 .agenda-container {
   display: flex;
   flex-direction: column;
@@ -432,7 +427,6 @@ button.cal-item.picked {
   opacity: 0.85;
 }
 
-/* Faculty Grouping View */
 .agenda-grouped-card {
   background: #ffffff;
   border: 1px solid var(--line);
@@ -471,7 +465,6 @@ button.cal-item.picked {
   color: var(--ink);
 }
 
-/* Department Grouping View */
 .agenda-dept-section {
   margin-bottom: 24px;
 }
@@ -484,11 +477,6 @@ button.cal-item.picked {
   border-bottom: 2px solid var(--green-100);
   margin-bottom: 12px;
 }
-
-
-/* ==========================================================================
-   Zero-Scroll Day-by-Day Strip & Interactive Panels
-   ========================================================================== */
 
 .agenda-view-mode-bar {
   display: flex;
@@ -593,7 +581,6 @@ button.cal-item.picked {
   background: #ffffff;
 }
 
-/* Horizontal entity tabs (for Faculty & Department sorting) */
 .agenda-entity-strip {
   display: flex;
   gap: 8px;
@@ -643,7 +630,6 @@ button.cal-item.picked {
   color: #ffffff;
 }
 
-/* Day Stepper Control */
 .agenda-day-stepper {
   display: flex;
   justify-content: space-between;
@@ -696,7 +682,6 @@ button.cal-item.picked {
   margin: 0 0 12px;
 }
 
-/* Bounded scroll for All Days list mode (prevents page blowout) */
 .agenda-all-days-scroll {
   max-height: 460px;
   overflow-y: auto;

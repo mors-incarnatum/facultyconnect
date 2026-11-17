@@ -1,5 +1,7 @@
 import AppointmentOutcome from '../../components/AppointmentOutcome.jsx';
 
-const TopicDeletedPage = () => <AppointmentOutcome outcome="deleted" />;
+function TopicDeletedPage() {
+    return <AppointmentOutcome outcome="deleted" />;
+}
 
 export default TopicDeletedPage;

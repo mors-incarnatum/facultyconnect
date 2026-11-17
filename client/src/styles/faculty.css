@@ -73,7 +73,6 @@
   max-width: 760px;
 }
 
-/* Consultation discovery & scheduling editor */
 .demo-notice {
   margin-bottom: 16px;
   font-size: 14px;
@@ -164,7 +163,6 @@
   display: none;
 }
 
-/* Faculty Profile Character & Pictures styling */
 .profile-card {
   display: flex;
   flex-direction: column;

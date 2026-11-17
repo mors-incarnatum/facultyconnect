@@ -1,4 +1,7 @@
-import { useContext } from 'react';
-import { AppContext } from '../state/AppContext.js';
+import { createContext, useContext } from 'react';
 
-export const useApp = () => useContext(AppContext);
+export const AppContext = createContext(null);
+
+export function useApp() {
+    return useContext(AppContext);
+}

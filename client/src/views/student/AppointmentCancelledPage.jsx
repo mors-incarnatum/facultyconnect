@@ -1,5 +1,7 @@
 import AppointmentOutcome from '../../components/AppointmentOutcome.jsx';
 
-const AppointmentCancelledPage = () => <AppointmentOutcome outcome="cancelled" />;
+function AppointmentCancelledPage() {
+    return <AppointmentOutcome outcome="cancelled" />;
+}
 
 export default AppointmentCancelledPage;

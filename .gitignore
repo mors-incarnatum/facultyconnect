@@ -1,6 +1,7 @@
 node_modules/
 .vite/
 dist/
+dist-static/
 .env
 .env.*
 !.env.example
@@ -9,4 +10,5 @@ dist/
 /client/tests
 /client/verification
 
-
+AGENTS.md
+implementation_plan.md

@@ -1,0 +1,177 @@
+{{!--
+    Find faculty. Used by two routes:
+      GET /student/faculty           list view      (isList)
+      GET /student/faculty/calendar  calendar view  (isCalendar)
+    The search and the filters are a GET form, so q, dept, faculty and slot all live in the URL.
+    Context: q, dept, total, results, selected, selectedSlots, selectedSlot, upNext, searchQuery, returnTo (and `week` in calendar view).
+--}}
+<div class="page-head">
+    <h1>Find your academic guide</h1>
+    <p>{{#if isList}}Compare faculty, then choose a consultation time that works for you.{{else}}Explore available times while keeping faculty details close at hand.{{/if}}</p>
+</div>
+
+<details class="faculty-search-options {{#if isList}}list-search-options{{/if}}" {{#if isList}}open{{/if}}>
+    <summary>Search and filter faculty</summary>
+    <form class="search-bar" method="get" action="{{#if isCalendar}}/student/faculty/calendar{{else}}/student/faculty{{/if}}" role="search">
+        <label class="field">
+            <span>Search faculty</span>
+            <input type="text" name="q" value="{{q}}" placeholder="Search by name, department, or subject">
+        </label>
+        <label class="field">
+            <span>Department</span>
+            <select name="dept">
+                <option value="">All departments</option>
+                {{#each departments}}
+                <option value="{{this}}"{{{selected ../dept this}}}>{{this}}</option>
+                {{/each}}
+            </select>
+        </label>
+        <button class="btn primary" type="submit">Search</button>
+    </form>
+</details>
+
+{{#if isList}}
+<div class="toolbar">
+    <strong class="muted small">{{total}} faculty · {{#if dept}}{{dept}}{{else}}All departments{{/if}}{{#if q}} · “{{q}}”{{/if}}</strong>
+    <div class="toggle auto" role="group" aria-label="View">
+        <a href="/student/faculty{{#if searchQuery}}?{{searchQuery}}{{/if}}" aria-current="true">List</a>
+        <a href="/student/faculty/calendar{{#if searchQuery}}?{{searchQuery}}{{/if}}" aria-current="false">Calendar</a>
+    </div>
+</div>
+{{/if}}
+
+<div class="two-col {{#if isList}}faculty-directory{{else}}calendar-directory{{/if}}">
+    <div>
+        {{#unless results.length}}
+        <div class="card empty">
+            <h3>No faculty match your search</h3>
+            <p class="muted">Try a different name, subject, or department.</p>
+            <div class="btn-row" style="justify-content: center">
+                <a class="btn" href="{{#if isCalendar}}/student/faculty/calendar{{else}}/student/faculty{{/if}}">Clear search</a>
+            </div>
+        </div>
+        {{else}}
+        {{#if isList}}
+        <div class="list-head">
+            <span>Faculty</span>
+            <span>Next available</span>
+        </div>
+        {{#each results}}
+        <a class="row {{#if (eq id ../selected.id)}}selected{{/if}}" href="/student/faculty?{{#if ../searchQuery}}{{../searchQuery}}&{{/if}}faculty={{id}}" {{#if (eq id ../selected.id)}}aria-current="true"{{/if}}>
+            <span class="who">
+                {{> avatar person=this}}
+                <span style="min-width: 0">
+                    <strong>{{name}}{{#if pronouns}}<span class="profile-pronouns" style="margin-left: 6px">{{pronouns}}</span>{{/if}}</strong>
+                    <span class="muted small">{{department}}</span>
+                    {{#if specialties.length}}
+                    <span class="muted small" style="display: block; font-size: 11px; opacity: 0.85; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{join (take specialties 2) " · "}}</span>
+                    {{/if}}
+                </span>
+            </span>
+            <span class="when">
+                {{#if nextSlot}}
+                <strong>{{fmtShort nextSlot.date}} · {{fmtTime nextSlot.start}}</strong>
+                <span class="muted small">{{#if (eq nextSlot.mode "online")}}Online consultation{{else}}{{nextSlot.location}}{{/if}}</span>
+                {{else}}
+                <span class="muted small">No open times</span>
+                {{/if}}
+            </span>
+        </a>
+        {{/each}}
+        <div class="notice" style="margin-top: 4px">
+            Choose a faculty member to see their consultation details.
+            <div class="muted small" style="margin-top: 8px">Slots are checked again when you submit.</div>
+        </div>
+        {{else}}
+        {{!-- BATCH 2C: replace this placeholder with the week calendar partial.
+              The controller already passes `week` (see viewdata.buildWeek) for it. --}}
+        <div class="card availability-calendar">
+            <div class="toolbar">
+                <strong>{{week.weekLabel}}</strong>
+                <div class="toggle auto" role="group" aria-label="View">
+                    <a href="/student/faculty{{#if searchQuery}}?{{searchQuery}}{{/if}}" aria-current="false">List</a>
+                    <a href="/student/faculty/calendar{{#if searchQuery}}?{{searchQuery}}{{/if}}" aria-current="true">Calendar</a>
+                </div>
+            </div>
+            <div class="notice">The week grid is added in the next batch. Until then, pick a time from "Coming up" below.</div>
+        </div>
+        <details class="calendar-coming-up" open>
+            <summary>Coming up</summary>
+            <div class="next-week">
+                {{#each upNext}}
+                <a class="link-btn" href="/student/faculty/calendar?{{#if ../searchQuery}}{{../searchQuery}}&{{/if}}faculty={{faculty.id}}&slot={{id}}">{{faculty.name}} · {{fmtShort date}} · {{fmtTime start}}</a>
+                {{else}}
+                <span class="muted">No open times for this search.</span>
+                {{/each}}
+            </div>
+        </details>
+        {{/if}}
+        {{/unless}}
+    </div>
+
+    {{#if selected}}
+    {{#if isCalendar}}
+    <aside class="selected-slot-summary" aria-label="Selected consultation time">
+        <div>
+            <strong>{{selected.name}}{{#if selectedSlot}} · {{fmtShort selectedSlot.date}} · {{fmtRange selectedSlot.start selectedSlot.end}}{{/if}}</strong>
+            <p>{{#if selectedSlot}}{{modeLabel selectedSlot}} · {{selectedSlot.location}}{{else}}No open consultation times at the moment.{{/if}}</p>
+        </div>
+        {{#if selectedSlot}}
+        <a class="btn primary" aria-label="Request consultation →" href="/student/request?slot={{selectedSlot.id}}&back={{encode returnTo}}">Continue →</a>
+        {{/if}}
+    </aside>
+    {{else}}
+    <aside class="card preview" aria-label="Faculty profile">
+        <div class="eyebrow">Faculty profile</div>
+        <div class="head">
+            {{> avatar person=selected size="lg"}}
+            <div>
+                <h3>{{selected.name}}{{#if selected.pronouns}}<span class="profile-pronouns" style="margin-left: 6px; font-size: 11px">{{selected.pronouns}}</span>{{/if}}</h3>
+                <div class="muted small">{{selected.rank}}</div>
+                <strong>{{selected.department}}</strong>
+            </div>
+        </div>
+        {{#if selected.motto}}
+        <p class="profile-quote" style="font-size: 12px; padding: 8px 12px; margin: 10px 0">“{{selected.motto}}”</p>
+        {{/if}}
+        <p class="muted" style="margin: 8px 0">{{join selected.subjects " · "}}<br>{{join selected.courses " and "}}</p>
+        {{#if selected.specialties.length}}
+        <div class="profile-tags" style="margin-bottom: 10px">
+            {{#each (take selected.specialties 3)}}
+            <span class="profile-tag highlight" style="font-size: 11px; padding: 2px 8px">{{this}}</span>
+            {{/each}}
+        </div>
+        {{/if}}
+        {{#if selected.consultationTip}}
+        <div class="profile-tip" style="padding: 8px 10px; font-size: 12px; margin-bottom: 12px">
+            <span class="profile-tip-icon" style="font-size: 13px" aria-hidden="true">💡</span>
+            <div><strong>Tip:</strong> {{selected.consultationTip}}</div>
+        </div>
+        {{/if}}
+        <hr class="divider">
+        {{#if selectedSlot}}
+        <span class="badge">Available</span>
+        <div class="when-big">{{fmtLong selectedSlot.date}}</div>
+        <div class="time-big">{{fmtRange selectedSlot.start selectedSlot.end}}</div>
+        <p class="muted" style="margin-bottom: 16px">{{modeLabel selectedSlot}} · 30 minutes<br>{{selectedSlot.location}}</p>
+        <a class="btn primary block" href="/student/request?slot={{selectedSlot.id}}&back={{encode returnTo}}">Request consultation →</a>
+        <div style="margin-top: 18px">
+            <strong>Other available times</strong>
+            <ul>
+                {{#each (otherSlots selectedSlots selectedSlot.id 4)}}
+                <li><a href="/student/faculty?{{#if ../searchQuery}}{{../searchQuery}}&{{/if}}faculty={{facultyId}}&slot={{id}}">{{fmtShort date}} · {{fmtRange start end}}</a></li>
+                {{else}}
+                <li class="muted small">No other times right now.</li>
+                {{/each}}
+            </ul>
+        </div>
+        {{else}}
+        <div class="notice warn">No open consultation times at the moment.</div>
+        {{/if}}
+        <hr class="divider">
+        <p class="muted small">Pending requests reserve the selected slot until the faculty responds.</p>
+        <p style="margin-top: 10px"><a href="/student/faculty/{{selected.id}}?back={{encode returnTo}}">View full profile →</a></p>
+    </aside>
+    {{/if}}
+    {{/if}}
+</div>

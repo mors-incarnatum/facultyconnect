@@ -66,3 +66,24 @@ form.inline {
 
 /* The sidebar menu button only matters on small screens and needs JavaScript. */
 .js-off .mobile-bar .btn { display: none; }
+
+/* Find faculty: rows, view switch and "other times" are links instead of buttons. */
+a.row {
+  text-decoration: none;
+}
+.toggle.auto a {
+  flex: none;
+  padding: 12px 28px;
+}
+.workspace-v2 .toggle a {
+  min-width: 80px;
+  min-height: 48px;
+  white-space: nowrap;
+}
+.preview li a {
+  color: var(--green);
+  font-size: 12px;
+}
+.next-week a {
+  margin-right: 16px;
+}

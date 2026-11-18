@@ -1,0 +1,111 @@
+{{!--
+    GET /student/faculty/:id
+    Context: faculty, slots (open slots, soonest first), backTo, backQuery (this page's URL, encoded).
+    When the id does not exist the controller sends notFound = true with a 404 status.
+--}}
+{{#if notFound}}
+<div class="page-head">
+    <h1>Faculty member not found</h1>
+</div>
+<a class="btn" href="/student/faculty">← Back to faculty</a>
+{{else}}
+<div class="page-head">
+    <h1>{{faculty.name}}</h1>
+    <p>{{faculty.rank}} · {{faculty.department}}</p>
+</div>
+<p style="margin-bottom: 16px"><a href="{{backTo}}">← Back to faculty</a></p>
+
+<div class="two-col">
+    <div class="card profile-card">
+        <div class="profile-header">
+            {{> avatar person=faculty size="xl"}}
+            <div class="profile-header-info">
+                <h2 class="profile-name">{{faculty.name}}{{#if faculty.pronouns}}<span class="profile-pronouns">{{faculty.pronouns}}</span>{{/if}}</h2>
+                <div class="profile-rank">{{faculty.rank}}</div>
+                <div class="profile-dept">{{faculty.department}} · {{faculty.email}}</div>
+                <div class="muted small">Office: {{faculty.office}}</div>
+            </div>
+        </div>
+
+        {{#if faculty.motto}}
+        <blockquote class="profile-quote">“{{faculty.motto}}”</blockquote>
+        {{/if}}
+
+        <div>
+            <h3 class="profile-section-title">About</h3>
+            <p style="line-height: 1.6; margin: 0">{{faculty.bio}}</p>
+        </div>
+
+        {{#if faculty.specialties.length}}
+        <div>
+            <h3 class="profile-section-title">Specialties &amp; Research Interests</h3>
+            <div class="profile-tags">
+                {{#each faculty.specialties}}<span class="profile-tag highlight">{{this}}</span>{{/each}}
+            </div>
+        </div>
+        {{/if}}
+
+        {{#if faculty.consultationTip}}
+        <div class="profile-tip">
+            <span class="profile-tip-icon" aria-hidden="true">💡</span>
+            <div>
+                <strong>How to prepare for our consultation:</strong>
+                <div>{{faculty.consultationTip}}</div>
+            </div>
+        </div>
+        {{/if}}
+
+        {{#if faculty.consultationStyle}}
+        <div>
+            <h3 class="profile-section-title">Consultation Style</h3>
+            <p class="muted" style="margin: 0; font-size: 14px">{{faculty.consultationStyle}}</p>
+        </div>
+        {{/if}}
+
+        {{#if faculty.officeHoursVibe}}
+        <div>
+            <h3 class="profile-section-title">Office &amp; Meeting Vibe</h3>
+            <p class="muted" style="margin: 0; font-size: 14px">{{faculty.officeHoursVibe}}</p>
+        </div>
+        {{/if}}
+
+        <hr class="divider" style="margin: 4px 0">
+
+        <dl class="kv">
+            {{#if faculty.education}}
+            <dt>Education</dt>
+            <dd>{{faculty.education}}</dd>
+            {{/if}}
+            <dt>Department</dt>
+            <dd>{{faculty.department}}</dd>
+            <dt>Subjects</dt>
+            <dd>{{#if faculty.subjects.length}}{{join faculty.subjects ", "}}{{else}}—{{/if}}</dd>
+            <dt>Courses</dt>
+            <dd>
+                {{#if faculty.courses.length}}
+                <div class="profile-tags" style="margin-top: 2px">
+                    {{#each faculty.courses}}<span class="profile-tag">{{this}}</span>{{/each}}
+                </div>
+                {{else}}—{{/if}}
+            </dd>
+            <dt>Office</dt>
+            <dd>{{faculty.office}}</dd>
+        </dl>
+    </div>
+
+    <div class="card">
+        <h2 style="font-size: 22px; margin-bottom: 12px">Available times</h2>
+        {{#each slots}}
+        <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 12px 0; border-top: 1px solid var(--line)">
+            <div>
+                <strong>{{fmtLong date}}</strong>
+                <div class="muted small">{{fmtRange start end}} · {{modeLabel this}}</div>
+            </div>
+            <a class="btn sm" href="/student/request?slot={{id}}&back={{../backQuery}}">Request</a>
+        </div>
+        {{else}}
+        <p class="muted">No open consultation times right now.</p>
+        {{/each}}
+    </div>
+</div>
+{{/if}}

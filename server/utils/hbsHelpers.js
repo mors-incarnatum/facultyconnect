@@ -43,6 +43,28 @@ const helpers = {
         return typeof text === 'string' && typeof prefix === 'string' && text.indexOf(prefix) === 0;
     },
 
+    // {{encode value}} -> value safe to place inside a URL query string
+    encode: function (value) {
+        return encodeURIComponent(String(value == null ? '' : value));
+    },
+
+    // {{#each (take list 3)}} -> the first 3 items of a list
+    take: function (list, count) {
+        return Array.isArray(list) ? list.slice(0, Number(count)) : [];
+    },
+
+    // {{#each (otherSlots slots selectedId 4)}} -> up to 4 slots other than the selected one
+    otherSlots: function (slots, selectedId, count) {
+        if (!Array.isArray(slots)) {
+            return [];
+        }
+        return slots
+            .filter(function (slot) {
+                return slot.id !== selectedId;
+            })
+            .slice(0, Number(count));
+    },
+
     join: function (list, separator) {
         if (!Array.isArray(list)) {
             return '';

@@ -1,0 +1,36 @@
+{{!--
+    Shared body of the three student result pages (topic updated, topic deleted, appointment cancelled).
+    Called from student/topic-updated.hbs, student/topic-deleted.hbs and student/appointment-cancelled.hbs with:
+      outcome  "updated" | "deleted" | "cancelled"
+      heading  page heading
+      subtitle line under the heading
+    The controller supplies `appointment` (own appointment with slot and faculty).
+--}}
+<div class="page-head">
+    <h1>{{heading}}</h1>
+    <p>{{subtitle}}</p>
+</div>
+<div class="card">
+    {{> badge status=appointment.status}}
+    <h2 style="font-size: 26px; margin: 14px 0">
+        {{appointment.faculty.name}} · {{fmtLong appointment.slot.date}} · {{fmtRange appointment.slot.start appointment.slot.end}}
+    </h2>
+    {{#if (eq outcome "updated")}}
+    <strong>{{appointment.topicLine}}</strong>
+    {{#if appointment.description}}<p class="muted" style="margin-top: 10px">{{appointment.description}}</p>{{/if}}
+    {{else if (eq outcome "deleted")}}
+    <p class="muted">No topic added. You can add one again at any time before the consultation.</p>
+    {{else}}
+    <p class="muted">Need another time? Browse open consultation slots.</p>
+    {{/if}}
+    <div class="btn-row">
+        <a class="btn primary" href="/student/appointments?id={{appointment.id}}">{{#if (eq outcome "cancelled")}}View the cancelled record{{else}}Back to my appointments{{/if}}</a>
+        {{#if (eq outcome "deleted")}}
+        <a class="btn" href="/student/appointments/{{appointment.id}}/edit-topic">Add a topic</a>
+        {{/if}}
+        {{#if (eq outcome "cancelled")}}
+        <a class="btn" href="/student">Back to overview</a>
+        <a class="btn" href="/student/faculty">Find faculty</a>
+        {{/if}}
+    </div>
+</div>

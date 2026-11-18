@@ -1,0 +1,29 @@
+{{!--
+    GET /student/appointments/:id/delete-topic  (confirmation page)
+    POST /student/appointments/:id/delete-topic (removes the topic and description, then redirects to topic-deleted)
+    Context: appointment, editable, error.
+--}}
+<div class="page-head">
+    <h1>Delete this consultation topic?</h1>
+    <p>Your appointment will remain scheduled.</p>
+</div>
+<div class="card">
+    {{#if error}}<p class="form-error" role="alert">{{error}}</p>{{/if}}
+    {{#if appointment.topic}}
+    {{#if editable}}
+    <h2 style="font-size: 26px; margin-bottom: 10px">{{appointment.topicLine}}</h2>
+    <p class="muted" style="margin-bottom: 14px">{{appointment.description}}</p>
+    <p>Deleting removes the consultation topic and description. It does not cancel your appointment.</p>
+    <form class="btn-row" method="post" action="/student/appointments/{{appointment.id}}/delete-topic">
+        <button class="btn primary" type="submit">Delete topic</button>
+        <a class="btn" href="/student/appointments?id={{appointment.id}}">Keep topic</a>
+    </form>
+    {{else}}
+    <p>Topics can only be deleted before a pending or confirmed consultation starts.</p>
+    <div class="btn-row"><a class="btn" href="/student/appointments?id={{appointment.id}}">Back</a></div>
+    {{/if}}
+    {{else}}
+    <p>This appointment has no topic to delete.</p>
+    <div class="btn-row"><a class="btn" href="/student/appointments?id={{appointment.id}}">Back</a></div>
+    {{/if}}
+</div>

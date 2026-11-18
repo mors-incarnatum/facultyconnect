@@ -1,0 +1,71 @@
+{{!--
+    GET /student/appointments?status=&id=
+    Context: filters [{value, label, count, active}], list (each has `selected`), selected, status, autoDeclinedMessage.
+    The status filters and the rows are links, so the URL holds the filter and the chosen appointment.
+--}}
+<div class="page-head">
+    <h1>My appointments</h1>
+    <p>Review your current consultations and previous appointment records.</p>
+</div>
+
+<nav class="filters" role="group" aria-label="Appointment status">
+    {{#each filters}}
+    <a href="{{url "/student/appointments" "" "status" value}}" aria-current="{{#if active}}true{{else}}false{{/if}}">{{label}} ({{count}})</a>
+    {{/each}}
+</nav>
+
+<div class="two-col appointments-workspace">
+    <div id="appointment-list">
+        {{#each list}}
+        <a class="appt-row {{#if selected}}selected{{/if}}" href="{{url "/student/appointments" "" "status" ../status "id" id}}" {{#if selected}}aria-current="true"{{/if}}>
+            <span style="display: flex; gap: 12px; align-items: center; min-width: 0">
+                {{> avatar person=faculty size="sm"}}
+                <span style="min-width: 0">
+                    <strong>{{faculty.name}}</strong>
+                    <span class="meta">{{fmtMonthDay slot.date}} · {{fmtRange slot.start slot.end}} · {{subject}}</span>
+                </span>
+            </span>
+            <span>{{> badge status=status}}</span>
+        </a>
+        {{else}}
+        <div class="card empty">
+            <h3>No appointments here</h3>
+            <p class="muted">Try a different filter, or <a href="/student/faculty">find a faculty member</a>.</p>
+        </div>
+        {{/each}}
+    </div>
+
+    {{#if selected}}
+    <aside class="card detail" aria-label="Appointment details" id="appointment-details">
+        {{> badge status=selected.status}}
+        <div class="appointment-faculty">
+            {{> avatar person=selected.faculty size="lg"}}
+            <div>
+                <h3>{{selected.faculty.name}}{{#if selected.faculty.pronouns}}<span class="profile-pronouns" style="margin-left: 6px; font-size: 11px">{{selected.faculty.pronouns}}</span>{{/if}}</h3>
+                <div class="muted small">{{selected.faculty.rank}} · {{selected.faculty.department}}</div>
+                <div class="muted small">{{selected.faculty.office}}</div>
+            </div>
+        </div>
+        <a class="link-btn mobile-details-back" href="#appointment-list">← Back to appointment list</a>
+        <div class="day">{{fmtLong selected.slot.date}}</div>
+        <div class="time">{{fmtTime selected.slot.start}}–{{fmtTime selected.slot.end}}</div>
+        <p class="muted">{{#if (eq selected.slot.mode "online")}}{{#if selected.slot.location}}{{selected.slot.location}}{{else}}{{selected.modeLabel}}{{/if}}{{else}}{{selected.modeLabel}} · {{selected.slot.location}}{{/if}}</p>
+        {{> appointment-guidance status=selected.status autoDeclined=selected.autoDeclined deadline=selected.deadline}}
+        <hr class="divider">
+        <strong>{{selected.subject}}{{#if selected.topic}} · {{selected.topic}}{{/if}}</strong>
+        <p class="muted" style="margin-top: 8px">{{#if selected.topic}}{{selected.description}}{{else}}No topic added.{{/if}}</p>
+        {{#if selected.canManage}}
+        <div class="actions">
+            <a class="btn block" href="/student/appointments/{{selected.id}}/edit-topic">{{#if selected.topic}}Edit Topic{{else}}Add a topic{{/if}}</a>
+            <a class="link-btn danger" href="/student/appointments/{{selected.id}}/cancel">Cancel Appointment</a>
+            <p class="muted small" style="text-align: center">Manage your consultation topic before the meeting.</p>
+            {{#if selected.topic}}
+            <a style="text-align: center" href="/student/appointments/{{selected.id}}/delete-topic">Delete topic</a>
+            {{/if}}
+        </div>
+        {{else}}
+        <p class="muted small" style="margin-top: 16px">Editing is closed for this appointment.</p>
+        {{/if}}
+    </aside>
+    {{/if}}
+</div>

@@ -1,0 +1,26 @@
+{{!--
+    GET /student/appointments/:id/cancel  (confirmation page)
+    POST /student/appointments/:id/cancel (sets the status to cancelled, then redirects to cancelled)
+    Context: appointment, editable, error.
+--}}
+<div class="page-head">
+    <h1>Cancel this appointment?</h1>
+    <p>The time slot will become available to other students.</p>
+</div>
+<div class="card">
+    {{#if error}}<p class="form-error" role="alert">{{error}}</p>{{/if}}
+    {{> badge status=appointment.status}}
+    <h2 style="font-size: 26px; margin: 14px 0 6px">{{appointment.faculty.name}}</h2>
+    <p style="font-weight: 600">{{fmtLong appointment.slot.date}} · {{fmtRange appointment.slot.start appointment.slot.end}}</p>
+    <p class="muted" style="margin: 6px 0 18px">{{appointment.topicLine}}</p>
+    {{#if editable}}
+    <div class="notice warn">Cancelling lets {{appointment.faculty.name}} know you can no longer attend. You can request another time afterwards.</div>
+    <form class="btn-row" method="post" action="/student/appointments/{{appointment.id}}/cancel">
+        <button class="btn danger" type="submit">Confirm cancellation</button>
+        <a class="btn" href="/student/appointments?id={{appointment.id}}">Keep appointment</a>
+    </form>
+    {{else}}
+    <p>This appointment can no longer be cancelled. Cancellation is available before an active consultation starts.</p>
+    <div class="btn-row"><a class="btn" href="/student/appointments?id={{appointment.id}}">Back</a></div>
+    {{/if}}
+</div>

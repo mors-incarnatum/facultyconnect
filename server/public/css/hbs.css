@@ -172,3 +172,31 @@ a.cal-item {
 .overview-calendar .calendar-day {
   padding: 10px;
 }
+
+/* My appointments: status filters and appointment rows are links instead of buttons. */
+.filters a {
+  display: inline-flex;
+  align-items: center;
+  padding: 12px 24px;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--green);
+  font-weight: 600;
+  font-size: 13px;
+  min-height: 48px;
+  text-decoration: none;
+}
+.filters a[aria-current="true"] {
+  background: var(--green-100);
+  color: var(--green);
+}
+a.appt-row {
+  text-decoration: none;
+}
+.detail .actions a.btn,
+.detail .actions a.link-btn {
+  display: block;
+  text-align: center;
+  text-decoration: none;
+}

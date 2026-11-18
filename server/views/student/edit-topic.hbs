@@ -1,0 +1,41 @@
+{{!--
+    GET /student/appointments/:id/edit-topic
+    POST /student/appointments/:id/edit-topic   (re-renders here with `error`, or redirects to topic-updated)
+    Context: appointment, editable, values {subject, topic, description}, error.
+--}}
+<div class="page-head">
+    <h1>Edit consultation topic</h1>
+    <p>Update what you would like to discuss before the consultation.</p>
+</div>
+{{#unless editable}}
+<div class="card">
+    <div class="notice warn">{{#if error}}{{error}}{{else}}Topics can only be changed before a pending or confirmed consultation starts.{{/if}}</div>
+    <div class="btn-row">
+        <a class="btn" href="/student/appointments?id={{appointment.id}}">Back</a>
+    </div>
+</div>
+{{else}}
+<form class="card" method="post" action="/student/appointments/{{appointment.id}}/edit-topic">
+    <h2 style="font-size: 26px; margin-bottom: 16px">{{appointment.faculty.name}} · {{fmtLong appointment.slot.date}} · {{fmtRange appointment.slot.start appointment.slot.end}}</h2>
+    {{#if error}}<div class="form-error" role="alert">{{error}}</div>{{/if}}
+    <label class="field">
+        <span>Subject / course</span>
+        <input type="text" name="subject" value="{{values.subject}}" required>
+    </label>
+    <label class="field">
+        <span>Consultation topic</span>
+        <input type="text" name="topic" value="{{values.topic}}" required>
+    </label>
+    <label class="field">
+        <span>Description</span>
+        <textarea name="description">{{values.description}}</textarea>
+    </label>
+    <div class="btn-row" style="margin-top: 0">
+        <button class="btn primary" type="submit">Save topic changes</button>
+        <a class="btn" href="/student/appointments?id={{appointment.id}}">Cancel</a>
+        {{#if appointment.topic}}
+        <a class="btn" style="border: 0" href="/student/appointments/{{appointment.id}}/delete-topic">Delete topic</a>
+        {{/if}}
+    </div>
+</form>
+{{/unless}}

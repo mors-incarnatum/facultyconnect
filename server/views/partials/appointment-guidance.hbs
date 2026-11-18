@@ -1,0 +1,12 @@
+{{!--
+    One-line explanation of an appointment's status. Call with:
+      {{> appointment-guidance status=selected.status autoDeclined=selected.autoDeclined deadline=selected.deadline autoDeclinedMessage=autoDeclinedMessage}}
+--}}
+<p class="notice appointment-guidance">
+    {{#if (eq status "pending")}}Awaiting faculty approval. This time is reserved, but the meeting is not confirmed yet.{{#if deadline}} Faculty must accept by {{deadline}} (24 hours before the consultation), or the request is automatically declined.{{/if}}
+    {{else if (eq status "confirmed")}}Your consultation is confirmed. Review the topic and meeting details before attending.
+    {{else if (eq status "completed")}}This consultation is complete. The details remain available in your appointment history.
+    {{else if (eq status "declined")}}{{#if autoDeclined}}{{autoDeclinedMessage}}{{else}}This request was declined. You can choose another available time or faculty member.{{/if}}
+    {{else if (eq status "cancelled")}}This appointment was cancelled. You can request a new consultation when you are ready.
+    {{/if}}
+</p>

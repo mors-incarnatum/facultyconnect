@@ -43,11 +43,6 @@
     </section>
     <section>
         <h2 class="section-title">Your week at a glance</h2>
-        {{!-- BATCH 2C: replace this placeholder card with the week calendar partial.
-              The controller already passes `week` (see viewdata.buildWeek) for it. --}}
-        <div class="card overview-calendar">
-            <div class="notice">The week calendar for {{week.weekLabel}} is added in a later batch. Until then, use Find faculty to see open times.</div>
-            <a class="btn" href="/student/faculty">Find faculty →</a>
-        </div>
+        {{> week-calendar className="overview-calendar" path="/student" slotPath="/student/faculty/calendar"}}
     </section>
 </div>

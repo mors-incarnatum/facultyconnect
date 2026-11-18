@@ -87,3 +87,88 @@ a.row {
 .next-week a {
   margin-right: 16px;
 }
+
+/* Week calendar: links instead of buttons, and hidden items stay hidden. */
+.week-nav a {
+  color: var(--green);
+  font-weight: 600;
+  font-size: 13px;
+  padding: 6px 8px;
+  border-radius: 6px;
+  text-decoration: none;
+}
+.week-nav a:hover {
+  background: var(--green-100);
+}
+.overview-calendar .week-nav a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 48px;
+  height: 48px;
+  padding: 12px 20px;
+  border-radius: 8px;
+}
+.overview-calendar .week-nav a[aria-label] {
+  width: 48px;
+  padding: 12px;
+}
+a.cal-item {
+  text-decoration: none;
+}
+.workspace-v2 a.cal-item {
+  min-height: 48px;
+  height: auto;
+  padding: 12px 8px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  text-align: center;
+}
+.workspace-v2 a.cal-item:hover {
+  box-shadow: inset 0 0 0 1.5px var(--green);
+}
+.workspace-v2 a.cal-item.picked {
+  background: var(--green);
+  color: var(--surface);
+  box-shadow: none;
+  border-color: var(--green);
+}
+.workspace-v2 a.cal-item.own {
+  background: var(--grey-bg);
+}
+.workspace-v2 a.cal-item.own.pending {
+  background: var(--amber-bg);
+  color: var(--amber);
+}
+.cal-item .slot-faculty-count {
+  display: block;
+  font-size: 11px;
+  opacity: 0.85;
+}
+.calendar-faculty-filter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.calendar-faculty-filter select {
+  padding: 5px 8px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #fff;
+  font-size: 12px;
+}
+.weekend-toggle {
+  display: inline-block;
+}
+#week-calendar [hidden] {
+  display: none !important;
+}
+
+/* The overview card is narrow, so keep five weekday columns on one row. */
+.overview-calendar .calendar-days {
+  grid-template-columns: repeat(auto-fit, minmax(84px, 1fr));
+  gap: 10px;
+}
+.overview-calendar .calendar-day {
+  padding: 10px;
+}

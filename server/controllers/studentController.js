@@ -101,7 +101,7 @@ const studentController = {
                 upcoming: upcoming,
                 week: viewdata.buildWeek({
                     weekStart: weekStart,
-                    includeWeekend: false,
+                    includeWeekend: http.str(req.query.weekend) === '1',
                     today: today,
                     available: available,
                     mine: records

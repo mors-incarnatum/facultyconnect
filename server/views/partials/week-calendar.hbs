@@ -1,0 +1,89 @@
+{{!--
+    Week calendar (server-rendered). Parameters:
+      week           from viewdata.buildWeek: weekStart, weekLabel, prevWeek, nextWeek, thisWeek, includeWeekend, days[]
+                     each day has: date, isToday, available[] (open slots with faculty), mine[] (the student's own appointments)
+      path           page the week buttons point back to       e.g. "/student/faculty/calendar"
+      slotPath       page a chosen slot opens                  e.g. "/student/faculty/calendar"
+      searchQuery    current search (q, dept) so it is kept in every link
+      selectedSlotId slot to highlight (optional)
+      className      extra class on the card
+      showViewToggle "true" shows the List / Calendar switch (Find faculty page only)
+    Week navigation, the weekend switch and picking a slot are plain links, so the URL holds the state.
+    public/js/calendar.js adds the morning / afternoon and faculty filters on top.
+--}}
+<div class="card week {{className}}" id="week-calendar">
+    {{#if showViewToggle}}
+    <div class="toolbar">
+        <div class="calendar-view-controls">
+            <div class="toggle auto" role="group" aria-label="View">
+                <a href="{{url "/student/faculty" searchQuery}}" aria-current="false">List</a>
+                <a href="{{url "/student/faculty/calendar" searchQuery}}" aria-current="true">Calendar</a>
+            </div>
+        </div>
+    </div>
+    {{/if}}
+
+    <div class="week-head">
+        <h3>{{week.weekLabel}}</h3>
+        <div class="week-nav">
+            <a href="{{url path searchQuery "week" week.prevWeek "weekend" week.includeWeekend}}" aria-label="Previous week">‹</a>
+            <a href="{{url path searchQuery "weekend" week.includeWeekend}}">This week</a>
+            <a href="{{url path searchQuery "week" week.nextWeek "weekend" week.includeWeekend}}" aria-label="Next week">›</a>
+        </div>
+    </div>
+
+    <div class="week-period" id="week-filters" hidden>
+        <span id="period-label"></span>
+        <div class="period-toggle" id="period-toggle"></div>
+        <label class="calendar-faculty-filter" id="calendar-faculty-label">
+            <span class="muted small">Faculty</span>
+            <select id="calendar-faculty">
+                <option value="">All faculty</option>
+                {{#each (calFaculty week)}}
+                <option value="{{id}}">{{name}}</option>
+                {{/each}}
+            </select>
+        </label>
+    </div>
+    <p class="notice" id="calendar-notice" role="status" hidden></p>
+
+    <div class="cal-scroll">
+        <div class="calendar-days {{#if week.includeWeekend}}full-week{{/if}}" role="group" aria-label="Weekly availability">
+            {{#each week.days}}
+            <section class="calendar-day" aria-label="{{fmtDayHeader date}}">
+                <h4 class="calendar-day-heading {{#if isToday}}today{{/if}}">{{fmtDayHeader date}}</h4>
+                {{#each mine}}{{#if isActive}}
+                <div class="calendar-slot" data-period="{{period slot.start}}">
+                    <a class="cal-item own {{status}}" href="/student/appointments?id={{id}}">
+                        {{shortName faculty.name}}<br>{{fmtTime slot.start}} · {{#if (eq status "confirmed")}}Confirmed{{else}}Pending{{/if}}
+                    </a>
+                </div>
+                {{/if}}{{/each}}
+                {{#each available}}
+                <div class="calendar-slot" data-period="{{period start}}" data-faculty="{{facultyId}}">
+                    <a class="cal-item {{#if (eq id ../../selectedSlotId)}}picked{{/if}}"
+                       href="{{url ../../slotPath ../../searchQuery "faculty" facultyId "slot" id "week" ../../week.weekStart "weekend" ../../week.includeWeekend}}"
+                       {{#if (eq id ../../selectedSlotId)}}aria-current="true"{{/if}}
+                       aria-label="{{faculty.name}}, {{fmtLong date}}, {{fmtRange start end}}">
+                        {{#if (eq id ../../selectedSlotId)}}<span aria-hidden="true">✓ </span>{{/if}}{{fmtRange start end}}
+                        <span class="slot-faculty-count">{{shortName faculty.name}}{{#if (eq mode "online")}} · Online{{/if}}</span>
+                    </a>
+                </div>
+                {{/each}}
+                <p class="muted small calendar-empty" {{#if (or mine.length available.length)}}hidden{{/if}}>No times this day</p>
+            </section>
+            {{/each}}
+        </div>
+    </div>
+
+    <a class="link-btn weekend-toggle" href="{{url path searchQuery "week" week.weekStart "weekend" (not week.includeWeekend)}}">
+        {{#if week.includeWeekend}}Show weekdays only{{else}}Include weekend{{/if}}
+    </a>
+
+    <div class="legend">
+        <span><i style="background: var(--green-100)"></i>Available</span>
+        <span><i style="background: #f1efe6; border: 1px solid var(--line)"></i>Confirmed</span>
+        <span><i style="background: var(--amber-bg)"></i>Pending</span>
+    </div>
+</div>
+<script src="/js/calendar.js"></script>

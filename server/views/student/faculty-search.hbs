@@ -83,23 +83,12 @@
             <div class="muted small" style="margin-top: 8px">Slots are checked again when you submit.</div>
         </div>
         {{else}}
-        {{!-- BATCH 2C: replace this placeholder with the week calendar partial.
-              The controller already passes `week` (see viewdata.buildWeek) for it. --}}
-        <div class="card availability-calendar">
-            <div class="toolbar">
-                <strong>{{week.weekLabel}}</strong>
-                <div class="toggle auto" role="group" aria-label="View">
-                    <a href="/student/faculty{{#if searchQuery}}?{{searchQuery}}{{/if}}" aria-current="false">List</a>
-                    <a href="/student/faculty/calendar{{#if searchQuery}}?{{searchQuery}}{{/if}}" aria-current="true">Calendar</a>
-                </div>
-            </div>
-            <div class="notice">The week grid is added in the next batch. Until then, pick a time from "Coming up" below.</div>
-        </div>
+        {{> week-calendar className="availability-calendar" path="/student/faculty/calendar" slotPath="/student/faculty/calendar" selectedSlotId=selectedSlot.id showViewToggle=true}}
         <details class="calendar-coming-up" open>
             <summary>Coming up</summary>
             <div class="next-week">
                 {{#each upNext}}
-                <a class="link-btn" href="/student/faculty/calendar?{{#if ../searchQuery}}{{../searchQuery}}&{{/if}}faculty={{faculty.id}}&slot={{id}}">{{faculty.name}} · {{fmtShort date}} · {{fmtTime start}}</a>
+                <a class="link-btn" href="{{url "/student/faculty/calendar" ../searchQuery "faculty" faculty.id "slot" id "week" ../week.weekStart}}">{{faculty.name}} · {{fmtShort date}} · {{fmtTime start}}</a>
                 {{else}}
                 <span class="muted">No open times for this search.</span>
                 {{/each}}

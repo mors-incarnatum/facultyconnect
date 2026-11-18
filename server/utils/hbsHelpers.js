@@ -65,6 +65,58 @@ const helpers = {
             .slice(0, Number(count));
     },
 
+    // {{url "/student/faculty" searchQuery "faculty" id "slot" slotId}}
+    // Builds a link: the path, then the existing query string, then the extra name/value pairs.
+    // Empty, false and missing values are left out; true becomes 1 (used for ?weekend=1).
+    url: function (path, searchQuery) {
+        var pairs = Array.prototype.slice.call(arguments, 2, arguments.length - 1);
+        var parts = typeof searchQuery === 'string' && searchQuery !== '' ? [searchQuery] : [];
+
+        for (var i = 0; i + 1 < pairs.length; i += 2) {
+            var value = pairs[i + 1];
+            if (value === true) {
+                value = '1';
+            }
+            if (value === undefined || value === null || value === false || value === '') {
+                continue;
+            }
+            parts.push(encodeURIComponent(pairs[i]) + '=' + encodeURIComponent(String(value)));
+        }
+
+        return path + (parts.length ? '?' + parts.join('&') : '');
+    },
+
+    // {{period "10:00"}} -> "morning" (before noon) or "afternoon"; used by the week calendar filter
+    period: function (hhmm) {
+        return typeof hhmm === 'string' && hhmm < '12:00' ? 'morning' : 'afternoon';
+    },
+
+    // {{shortName "Dr. Sofia Santos"}} -> "Sofia Santos"
+    shortName: function (name) {
+        return String(name || '').replace(/^(Dr\.|Prof\.)\s*/, '');
+    },
+
+    // {{#each (calFaculty week)}} -> the distinct faculty who have open times in the displayed week
+    calFaculty: function (week) {
+        var seen = {};
+        var list = [];
+
+        if (!week || !Array.isArray(week.days)) {
+            return list;
+        }
+
+        week.days.forEach(function (day) {
+            day.available.forEach(function (slot) {
+                if (slot.faculty && !seen[slot.facultyId]) {
+                    seen[slot.facultyId] = true;
+                    list.push({ id: slot.facultyId, name: slot.faculty.name });
+                }
+            });
+        });
+
+        return list;
+    },
+
     join: function (list, separator) {
         if (!Array.isArray(list)) {
             return '';

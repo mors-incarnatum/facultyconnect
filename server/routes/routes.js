@@ -18,6 +18,20 @@ const router = express.Router();
 // and GET for search and filters, so the URL carries the filter state.
 // Fixed paths are listed before paths with :id so that e.g. /faculty/availability/new is not read as an id.
 
+// Chooses which layout file (views/layouts) wraps the page.
+// Sign-in and register use "auth", the student and faculty areas use "workspace", everything else uses "main".
+router.use(function (req, res, next) {
+    var path = req.path;
+
+    if (path === '/login' || path.indexOf('/register') === 0) {
+        res.locals.layout = 'auth';
+    } else if (path === '/student' || path.indexOf('/student/') === 0 || path === '/faculty' || path.indexOf('/faculty/') === 0) {
+        res.locals.layout = 'workspace';
+    }
+
+    next();
+});
+
 // ---------- Public ----------
 
 router.get('/favicon.ico', controller.getFavicon);

@@ -1,18 +1,12 @@
 const mongoose = require('mongoose');
 
-const User = require('./UserModel.js');
-
 const url = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/facultyconnect';
 
-const options = {
-    useUnifiedTopology: true,
-    useNewUrlParser: true
-};
-
+// Reads return plain objects (lean) so they can be passed straight to Handlebars views.
 const database = {
 
     connect: async function () {
-        await mongoose.connect(url, options);
+        await mongoose.connect(url);
         console.log('Connected to: ' + url);
     },
 
@@ -25,11 +19,11 @@ const database = {
     },
 
     findOne: async function (model, query, projection) {
-        return await model.findOne(query, projection);
+        return await model.findOne(query, projection).lean();
     },
 
     findMany: async function (model, query, projection) {
-        return await model.find(query, projection);
+        return await model.find(query, projection).lean();
     },
 
     updateOne: async function (model, filter, update) {

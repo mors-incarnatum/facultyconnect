@@ -1,0 +1,28 @@
+{{!--
+    GET /student/booking-conflict?slot=&subject=&topic=&description=
+    Shown when another student reserved the slot first. Context: slot, faculty, others (up to 3), draft, changeTimeUrl.
+    The "other times" links carry the typed subject, topic and notes so the student does not retype them.
+--}}
+<div class="page-head">
+    <h1>That time was just taken</h1>
+    <p>Another student reserved this slot before your request was submitted.</p>
+</div>
+<div class="card">
+    <span class="badge pending">Slot reserved</span>
+    {{#if slot}}
+    <h2 style="font-size: 26px; margin: 14px 0 6px">{{faculty.name}} · {{fmtLong slot.date}} · {{fmtRange slot.start slot.end}}</h2>
+    {{/if}}
+    <p class="muted" style="margin-bottom: 18px">Slots are checked again when you submit, so two students can never hold the same time.</p>
+    {{#if others.length}}
+    <strong>Other times with {{faculty.name}}</strong>
+    <div class="btn-row" style="margin-top: 10px">
+        {{#each others}}
+        <a class="btn sm" href="{{url "/student/request" "" "slot" id "subject" ../draft.subject "topic" ../draft.topic "description" ../draft.description}}">{{fmtLong date}} · {{fmtRange start end}}</a>
+        {{/each}}
+    </div>
+    {{/if}}
+    <div class="btn-row">
+        <a class="btn primary" href="{{changeTimeUrl}}">Choose another time</a>
+        <a class="btn" href="/student">Back to overview</a>
+    </div>
+</div>

@@ -1,0 +1,11 @@
+{{!-- Booking progress. Call with: {{> stepper current=3}} (1 = faculty chosen ... 4 = confirmation) --}}
+<ol class="booking-stepper" aria-label="Consultation request progress">
+    {{#each (bookingSteps current)}}
+    <li class="{{#if complete}}complete{{/if}}" {{#if isCurrent}}aria-current="step"{{/if}}>
+        <span class="step-indicator" aria-hidden="true">{{#if complete}}✓{{else}}{{number}}{{/if}}</span>
+        <span>
+            <span class="sr-only">Step </span>{{number}}. {{label}}{{#if complete}}<span class="sr-only">, completed</span>{{/if}}
+        </span>
+    </li>
+    {{/each}}
+</ol>

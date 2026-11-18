@@ -117,6 +117,21 @@ const helpers = {
         return list;
     },
 
+    // {{#each (bookingSteps 3)}} -> the four booking steps for the stepper; `current` is the active step (1 to 4)
+    bookingSteps: function (current) {
+        var labels = ['Faculty Chosen', 'Slot Selected', 'Add Topic', 'Confirmation'];
+
+        return labels.map(function (label, index) {
+            var number = index + 1;
+            return {
+                number: number,
+                label: label,
+                complete: number < current,
+                isCurrent: number === current
+            };
+        });
+    },
+
     join: function (list, separator) {
         if (!Array.isArray(list)) {
             return '';

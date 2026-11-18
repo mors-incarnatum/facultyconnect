@@ -1,0 +1,85 @@
+{{!--
+    GET /student/request?slot=&subject=&topic=&description=&back=   (the form)
+    POST /student/request                                           (re-renders here with errors, or redirects)
+    Context: slot, faculty, modeLabel, draft, errors, closed, taken, closedMessage, changeTimeUrl, backTo, noSlot.
+    public/js/request.js re-checks the slot through GET /getCheckSlot just before the form is sent.
+--}}
+{{#if noSlot}}
+<div class="page-head">
+    <h1>Request a consultation</h1>
+    <p>Choose a time first.</p>
+</div>
+<a class="btn primary" href="/student/faculty">Find faculty →</a>
+{{else}}
+<div class="page-head">
+    <h1>Request a consultation</h1>
+    <p>Review your selected time and specify your consultation topic.</p>
+</div>
+{{> stepper current=3}}
+
+<div class="two-col request-workspace">
+    <form class="card request-form" id="request-form" method="post" action="/student/request" data-slot="{{slot.id}}">
+        <h2>What would you like to discuss?</h2>
+        <input type="hidden" name="slotId" value="{{slot.id}}">
+
+        <div class="form-error" id="request-alert" role="alert" {{#unless (or closed taken)}}hidden{{/unless}}>
+            {{#if closed}}
+            {{closedMessage}} <a href="{{changeTimeUrl}}">Choose another time</a>.
+            {{else if taken}}
+            This time is no longer available. <a href="{{changeTimeUrl}}">Choose another time</a>.
+            {{/if}}
+        </div>
+
+        <label class="field {{#if errors.subject}}invalid{{/if}}">
+            <span>Subject / course (required)</span>
+            <input type="text" name="subject" value="{{draft.subject}}" list="courses" required
+                   placeholder="CCDSALG · Data Structures and Algorithms"
+                   {{#if errors.subject}}aria-invalid="true"{{/if}}>
+            {{#if errors.subject}}<span class="field-error">{{errors.subject}}</span>{{/if}}
+        </label>
+        <datalist id="courses">
+            {{#each faculty.courses}}<option value="{{this}}">{{/each}}
+        </datalist>
+
+        <label class="field {{#if errors.topic}}invalid{{/if}}">
+            <span>Consultation topic (required)</span>
+            <input type="text" name="topic" value="{{draft.topic}}" required
+                   placeholder="Help understanding recursion"
+                   {{#if errors.topic}}aria-invalid="true"{{/if}}>
+            {{#if errors.topic}}<span class="field-error">{{errors.topic}}</span>{{/if}}
+        </label>
+
+        <label class="field">
+            <span>Preparation notes (optional)</span>
+            <textarea name="description" placeholder="Share what you have tried and what you would like to cover.">{{draft.description}}</textarea>
+        </label>
+
+        <p class="muted small">
+            Submitting reserves this slot. Your meeting is confirmed after the faculty approves your request, which must happen at least 24 hours before the consultation, or the request is automatically declined.
+        </p>
+        <div class="btn-row">
+            <button class="btn primary" type="submit" {{#if taken}}disabled{{/if}}>Submit request →</button>
+            <a class="btn" href="{{backTo}}">Back to Availability</a>
+        </div>
+    </form>
+
+    <aside class="card preview request-preview">
+        <div class="eyebrow">Your selected time</div>
+        <div style="margin: 14px 0">{{> avatar person=faculty size="lg"}}</div>
+        <h3 style="font-size: 24px; margin: 0 0 4px">{{faculty.name}}</h3>
+        {{#if faculty.pronouns}}<p class="muted small">{{faculty.pronouns}}</p>{{/if}}
+        <p class="muted" style="margin: 2px 0 10px">{{faculty.rank}} · {{faculty.department}}</p>
+        {{#if faculty.consultationTip}}
+        <div class="profile-tip" style="margin: 10px 0; font-size: 12px; padding: 8px 10px">
+            <div><strong>Prep tip:</strong> {{faculty.consultationTip}}</div>
+        </div>
+        {{/if}}
+        <hr class="divider">
+        <div class="when-big" style="margin-top: 0">{{fmtLong slot.date}}</div>
+        <div class="time-big">{{fmtRange slot.start slot.end}}</div>
+        <p class="muted" style="margin-bottom: 16px">{{this.modeLabel}} · 30 minutes<br>{{slot.location}}</p>
+        <a class="btn block" href="{{changeTimeUrl}}">Change time</a>
+    </aside>
+</div>
+<script src="/js/request.js"></script>
+{{/if}}

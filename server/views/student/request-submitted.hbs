@@ -1,0 +1,27 @@
+{{!-- GET /student/request/submitted/:id   Context: appointment (with slot and faculty), isPending --}}
+<div class="page-head">
+    <h1>{{#if isPending}}Your request has been sent{{else}}Your consultation request{{/if}}</h1>
+    <p>{{#if isPending}}Your time is reserved while you wait for faculty approval.{{else}}View the latest status and details in My appointments.{{/if}}</p>
+</div>
+{{> stepper current=4}}
+<div class="card" style="padding: 32px">
+    {{> badge status=appointment.status}}
+    <h2 style="font-size: 38px; margin: 18px 0 10px">{{fmtLong appointment.slot.date}} · {{fmtRange appointment.slot.start appointment.slot.end}}</h2>
+    <h3 style="font-size: 26px; margin: 0 0 14px">{{appointment.faculty.name}} · {{appointment.faculty.department}}</h3>
+    <p class="muted">{{appointment.modeLabel}} · {{appointment.slot.location}}</p>
+    <hr class="divider">
+    <strong>{{appointment.topicLine}}</strong>
+    {{#if appointment.description}}<p class="muted" style="margin-top: 10px">{{appointment.description}}</p>{{/if}}
+    <div class="notice" style="margin: 20px 0; padding: 24px">
+        <h3 style="font-size: 24px; margin-bottom: 10px">What happens next</h3>
+        {{#if isPending}}
+        The selected slot is reserved. Your faculty member will review the request; the consultation remains pending until approved. Faculty must accept it at least 24 hours before the consultation, or it is automatically declined.
+        {{else}}
+        This appointment is now {{appointment.status}}. Open the appointment record to review its current details.
+        {{/if}}
+    </div>
+    <div class="btn-row" style="margin-top: 0">
+        <a class="btn primary" href="/student/appointments?id={{appointment.id}}">View my appointment</a>
+        <a class="btn" href="/student">Back to overview</a>
+    </div>
+</div>

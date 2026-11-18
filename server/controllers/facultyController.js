@@ -200,8 +200,28 @@ const facultyController = {
             var world = await queries.loadWorld(new Date());
             var records = viewdata.facultyRecords(world, req.user.id);
 
+            // "Your week at a glance": this faculty member's open slots and booked consultations (?week=YYYY-MM-DD)
+            var today = format.toIso(world.now);
+            var weekParam = http.str(req.query.week);
+            var weekStart = /^\d{4}-\d{2}-\d{2}$/.test(weekParam)
+                ? format.weekStartOf(weekParam)
+                : format.weekStartOf(today);
+
+            var openSlots = viewdata.availableSlotsFor(world, req.user.id).map(function (slot) {
+                return viewdata.slotWithFaculty(world, slot);
+            });
+
             return res.render('faculty/overview', {
                 title: 'Overview',
+                week: viewdata.buildWeek({
+                    weekStart: weekStart,
+                    includeWeekend: false,
+                    today: today,
+                    available: openSlots,
+                    mine: records.filter(function (a) {
+                        return a.isActive;
+                    })
+                }),
                 statusCounts: viewdata.statusCounts(records),
                 pending: records.filter(function (a) {
                     return a.status === 'pending';

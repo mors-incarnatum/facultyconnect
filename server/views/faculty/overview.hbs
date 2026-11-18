@@ -1,0 +1,81 @@
+<div class="faculty-welcome">
+    {{> avatar person=user size="lg"}}
+    <div>
+        <div class="page-head">
+            <h1>Welcome back, {{user.name}}</h1>
+            <p>{{#if user.rank}}{{user.rank}}{{else}}Faculty{{/if}} · {{user.department}}</p>
+        </div>
+    </div>
+</div>
+
+<div class="stat-grid faculty-stats">
+    {{#each statusCounts}}
+    <a class="stat" href="/faculty/consultations?status={{status}}">
+        <span>{{label}}</span>
+        <b>{{count}}</b>
+    </a>
+    {{/each}}
+</div>
+
+<div class="faculty-dashboard">
+    <section class="card">
+        <h2 class="section-title">Pending requests</h2>
+        {{#each pending}}
+        <article class="req-card">
+            {{> badge status=status}}
+            <div class="request-person">
+                {{> avatar person=student size="md"}}
+                <div>
+                    <h3>{{student.name}}{{#if student.pronouns}} · {{student.pronouns}}{{/if}}</h3>
+                    <div class="muted small">{{#if student.program}}{{student.program}}{{else}}Student{{/if}}</div>
+                </div>
+            </div>
+            <p class="when">{{fmtShort slot.date}} · {{fmtRange slot.start slot.end}}</p>
+            <div class="topic">
+                <strong>{{subject}} · {{#if topic}}{{topic}}{{else}}No topic added{{/if}}</strong>
+                <p class="muted">{{description}}</p>
+            </div>
+            {{!-- Batch 3B adds the Accept / Decline buttons here (status-actions partial). --}}
+            <p class="faculty-spaced">
+                <a class="btn block" href="/faculty/consultations/{{id}}">View full request →</a>
+            </p>
+        </article>
+        {{else}}
+        <p class="muted">You're all caught up. No pending requests.</p>
+        {{/each}}
+    </section>
+
+    <section class="card">
+        <h2 class="section-title">Upcoming and ongoing consultations</h2>
+        {{#each upcoming}}
+        <article class="req-card">
+            {{> badge status=status}}
+            <div class="request-person">
+                {{> avatar person=student size="md"}}
+                <div>
+                    <h3>{{student.name}} · {{subject}}</h3>
+                    <div class="muted small">{{#if student.program}}{{student.program}}{{else}}Student{{/if}}</div>
+                </div>
+            </div>
+            <p class="muted">
+                {{fmtShort slot.date}} · {{fmtRange slot.start slot.end}}
+                <br>
+                {{slot.location}}
+            </p>
+            <p class="faculty-spaced">Topic: {{#if topic}}{{topic}}{{else}}No topic added{{/if}}</p>
+            <a class="btn block" href="/faculty/consultations/{{id}}">Manage consultation →</a>
+        </article>
+        {{else}}
+        <p class="muted">No confirmed consultations yet.</p>
+        {{/each}}
+        <hr class="divider">
+        <h2>Availability</h2>
+        <p class="muted faculty-spaced">Publish the dates and time slots students can request.</p>
+        <a class="btn primary block" href="/faculty/availability">Manage my availability →</a>
+    </section>
+</div>
+
+<section class="faculty-week-section">
+    <h2 class="section-title">Your week at a glance</h2>
+    {{> faculty-week path="/faculty"}}
+</section>

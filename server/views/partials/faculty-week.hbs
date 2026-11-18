@@ -1,0 +1,55 @@
+{{!--
+    Faculty week calendar (server-rendered, read-only). Parameters:
+      week   from viewdata.buildWeek: weekStart, weekLabel, prevWeek, nextWeek, thisWeek, days[]
+             each day has: date, isToday, available[] (this faculty member's open slots),
+             mine[] (consultations on that day; only pending and confirmed are shown)
+      path   page the week buttons point back to, e.g. "/faculty"
+    A consultation opens its details page; an open slot opens the published slots page.
+    Week navigation is plain links, so the URL holds the week and no JavaScript is needed.
+--}}
+<div class="card week overview-calendar faculty-week" id="faculty-week">
+    <div class="week-head">
+        <h3>{{week.weekLabel}}</h3>
+        <div class="week-nav">
+            <a href="{{url path "" "week" week.prevWeek}}" aria-label="Previous week">‹</a>
+            <a href="{{url path "" "week" week.thisWeek}}">This week</a>
+            <a href="{{url path "" "week" week.nextWeek}}" aria-label="Next week">›</a>
+        </div>
+    </div>
+
+    <div class="cal-scroll">
+        <div class="calendar-days" role="group" aria-label="Weekly consultations and availability">
+            {{#each week.days}}
+            <section class="calendar-day" aria-label="{{fmtDayHeader date}}">
+                <h4 class="calendar-day-heading {{#if isToday}}today{{/if}}">{{fmtDayHeader date}}</h4>
+                {{#each mine}}{{#if isActive}}
+                <div class="calendar-slot">
+                    <a class="cal-item own {{status}}" href="/faculty/consultations/{{id}}"
+                       aria-label="{{student.name}}, {{fmtLong slot.date}}, {{fmtRange slot.start slot.end}}, {{status}}">
+                        {{student.name}}<br>{{fmtTime slot.start}} · {{#if (eq status "confirmed")}}Confirmed{{else}}Pending{{/if}}
+                    </a>
+                </div>
+                {{/if}}{{/each}}
+                {{#each available}}
+                <div class="calendar-slot">
+                    <a class="cal-item" href="/faculty/availability/slots"
+                       aria-label="Open slot, {{fmtLong date}}, {{fmtRange start end}}">
+                        {{fmtRange start end}}
+                        <span class="slot-faculty-count">Open{{#if (eq mode "online")}} · Online{{/if}}</span>
+                    </a>
+                </div>
+                {{/each}}
+                {{#unless (or mine.length available.length)}}
+                <p class="muted small calendar-empty">No times this day</p>
+                {{/unless}}
+            </section>
+            {{/each}}
+        </div>
+    </div>
+
+    <div class="legend">
+        <span><i style="background: var(--surface); border: 1px solid var(--line)"></i>Open slot</span>
+        <span><i style="background: #f1efe6; border: 1px solid var(--line)"></i>Confirmed</span>
+        <span><i style="background: var(--amber-bg)"></i>Pending</span>
+    </div>
+</div>

@@ -200,3 +200,10 @@ a.appt-row {
   text-align: center;
   text-decoration: none;
 }
+/* Faculty overview: the week calendar sits under the two dashboard cards. */
+.faculty-week-section {
+  margin-top: 32px;
+}
+.faculty-week-section .section-title {
+  margin-bottom: 16px;
+}

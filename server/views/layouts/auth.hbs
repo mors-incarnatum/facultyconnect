@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {{> head}}
+</head>
+<body>
+    <div class="auth">
+        <aside class="auth-side">
+            <a href="/" class="brand">FacultyConnect</a>
+            <div class="muted small" style="margin-top: 14px">{{university}}</div>
+            <div class="tag">
+                <h2>A little guidance.<br>A clearer path.</h2>
+                <p>Find faculty availability, request a consultation, and keep every appointment in one place.</p>
+                <div class="line"></div>
+                <strong>For students and faculty members</strong>
+            </div>
+        </aside>
+        <div class="auth-main">
+            {{> flash}}
+            {{{body}}}
+        </div>
+    </div>
+    <script src="/js/app.js"></script>
+</body>
+</html>

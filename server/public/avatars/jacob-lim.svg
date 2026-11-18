@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bg-s5" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#404756" />
+      <stop offset="100%" stop-color="#1e222b" />
+    </linearGradient>
+    <linearGradient id="skin-s5" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#f8d6bb" />
+      <stop offset="100%" stop-color="#e0b28e" />
+    </linearGradient>
+  </defs>
+  <rect width="160" height="160" rx="32" fill="url(#bg-s5)" />
+  <!-- Neck & Hoodie -->
+  <path d="M69 95 L91 95 L96 118 L64 118 Z" fill="#e0b28e" />
+  <path d="M26 160 C28 126 48 114 66 114 L75 128 L85 128 L94 114 C112 114 132 126 134 160 Z" fill="#2d333b" />
+  <path d="M66 114 Q80 128 94 114 Q80 134 66 114 Z" fill="#22272e" />
+  <!-- Inner Tee -->
+  <path d="M72 126 L88 126 L88 138 L72 138 Z" fill="#388bfd" />
+  <!-- Hair back -->
+  <path d="M50 68 C46 36 62 24 80 24 C98 24 114 36 110 68 Z" fill="#1b1c20" />
+  <!-- Face -->
+  <path d="M54 66 C54 44 65 39 80 39 C95 39 106 44 106 66 C106 89 95 106 80 106 C65 106 54 89 54 66 Z" fill="url(#skin-s5)" />
+  <!-- Wavy curly hair top -->
+  <path d="M48 48 C48 24 66 18 80 18 C94 18 112 24 112 48 C108 38 98 32 80 32 C64 32 52 38 48 48 Z" fill="#1b1c20" />
+  <circle cx="58" cy="34" r="9" fill="#1b1c20" />
+  <circle cx="72" cy="26" r="10" fill="#24262b" />
+  <circle cx="88" cy="26" r="10" fill="#1b1c20" />
+  <circle cx="102" cy="34" r="9" fill="#24262b" />
+  <!-- Eyes -->
+  <circle cx="68" cy="68" r="3.2" fill="#1e1e24" />
+  <circle cx="92" cy="68" r="3.2" fill="#1e1e24" />
+  <circle cx="69" cy="67" r="1" fill="#ffffff" />
+  <circle cx="93" cy="67" r="1" fill="#ffffff" />
+  <!-- Brows -->
+  <path d="M58 57 Q68 53 76 57" fill="none" stroke="#1b1c20" stroke-width="2.4" stroke-linecap="round" />
+  <path d="M84 57 Q92 53 102 57" fill="none" stroke="#1b1c20" stroke-width="2.4" stroke-linecap="round" />
+  <!-- Nose -->
+  <path d="M80 70 L78 79 L83 79" fill="none" stroke="#c49772" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+  <!-- Smirk / confident smile -->
+  <path d="M72 88 Q81 95 90 86" fill="none" stroke="#b04b4b" stroke-width="2.2" stroke-linecap="round" />
+</svg>

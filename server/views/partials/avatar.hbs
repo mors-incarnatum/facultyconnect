@@ -1,0 +1,3 @@
+<div class="avatar {{size}}" aria-hidden="true" title="{{person.name}}"{{#unless person.avatar}} style="background: {{#if person.color}}{{person.color}}{{else}}#2d5a48{{/if}}"{{else}} style="background: transparent"{{/unless}}>
+    {{#if person.avatar}}<img src="{{person.avatar}}" alt="{{person.name}}" class="avatar-img" loading="lazy">{{else}}{{initials person.name}}{{/if}}
+</div>

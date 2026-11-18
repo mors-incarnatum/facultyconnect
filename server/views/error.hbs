@@ -1,0 +1,8 @@
+<main class="error-page">
+    <p class="code">{{status}}</p>
+    <h1>{{#if (eq status 404)}}Page not found{{else}}Something went wrong{{/if}}</h1>
+    <p class="muted">{{message}}</p>
+    <div class="btn-row" style="justify-content: center">
+        <a class="btn primary" href="{{#if user}}{{homePath}}{{else}}/{{/if}}">{{#if user}}Back to my workspace{{else}}Back to home{{/if}}</a>
+    </div>
+</main>

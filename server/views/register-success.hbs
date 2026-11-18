@@ -1,0 +1,12 @@
+<div class="auth-card">
+    <span class="badge confirmed">Account created</span>
+    <h1 style="margin-top: 14px">{{#if isFacultyAccount}}Faculty{{else}}Student{{/if}} account created</h1>
+    <p class="muted">
+        Welcome, {{account.name}}.
+        Your account is ready. Sign in to {{#if isFacultyAccount}}publish your consultation schedule{{else}}find faculty and request consultations{{/if}}.
+    </p>
+    <div class="btn-row">
+        <a href="/login?email={{account.email}}" class="btn primary">Sign in</a>
+        <a href="/" class="btn">Back to home</a>
+    </div>
+</div>

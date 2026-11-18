@@ -1,0 +1,40 @@
+<form class="auth-card" method="post" action="/register" novalidate>
+    <h1>Create your account</h1>
+    <p class="muted">Choose your role and enter your account details.</p>
+    <div class="toggle" role="group" aria-label="Account role">
+        <a href="/register?role=student" aria-current="{{#if (eq values.role 'student')}}true{{else}}false{{/if}}">Student</a>
+        <a href="/register?role=faculty" aria-current="{{#if (eq values.role 'faculty')}}true{{else}}false{{/if}}">Faculty</a>
+    </div>
+    <input type="hidden" name="role" value="{{values.role}}">
+    {{#if error}}<div class="form-error" role="alert">{{error}}</div>{{/if}}
+    <label class="field">
+        <span>Full name</span>
+        <input type="text" name="name" value="{{values.name}}" placeholder="Alex Dela Cruz" autocomplete="name" required>
+    </label>
+    <label class="field">
+        <span>Email address</span>
+        <input type="email" name="email" id="register-email" value="{{values.email}}" placeholder="firstname.lastname@dlsu.edu.ph" autocomplete="email" required>
+        <span class="field-error" id="email-note" aria-live="polite"></span>
+    </label>
+    {{#if (eq values.role 'faculty')}}
+    <label class="field">
+        <span>Department</span>
+        <select name="department">
+            {{#each departments}}
+            <option value="{{this}}"{{{selected ../values.department this}}}>{{this}}</option>
+            {{/each}}
+        </select>
+    </label>
+    {{/if}}
+    <label class="field">
+        <span>Password</span>
+        <input type="password" name="password" minlength="8" autocomplete="new-password" required>
+    </label>
+    <label class="field">
+        <span>Confirm password</span>
+        <input type="password" name="confirm" minlength="8" autocomplete="new-password" required>
+    </label>
+    <button class="btn primary block" type="submit">Create account</button>
+    <p class="hint">After creating your account, sign in to continue.</p>
+    <p class="foot"><a href="/login">Already have an account? Sign in</a></p>
+</form>

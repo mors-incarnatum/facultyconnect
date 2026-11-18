@@ -1,0 +1,40 @@
+<aside class="sidebar" id="sidebar">
+    <div class="mobile-bar">
+        <a href="{{homePath}}" class="brand">FacultyConnect</a>
+        <button type="button" class="btn sm" id="menu-toggle" aria-expanded="false">Menu</button>
+    </div>
+    <div class="collapsible">
+        <a href="{{homePath}}" class="brand">FacultyConnect</a>
+        <div class="brand-sub">{{university}}</div>
+        <hr>
+        <div class="nav-label">{{#if isFaculty}}faculty{{else}}student{{/if}} workspace</div>
+        <nav class="nav" aria-label="Primary">
+            {{#if isFaculty}}
+            <a href="/faculty" {{#if (eq currentPath "/faculty")}}class="active" aria-current="page"{{/if}}>Overview</a>
+            <a href="/faculty/availability" {{#if (startsWith currentPath "/faculty/availability")}}class="active" aria-current="page"{{/if}}>My availability</a>
+            <a href="/faculty/consultations" {{#if (startsWith currentPath "/faculty/consultations")}}class="active" aria-current="page"{{/if}}>Consultations</a>
+            {{else}}
+            <a href="/student" {{#if (eq currentPath "/student")}}class="active" aria-current="page"{{/if}}>Overview</a>
+            <a href="/student/faculty" {{#if (or (startsWith currentPath "/student/faculty") (or (startsWith currentPath "/student/request") (startsWith currentPath "/student/booking-conflict")))}}class="active" aria-current="page"{{/if}}>Find faculty</a>
+            <a href="/student/appointments" {{#if (startsWith currentPath "/student/appointments")}}class="active" aria-current="page"{{/if}}>My appointments</a>
+            {{/if}}
+        </nav>
+        <div class="semester">
+            <strong>{{semester}}</strong>
+            <span>A little guidance goes a long way.</span>
+        </div>
+    </div>
+    <div class="sidebar-foot collapsible">
+        <div class="sidebar-identity">
+            {{> avatar person=user size="sm"}}
+            <div style="min-width: 0">
+                <div class="who" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{user.name}}</div>
+                <div class="role">{{#if isStudent}}Student{{else}}{{user.department}}{{/if}}</div>
+            </div>
+        </div>
+        <a href="{{homePath}}/help">Help &amp; support</a>
+        <form class="inline" method="post" action="/logout">
+            <button class="link-btn" type="submit">Log out →</button>
+        </form>
+    </div>
+</aside>

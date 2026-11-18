@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bg-f2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#9e6927" />
+      <stop offset="100%" stop-color="#694112" />
+    </linearGradient>
+    <linearGradient id="skin-f2" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#e6b38c" />
+      <stop offset="100%" stop-color="#cc976e" />
+    </linearGradient>
+    <linearGradient id="coat-f2" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#8a5a1f" />
+      <stop offset="100%" stop-color="#5c3b12" />
+    </linearGradient>
+  </defs>
+  <!-- Background -->
+  <rect width="160" height="160" rx="32" fill="url(#bg-f2)" />
+  <!-- Neck & Shirt -->
+  <path d="M69 95 L91 95 L95 118 L65 118 Z" fill="#cc976e" />
+  <path d="M63 110 L97 110 L104 140 L56 140 Z" fill="#eef3f7" />
+  <path d="M78 114 L82 114 L82 140 L78 140 Z" fill="#cfdce6" />
+  <!-- Coat / Shoulders -->
+  <path d="M26 160 C28 126 48 114 66 112 L75 138 L85 138 L94 112 C112 114 132 126 134 160 Z" fill="url(#coat-f2)" />
+  <path d="M66 112 L77 142 L83 142 L94 112 L86 112 L80 128 L74 112 Z" fill="#694112" />
+  <!-- Hair back -->
+  <path d="M50 68 C48 38 62 26 80 26 C98 26 112 38 110 68 Z" fill="#231f1d" />
+  <!-- Face -->
+  <path d="M53 66 C53 44 65 39 80 39 C95 39 107 44 107 66 C107 89 96 106 80 106 C64 106 53 89 53 66 Z" fill="url(#skin-f2)" />
+  <!-- Hair top & texture -->
+  <path d="M48 52 C50 32 64 24 80 24 C96 24 110 32 112 52 C108 42 98 33 80 34 C64 33 53 42 48 52 Z" fill="#1c1917" />
+  <path d="M50 48 Q65 38 80 43 Q95 38 110 48 C106 42 95 36 80 37 C65 36 54 42 50 48 Z" fill="#2c2724" />
+  <!-- Beard & Stubble -->
+  <path d="M56 76 C56 94 66 104 80 104 C94 104 104 94 104 76 C104 88 94 101 80 101 C66 101 56 88 56 76 Z" fill="#231f1d" opacity="0.45" />
+  <path d="M72 87 Q80 91 88 87 Q80 93 72 87 Z" fill="#231f1d" opacity="0.35" />
+  <!-- Glasses -->
+  <rect x="56" y="60" width="22" height="17" rx="4" fill="none" stroke="#262626" stroke-width="2.5" />
+  <rect x="82" y="60" width="22" height="17" rx="4" fill="none" stroke="#262626" stroke-width="2.5" />
+  <line x1="78" y1="67" x2="82" y2="67" stroke="#262626" stroke-width="2.5" />
+  <!-- Eyes -->
+  <circle cx="67" cy="68" r="3" fill="#1a1816" />
+  <circle cx="93" cy="68" r="3" fill="#1a1816" />
+  <circle cx="68" cy="67" r="1" fill="#ffffff" />
+  <circle cx="94" cy="67" r="1" fill="#ffffff" />
+  <!-- Eyebrows -->
+  <path d="M57 56 Q67 53 76 56" fill="none" stroke="#1c1917" stroke-width="2.5" stroke-linecap="round" />
+  <path d="M84 56 Q93 53 103 56" fill="none" stroke="#1c1917" stroke-width="2.5" stroke-linecap="round" />
+  <!-- Nose -->
+  <path d="M80 70 L78 79 L83 79" fill="none" stroke="#b37f59" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+  <!-- Smile -->
+  <path d="M72 88 Q80 95 88 88" fill="none" stroke="#8c443b" stroke-width="2.2" stroke-linecap="round" />
+</svg>

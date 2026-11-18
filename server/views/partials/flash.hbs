@@ -1,0 +1,6 @@
+{{#if flash}}
+<div class="feedback flash {{#if flash.error}}error{{/if}}" id="flash" role="status" aria-live="polite">
+    <span>{{#if flash.error}}{{flash.error}}{{else}}{{flash.message}}{{/if}}</span>
+    <button type="button" id="flash-close" aria-label="Dismiss notification">×</button>
+</div>
+{{/if}}

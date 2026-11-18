@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bg-f6" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#b06a46" />
+      <stop offset="100%" stop-color="#703c22" />
+    </linearGradient>
+    <linearGradient id="skin-f6" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ecc09c" />
+      <stop offset="100%" stop-color="#d49f79" />
+    </linearGradient>
+    <linearGradient id="tweed-f6" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#9a5a3a" />
+      <stop offset="100%" stop-color="#69371f" />
+    </linearGradient>
+  </defs>
+  <!-- Background -->
+  <rect width="160" height="160" rx="32" fill="url(#bg-f6)" />
+  <!-- Neck & Shirt & Tie -->
+  <path d="M69 95 L91 95 L95 118 L65 118 Z" fill="#d49f79" />
+  <path d="M64 110 L96 110 L104 140 L56 140 Z" fill="#f4f7f6" />
+  <!-- Tie -->
+  <path d="M78 114 L82 114 L84 142 L80 148 L76 142 Z" fill="#2d5a48" />
+  <!-- Tweed Jacket / Shoulders -->
+  <path d="M26 160 C28 126 48 114 66 112 L75 138 L85 138 L94 112 C112 114 132 126 134 160 Z" fill="url(#tweed-f6)" />
+  <path d="M66 112 L77 142 L83 142 L94 112 L86 112 L80 128 L74 112 Z" fill="#784025" />
+  <!-- Hair back -->
+  <path d="M50 68 C48 38 62 26 80 26 C98 26 112 38 110 68 Z" fill="#4a4c50" />
+  <!-- Face -->
+  <path d="M54 66 C54 44 65 39 80 39 C95 39 106 44 106 66 C106 89 95 106 80 106 C65 106 54 89 54 66 Z" fill="url(#skin-f6)" />
+  <!-- Salt & Pepper Hair -->
+  <path d="M48 50 C49 30 64 24 80 24 C96 24 111 30 112 50 C108 40 98 33 80 34 C64 33 52 40 48 50 Z" fill="#474a4f" />
+  <!-- Silver highlights -->
+  <path d="M54 40 Q66 32 80 33 Q94 32 106 40" fill="none" stroke="#b0b5be" stroke-width="2" />
+  <path d="M48 54 Q50 42 56 36" fill="none" stroke="#caced4" stroke-width="2" />
+  <path d="M112 54 Q110 42 104 36" fill="none" stroke="#caced4" stroke-width="2" />
+  <!-- Goatee & Mustache -->
+  <path d="M72 84 Q80 82 88 84 Q80 87 72 84 Z" fill="#474a4f" />
+  <path d="M74 92 C74 101 77 105 80 105 C83 105 86 101 86 92 Z" fill="#474a4f" />
+  <circle cx="80" cy="98" r="2" fill="#caced4" opacity="0.6" />
+  <!-- Eyes & Laugh lines -->
+  <circle cx="68" cy="68" r="3" fill="#1b171a" />
+  <circle cx="92" cy="68" r="3" fill="#1b171a" />
+  <circle cx="69" cy="67" r="1" fill="#ffffff" />
+  <circle cx="93" cy="67" r="1" fill="#ffffff" />
+  <!-- Laugh lines -->
+  <path d="M60 68 Q58 72 61 74" fill="none" stroke="#b8835d" stroke-width="1.3" />
+  <path d="M100 68 Q102 72 99 74" fill="none" stroke="#b8835d" stroke-width="1.3" />
+  <!-- Brows -->
+  <path d="M57 56 Q67 53 76 56" fill="none" stroke="#52555c" stroke-width="2.5" stroke-linecap="round" />
+  <path d="M84 56 Q93 53 103 56" fill="none" stroke="#52555c" stroke-width="2.5" stroke-linecap="round" />
+  <!-- Nose -->
+  <path d="M80 68 L77 78 L83 78" fill="none" stroke="#ba825a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+  <!-- Smile -->
+  <path d="M72 86 Q80 93 88 86" fill="none" stroke="#8a4133" stroke-width="2.2" stroke-linecap="round" />
+</svg>

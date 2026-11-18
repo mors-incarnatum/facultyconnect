@@ -1,0 +1,89 @@
+.index-hero {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 56px 32px 24px;
+}
+.index-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 72px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.index-hero h1 {
+  font-size: 64px;
+  line-height: 1.08;
+  max-width: 720px;
+}
+.index-hero .lead {
+  font-size: 18px;
+  color: var(--muted);
+  max-width: 620px;
+  margin: 24px 0 32px;
+}
+.value-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 56px;
+}
+.value-grid .card h3 {
+  font-size: 20px;
+  margin-bottom: 8px;
+}
+.directory {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 32px 32px 80px;
+}
+.directory > h2 {
+  font-size: 34px;
+  margin-bottom: 8px;
+}
+.dir-group {
+  margin-top: 32px;
+}
+.dir-group h3 {
+  font-size: 22px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.dir-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 12px;
+}
+.dir-link {
+  display: block;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 14px 16px;
+  color: var(--ink);
+  width: 100%;
+  text-align: left;
+  font-weight: 400;
+}
+.dir-link:hover {
+  border-color: var(--green);
+  text-decoration: none;
+}
+.dir-link strong {
+  display: block;
+  color: var(--green);
+  font-size: 14px;
+}
+.dir-link span {
+  color: var(--muted);
+  font-size: 12px;
+}
+.footer {
+  text-align: center;
+  color: var(--muted);
+  font-size: 12px;
+  padding: 24px;
+  border-top: 1px solid var(--line);
+}

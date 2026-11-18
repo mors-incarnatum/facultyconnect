@@ -1,0 +1,67 @@
+<div>
+    <header class="index-hero">
+        <div class="index-nav">
+            <div>
+                <span class="brand">FacultyConnect</span>
+                <div class="muted small">{{university}}</div>
+            </div>
+            <div class="btn-row" style="margin: 0">
+                {{#if user}}
+                <a class="btn primary" href="{{homePath}}">Open my workspace</a>
+                {{else}}
+                <a class="btn" href="/register">Register</a>
+                <a class="btn primary" href="/login">Sign in</a>
+                {{/if}}
+            </div>
+        </div>
+        <h1>A little guidance.<br>A clearer path.</h1>
+        <p class="lead">
+            FacultyConnect brings consultation scheduling into one place. Faculty publish their available times, students find the right person and request a slot, and both sides see the same appointment status.
+        </p>
+        <div class="btn-row" style="margin-top: 0">
+            {{#if user}}
+            <a href="{{homePath}}" class="btn primary">Open my workspace</a>
+            {{else}}
+            <a href="/login" class="btn primary">Sign in to get started</a>
+            <a href="/register" class="btn">Create an account</a>
+            {{/if}}
+        </div>
+        <div class="value-grid">
+            <div class="card">
+                <h3>See real availability</h3>
+                <p class="muted">Students check open slots before they ask, so there is no back-and-forth over email.</p>
+            </div>
+            <div class="card">
+                <h3>No double bookings</h3>
+                <p class="muted">A requested slot is held until the faculty member responds, and is re-checked on submit.</p>
+            </div>
+            <div class="card">
+                <h3>Prepared consultations</h3>
+                <p class="muted">Every request carries a topic, so faculty can prepare before the meeting.</p>
+            </div>
+        </div>
+
+        {{#if faculty.length}}
+        <div style="margin-top: 48px; text-align: left">
+            <h2 style="font-size: 22px; margin-bottom: 6px; text-align: center">Meet your CCS faculty guides</h2>
+            <p class="muted" style="text-align: center; margin-bottom: 24px; font-size: 14px">
+                Connect with professors across Software Technology, Computer Technology, and Information Technology.
+            </p>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px">
+                {{#each faculty}}
+                <div class="card" style="display: flex; gap: 14px; align-items: flex-start">
+                    {{> avatar person=this size="lg"}}
+                    <div style="min-width: 0; flex: 1">
+                        <strong style="display: block; font-size: 15px">{{name}}</strong>
+                        <div class="muted small" style="margin-bottom: 6px">{{rank}} · {{department}}</div>
+                        {{#if motto}}<p class="muted small" style="font-style: italic; margin: 0; line-height: 1.4">“{{motto}}”</p>{{/if}}
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+        {{/if}}
+    </header>
+
+    <footer class="footer">FacultyConnect · CBAPDEV Group 2</footer>
+</div>

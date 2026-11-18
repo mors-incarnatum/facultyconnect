@@ -1,0 +1,68 @@
+/* Additions needed now that pages are server-rendered. */
+
+/* Role switch on the register page is a pair of links instead of buttons. */
+.toggle a {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--green);
+  font-weight: 600;
+  font-size: 13px;
+  min-height: 44px;
+  text-decoration: none;
+}
+.toggle a[aria-current="true"] {
+  background: var(--green);
+  color: #fff;
+  border-color: var(--green);
+}
+
+/* The log out control is a form with one button. */
+form.inline {
+  display: inline;
+  margin: 0;
+}
+
+/* Flash message that sits above the page content. */
+.flash {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0 0 24px;
+}
+.flash button {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font-size: 22px;
+  cursor: pointer;
+}
+.flash.error {
+  background: #fdeceb;
+  border: 1px solid #e3b4b0;
+  color: #7a2a24;
+  padding: 12px 16px;
+  border-radius: 8px;
+}
+
+/* Error page */
+.error-page {
+  max-width: 520px;
+  margin: 96px auto;
+  padding: 0 16px;
+  text-align: center;
+}
+.error-page .code {
+  font-size: 64px;
+  color: var(--green);
+  margin: 0;
+}
+
+/* The sidebar menu button only matters on small screens and needs JavaScript. */
+.js-off .mobile-bar .btn { display: none; }

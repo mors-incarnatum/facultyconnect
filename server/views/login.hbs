@@ -1,0 +1,17 @@
+<form class="auth-card" method="post" action="/login" novalidate>
+    <h1>Welcome back</h1>
+    <p class="muted">Sign in with your account email and password.</p>
+    {{#if error}}<div class="form-error" role="alert">{{error}}</div>{{/if}}
+    <label class="field">
+        <span>Email address</span>
+        <input type="email" name="email" value="{{email}}" autocomplete="username" required>
+    </label>
+    <label class="field">
+        <span>Password</span>
+        <input type="password" name="password" autocomplete="current-password" required>
+    </label>
+    <button class="btn primary block" type="submit">Sign in</button>
+    <p class="hint">Your account role determines the workspace you can access.</p>
+
+    <p class="foot"><a href="/register">New to FacultyConnect? Register</a></p>
+</form>

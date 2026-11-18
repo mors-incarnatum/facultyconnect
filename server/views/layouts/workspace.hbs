@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {{> head}}
+</head>
+<body>
+    <div class="shell workspace-v2 workspace-{{#if isFaculty}}faculty{{else}}student{{/if}}">
+        <a class="skip-link" href="#workspace-content">Skip to content</a>
+        {{> sidebar}}
+        <main class="main" id="workspace-content" tabindex="-1">
+            <div class="topline">
+                <span class="eyebrow">Your academic connections</span>
+                <span>{{today}}</span>
+            </div>
+            {{> flash}}
+            {{{body}}}
+        </main>
+    </div>
+    <script src="/js/app.js"></script>
+</body>
+</html>

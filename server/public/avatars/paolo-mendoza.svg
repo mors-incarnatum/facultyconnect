@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bg-f4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#8c587a" />
+      <stop offset="100%" stop-color="#553149" />
+    </linearGradient>
+    <linearGradient id="skin-f4" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#e2aa82" />
+      <stop offset="100%" stop-color="#c98c61" />
+    </linearGradient>
+    <linearGradient id="jacket-f4" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#7a4a6a" />
+      <stop offset="100%" stop-color="#4d2c42" />
+    </linearGradient>
+  </defs>
+  <!-- Background -->
+  <rect width="160" height="160" rx="32" fill="url(#bg-f4)" />
+  <!-- Neck & Inner Collar -->
+  <path d="M69 95 L91 95 L96 118 L64 118 Z" fill="#c98c61" />
+  <path d="M65 110 L95 110 L99 126 L61 126 Z" fill="#2d2d30" />
+  <!-- Jacket / Shoulders -->
+  <path d="M26 160 C28 126 48 114 66 112 L77 126 L83 126 L94 112 C112 114 132 126 134 160 Z" fill="url(#jacket-f4)" />
+  <!-- Zipper line -->
+  <line x1="80" y1="126" x2="80" y2="160" stroke="#a38299" stroke-width="2" />
+  <!-- Hair back -->
+  <path d="M52 68 C50 36 64 24 80 24 C96 24 110 36 108 68 Z" fill="#1e1a1d" />
+  <!-- Face -->
+  <path d="M54 66 C54 44 65 39 80 39 C95 39 106 44 106 66 C106 89 95 106 80 106 C65 106 54 89 54 66 Z" fill="url(#skin-f4)" />
+  <!-- Hair top: modern textured pompadour/fade -->
+  <path d="M48 48 C49 24 65 16 82 17 C96 18 109 25 110 46 C105 38 96 32 82 32 C66 32 54 38 48 48 Z" fill="#1e1a1d" />
+  <path d="M50 42 C56 22 72 18 84 19 C98 20 108 28 108 42 C102 32 92 26 80 26 C66 26 56 32 50 42 Z" fill="#2b2529" />
+  <!-- Glasses -->
+  <circle cx="68" cy="67" r="11" fill="none" stroke="#1f2421" stroke-width="2.6" />
+  <circle cx="92" cy="67" r="11" fill="none" stroke="#1f2421" stroke-width="2.6" />
+  <line x1="79" y1="67" x2="81" y2="67" stroke="#1f2421" stroke-width="2.6" />
+  <!-- Eyes -->
+  <circle cx="68" cy="67" r="3" fill="#1b171a" />
+  <circle cx="92" cy="67" r="3" fill="#1b171a" />
+  <circle cx="69" cy="66" r="1" fill="#ffffff" />
+  <circle cx="93" cy="66" r="1" fill="#ffffff" />
+  <!-- Brows -->
+  <path d="M58 56 Q68 53 76 56" fill="none" stroke="#1e1a1d" stroke-width="2.4" stroke-linecap="round" />
+  <path d="M84 56 Q92 53 102 56" fill="none" stroke="#1e1a1d" stroke-width="2.4" stroke-linecap="round" />
+  <!-- Nose -->
+  <path d="M80 69 L78 78 L83 78" fill="none" stroke="#b07449" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+  <!-- Smile -->
+  <path d="M72 87 Q80 94 88 87" fill="none" stroke="#944d56" stroke-width="2.2" stroke-linecap="round" />
+</svg>

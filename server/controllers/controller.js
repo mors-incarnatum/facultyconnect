@@ -2,15 +2,9 @@ const db = require('../models/db.js');
 
 const User = require('../models/UserModel.js');
 
-const Faculty = require('../models/FacultyModel.js');
+const auth = require('../utils/auth.js');
 
-const Student = require('../models/StudentModel.js');
-
-const Slot = require('../models/SlotModel.js');
-
-const Appointment = require('../models/AppointmentModel.js');
-
-const Schedule = require('../models/ScheduleModel.js');
+const http = require('../utils/http.js');
 
 const controller = {
 
@@ -18,70 +12,69 @@ const controller = {
         res.status(204).end();
     },
 
-    getBootstrap: async function (req, res) {
-        try {
-
-            var faculty = await db.findMany(Faculty, {});
-            var students = await db.findMany(Student, {});
-            var slots = await db.findMany(Slot, {});
-            var appointments = await db.findMany(Appointment, {});
-            var scheduleDocs = await db.findMany(Schedule, {});
-
-            var schedules = {};
-            for (var i = 0; i < scheduleDocs.length; i++) {
-                var doc = scheduleDocs[i];
-                schedules[doc.facultyId] = {
-                    weekly: doc.weekly,
-                    exceptions: doc.exceptions || [],
-                    location: doc.location,
-                    weeks: doc.weeks || 4
-                };
-            }
-
-            res.send({
-                ok: true,
-                faculty: faculty,
-                students: students,
-                slots: slots,
-                appointments: appointments,
-                schedules: schedules
-            });
-        } catch (err) {
-            console.error('Error loading bootstrap data:', err);
-            res.status(500).send({
-                ok: false,
-                error: 'Failed to load application data from the database.'
-            });
-        }
+    // GET / - landing page (views/index.hbs)
+    getHome: function (req, res) {
+        return res.render('index', { title: 'FacultyConnect' });
     },
 
+    // GET /login - views/login.hbs
+    getLogin: function (req, res) {
+        if (req.user) {
+            return res.redirect(auth.homeFor(req.user.role));
+        }
+        return res.render('login', {
+            title: 'Sign in',
+            email: http.str(req.query.email)
+        });
+    },
+
+    // POST /login - checks the email and password, then stores the user id in a cookie
     postLogin: async function (req, res) {
         try {
 
-            var email = (req.body.email || '').trim().toLowerCase();
-            var query = { email: email };
+            var email = http.str(req.body.email).toLowerCase();
+            var password = typeof req.body.password === 'string' ? req.body.password : '';
 
-            var result = await db.findOne(User, query);
-
-            if (result != null) {
-                return res.send({
-                    ok: true,
-                    role: result.role,
-                    user: result
-                });
-            } else {
-                return res.send({
-                    ok: false,
-                    error: 'No account found for that email address.'
+            if (!email || !password) {
+                return res.status(400).render('login', {
+                    title: 'Sign in',
+                    email: email,
+                    error: 'Enter your email address and password.'
                 });
             }
+
+            var result = await db.findOne(User, { email: email });
+
+            if (result == null || result.pw !== password) {
+                return res.status(401).render('login', {
+                    title: 'Sign in',
+                    email: email,
+                    error: 'Incorrect email address or password.'
+                });
+            }
+
+            auth.signIn(res, result);
+            return res.redirect(auth.homeFor(result.role));
         } catch (err) {
             console.error('Error during login:', err);
-            return res.status(500).send({
-                ok: false,
-                error: 'Unable to sign in right now.'
-            });
+            return http.sendError(res, 500, 'Unable to sign in right now.');
         }
+    },
+
+    // GET or POST /logout - clears the cookie and goes back to the landing page
+    logout: function (req, res) {
+        auth.signOut(res);
+        return res.redirect('/');
+    },
+
+    // GET /student/help - views/student/help.hbs
+    getStudentHelp: function (req, res) {
+        return res.render('student/help', { title: 'Help' });
+    },
+
+    // GET /faculty/help - views/faculty/help.hbs
+    getFacultyHelp: function (req, res) {
+        return res.render('faculty/help', { title: 'Help' });
     }
 
 };

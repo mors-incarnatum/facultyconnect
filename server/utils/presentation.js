@@ -317,7 +317,72 @@ function hasActiveHolder(appointments, slot, now) {
     return false;
 }
 
+const UNIVERSITY = 'De La Salle University';
+
+const SEMESTER = 'Term 1, AY 2026\u20132027';
+
+const DEPARTMENTS = [
+    'Software Technology',
+    'Information Technology',
+    'Computer Technology'
+];
+
+const STATUSES = ['pending', 'confirmed', 'completed', 'declined', 'cancelled'];
+
+const AUTO_DECLINED_MESSAGE = 'This request was automatically declined because it was not accepted 24 hours before the consultation.';
+
+const REQUEST_CLOSED_MESSAGE = 'Requests for this time closed 24 hours before the consultation, so it can no longer be booked. Choose a later time.';
+
+function isCurrentAppointment(appointment, slot, now) {
+    return Boolean(
+        appointment != null
+        && slot != null
+        && ACTIVE.indexOf(appointment.status) !== -1
+        && !clock.hasEnded(slot, now)
+    );
+}
+
+function formatDeadline(slot) {
+    var d = new Date(requestDeadline(slot));
+    var iso = format.toIso(d);
+    var time = d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+    return format.fmtShort(iso) + ', ' + time;
+}
+
+function applyAutoDecline(appointments, slotsById, now) {
+    return appointments.map(function (appointment) {
+        if (appointment.status !== 'pending') {
+            return appointment;
+        }
+        var slot = slotsById[appointment.slotId] || null;
+        if (shouldAutoDecline(appointment, slot, now)) {
+            return Object.assign({}, appointment, { status: 'declined', autoDeclined: true });
+        }
+        return appointment;
+    });
+}
+
+function modeLabel(slot) {
+    return slot && slot.mode === 'online' ? 'Online' : 'In person';
+}
+
+function topicLine(appointment) {
+    return appointment.topic ? appointment.subject + ' \u00b7 ' + appointment.topic : 'No topic added';
+}
+
 const presentation = {
+    ACTIVE: ACTIVE,
+    STATUSES: STATUSES,
+    UNIVERSITY: UNIVERSITY,
+    SEMESTER: SEMESTER,
+    DEPARTMENTS: DEPARTMENTS,
+    AUTO_DECLINED_MESSAGE: AUTO_DECLINED_MESSAGE,
+    REQUEST_CLOSED_MESSAGE: REQUEST_CLOSED_MESSAGE,
+    isCurrentAppointment: isCurrentAppointment,
+    formatDeadline: formatDeadline,
+    applyAutoDecline: applyAutoDecline,
+    modeLabel: modeLabel,
+    topicLine: topicLine,
     requestDeadline: requestDeadline,
     isRequestOpen: isRequestOpen,
     shouldAutoDecline: shouldAutoDecline,

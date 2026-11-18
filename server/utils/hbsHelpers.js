@@ -39,6 +39,10 @@ const helpers = {
         return Array.isArray(list) && list.indexOf(value) !== -1;
     },
 
+    startsWith: function (text, prefix) {
+        return typeof text === 'string' && typeof prefix === 'string' && text.indexOf(prefix) === 0;
+    },
+
     join: function (list, separator) {
         if (!Array.isArray(list)) {
             return '';

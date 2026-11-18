@@ -507,7 +507,8 @@ const facultyController = {
                         status: holder ? holder.status : 'available',
                         modeLabel: presentation.modeLabel(slot),
                         canEdit: !holder && !history,
-                        canRemove: !holder && !history
+                        canRemove: !holder && !history,
+                        closedToRequests: !holder && clock.isFutureSlot(slot, now) && !presentation.isRequestOpen(slot, now)
                     };
                 })
                 .filter(function (entry) {
@@ -544,6 +545,15 @@ const facultyController = {
                     }
                     day.entries.push(entry);
                 });
+
+            // Per-day totals shown in each day's heading.
+            days.forEach(function (day) {
+                day.slotCount = day.entries.length;
+                day.reservedCount = day.entries.filter(function (entry) {
+                    return Boolean(entry.holder);
+                }).length;
+                day.availableCount = day.slotCount - day.reservedCount;
+            });
 
             return res.render('faculty/published-slots', {
                 title: 'My consultation availability',

@@ -1,0 +1,108 @@
+{{!--
+    GET /faculty/availability/slots?date=&status=&week=
+    Context: filters {date, status}, hasFilters, statusOptions, totalSlots, weekOptions [{value, label, selected}],
+             weekNumber, weekCount, prevWeek, nextWeek, days [{date, slotCount, availableCount, reservedCount, entries[]}].
+    Each entry: slot, holder, status, modeLabel, canEdit, canRemove, closedToRequests.
+    Filters and week buttons are plain GET links and forms, so the URL holds the state.
+--}}
+<div class="page-head">
+    <h1>My consultation availability</h1>
+    <p>Create, review, edit, or remove the dates and times students can request.</p>
+</div>
+
+{{#> availability-tabs active="slots"}}
+    <a class="btn primary" href="/faculty/availability?add=1">+ Add availability</a>
+{{/availability-tabs}}
+
+<form class="filters" method="get" action="/faculty/availability/slots">
+    <label class="field">
+        <span>Filter slots by date</span>
+        <input type="date" name="date" value="{{filters.date}}" onchange="this.form.submit()">
+    </label>
+    <label class="field">
+        <span>Filter slot status</span>
+        <select name="status" onchange="this.form.submit()">
+            <option value=""{{#unless filters.status}} selected{{/unless}}>All statuses</option>
+            {{#each statusOptions}}
+            <option value="{{value}}"{{#if selected}} selected{{/if}}>{{cap value}}</option>
+            {{/each}}
+        </select>
+    </label>
+    <noscript><button type="submit" class="btn">Apply filters</button></noscript>
+    {{#if hasFilters}}<a class="btn" href="/faculty/availability/slots">Clear filters</a>{{/if}}
+</form>
+
+<section class="card published-slots">
+    <h2>Published time slots</h2>
+    <p class="muted faculty-spaced">
+        Browse by week and expand a day to manage its slots. Each slot allows one appointment.
+    </p>
+
+    {{#unless weekCount}}
+    <div class="empty">
+        <h3>{{#if hasFilters}}No matching slots{{else}}No published slots{{/if}}</h3>
+        <p class="muted">
+            {{#if hasFilters}}Try another date or status, or clear the filters.{{else}}Add a time or publish weekly hours to get started.{{/if}}
+        </p>
+    </div>
+    {{else}}
+    <form class="published-week-navigation" method="get" action="/faculty/availability/slots" role="group" aria-label="Published slot weeks">
+        <input type="hidden" name="date" value="{{filters.date}}">
+        <input type="hidden" name="status" value="{{filters.status}}">
+        {{#if prevWeek}}
+        <a class="btn" href="{{url "/faculty/availability/slots" "" "date" filters.date "status" filters.status "week" prevWeek}}">← Previous week</a>
+        {{else}}
+        <button type="button" class="btn" disabled>← Previous week</button>
+        {{/if}}
+        <label class="field">
+            <span>Published week</span>
+            <select name="week" onchange="this.form.submit()">
+                {{#each weekOptions}}
+                <option value="{{value}}"{{#if selected}} selected{{/if}}>{{label}}</option>
+                {{/each}}
+            </select>
+        </label>
+        {{#if nextWeek}}
+        <a class="btn" href="{{url "/faculty/availability/slots" "" "date" filters.date "status" filters.status "week" nextWeek}}">Next week →</a>
+        {{else}}
+        <button type="button" class="btn" disabled>Next week →</button>
+        {{/if}}
+        <noscript><button type="submit" class="btn">Go</button></noscript>
+    </form>
+    <p class="muted small" role="status">
+        Week {{weekNumber}} of {{weekCount}} with matching slots · {{totalSlots}} {{plural totalSlots "slot"}} total
+    </p>
+
+    <div class="published-days">
+        {{#each days}}
+        <details class="published-day" name="published-slot-day">
+            <summary>
+                <span class="published-day-title">{{fmtShort date}}</span>
+                <span class="published-day-counts">{{slotCount}} {{plural slotCount "slot"}} · {{availableCount}} available · {{reservedCount}} reserved</span>
+            </summary>
+            <div class="published-day-slots">
+                {{#each entries}}
+                <div class="appt-row">
+                    <div>
+                        <strong>{{fmtRange slot.start slot.end}}</strong>
+                        <span class="meta">{{this.modeLabel}} · {{slot.location}}{{#if closedToRequests}} · Closed to requests (less than 24 hours away){{/if}}</span>
+                    </div>
+                    {{> badge status=status}}
+                    <div class="slot-actions">
+                        {{#if holder}}
+                        <a class="btn" href="/faculty/consultations/{{holder.id}}">View appointment</a>
+                        {{else if canEdit}}
+                        <a class="btn" href="/faculty/availability/{{slot.id}}/edit">Edit</a>
+                        <a class="btn" href="/faculty/availability/{{slot.id}}/remove">Remove</a>
+                        {{else}}
+                        <span class="muted small">History retained</span>
+                        {{/if}}
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+        </details>
+        {{/each}}
+    </div>
+    {{/unless}}
+</section>

@@ -1,0 +1,32 @@
+{{!--
+    GET /faculty/availability/:id/remove
+    Context: slot, modeLabel, removable, occupied, hasHistory.
+    The remove button is a POST form; the server checks again that the slot is free and has no history.
+--}}
+<div class="page-head">
+    <h1>Remove this time slot?</h1>
+    <p>Review the schedule before removing it from your published availability.</p>
+</div>
+
+<div class="card">
+    <h2>{{fmtShort slot.date}} · {{fmtRange slot.start slot.end}}</h2>
+    <p class="muted faculty-spaced">{{this.modeLabel}} · {{slot.location}}</p>
+    {{#if removable}}
+    {{> badge status="available"}}
+    {{else if occupied}}
+    <span class="badge">Reserved</span>
+    {{else}}
+    <span class="badge">History retained</span>
+    {{/if}}
+    <p class="faculty-spaced">
+        {{#if occupied}}This time is reserved. Manage its appointment before changing availability.
+        {{else if hasHistory}}This slot has appointment history and must be retained.
+        {{else}}Students will no longer be able to request this time slot.{{/if}}
+    </p>
+    <div class="btn-row">
+        <form method="post" action="/faculty/availability/{{slot.id}}/remove" style="margin: 0">
+            <button type="submit" class="btn danger"{{#unless removable}} disabled{{/unless}}>Remove time slot</button>
+        </form>
+        <a class="btn" href="/faculty/availability/slots">Keep time slot</a>
+    </div>
+</div>

@@ -1,0 +1,11 @@
+{{!--
+    Tab bar shared by the two availability pages. Parameters:
+      active  "weekly" (Weekly hours & exceptions) or "slots" (Published slots)
+    Call as a block to add extra buttons after the two tabs:
+      {{#> availability-tabs active="slots"}}<a class="btn primary" href="...">+ Add availability</a>{{/availability-tabs}}
+--}}
+<nav class="availability-tabs" aria-label="Availability views">
+    <a class="btn {{#if (eq active "weekly")}}primary{{/if}}" href="/faculty/availability"{{#if (eq active "weekly")}} aria-current="page"{{/if}}>Weekly hours &amp; exceptions</a>
+    <a class="btn {{#if (eq active "slots")}}primary{{/if}}" href="/faculty/availability/slots"{{#if (eq active "slots")}} aria-current="page"{{/if}}>Published slots</a>
+    {{> @partial-block}}
+</nav>

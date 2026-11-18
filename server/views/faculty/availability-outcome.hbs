@@ -1,0 +1,24 @@
+{{!--
+    GET /faculty/availability/saved?slot=      (a slot was added or edited)
+    GET /faculty/availability/removed?date=&start=&end=   (a slot was removed)
+    Context: removed (true/false), slot (may be missing), modeLabel (saved page only).
+--}}
+<div class="page-head">
+    <h1>{{#if removed}}Time slot removed{{else}}Availability saved{{/if}}</h1>
+    <p>{{#if removed}}This selected slot has been removed from published availability.{{else}}Your consultation schedules are ready for students to view.{{/if}}</p>
+</div>
+
+<div class="notice">{{#if removed}}Removal complete{{else}}Your availability is up to date{{/if}}</div>
+
+<div class="card faculty-spaced">
+    {{#if slot}}
+    <h2>{{#if removed}}Removed consultation slot{{else}}Published consultation slot{{/if}}</h2>
+    <p class="faculty-spaced">{{fmtShort slot.date}} · {{fmtRange slot.start slot.end}}</p>
+    {{#unless removed}}<p class="muted">One appointment{{#if slot.location}} · {{slot.location}}{{/if}}</p>{{/unless}}
+    {{else}}
+    <p>Review your current published availability below.</p>
+    {{/if}}
+    <div class="btn-row">
+        <a class="btn primary" href="/faculty/availability/slots">Back to availability</a>
+    </div>
+</div>

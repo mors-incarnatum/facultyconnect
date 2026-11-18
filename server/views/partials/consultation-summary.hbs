@@ -1,0 +1,25 @@
+{{!--
+    Student, time and topic summary of one consultation. Used by consultation-details and consultation-updated.
+    Call as a block so extra content can go underneath:
+      {{#> consultation-summary appointment=appointment}} ...extra content... {{/consultation-summary}}
+--}}
+<div class="card detail consultation-summary">
+    {{> badge status=appointment.status}}
+    <div class="consultation-student">
+        {{> avatar person=appointment.student size="lg"}}
+        <div>
+            <h3>
+                {{appointment.student.name}}
+                {{#if appointment.student.pronouns}}<span class="profile-pronouns" style="margin-left: 6px; font-size: 11px">{{appointment.student.pronouns}}</span>{{/if}}
+            </h3>
+            <p class="muted small">{{#if appointment.student.program}}{{appointment.student.program}}{{else}}Student{{/if}}</p>
+            <p class="muted small">{{appointment.student.email}}{{#if appointment.student.yearLevel}} · {{appointment.student.yearLevel}}{{/if}}</p>
+        </div>
+    </div>
+    <h2>{{fmtLong appointment.slot.date}}</h2>
+    <p class="consultation-time">{{fmtRange appointment.slot.start appointment.slot.end}}</p>
+    <p class="muted faculty-spaced">{{appointment.modeLabel}} · {{appointment.slot.location}}</p>
+    <strong>{{appointment.subject}}{{#if appointment.topic}} · {{appointment.topic}}{{/if}}</strong>
+    <p class="muted faculty-spaced">{{#if appointment.topic}}{{appointment.description}}{{else}}No topic added.{{/if}}</p>
+    {{> @partial-block}}
+</div>

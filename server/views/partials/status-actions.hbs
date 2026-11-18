@@ -1,0 +1,48 @@
+{{!--
+    Accept / decline / complete / cancel buttons for one consultation. Parameters:
+      appointment  a record from viewdata.detail (needs id, status, autoDeclined, actions[], deadline, slotEnded)
+      message      the "automatically declined" text (autoDeclinedMessage)
+      compact      "true" for the small overview cards (no helper text, buttons in a row)
+    Each button is a small form that POSTs the new status to /faculty/consultations/:id/status.
+    Decline and cancel first open a confirmation (a <details> element, so it works without JavaScript).
+    The server decides which changes are allowed, so a stale page cannot make an invalid change.
+--}}
+{{#if appointment.autoDeclined}}
+<div class="stack">
+    <p class="notice warn" role="status">{{message}}</p>
+    <div class="{{#if compact}}btn-row{{else}}stack{{/if}}">
+        <button type="button" class="btn primary" disabled>Accept request</button>
+        <button type="button" class="btn" disabled>Decline request</button>
+    </div>
+</div>
+{{else}}
+<div class="{{#if compact}}btn-row{{else}}stack{{/if}} status-actions">
+    {{#each appointment.actions}}
+    {{#if needsConfirm}}
+    <details class="status-confirm">
+        <summary class="btn">{{label}}</summary>
+        <div class="notice warn status-confirmation" role="group" aria-label="Confirm status change">
+            <p>{{label}}? The student's reserved time will be released.</p>
+            <form method="post" action="/faculty/consultations/{{../appointment.id}}/status">
+                <input type="hidden" name="status" value="{{status}}">
+                <button type="submit" class="btn danger">Confirm {{#if (eq status "declined")}}decline{{else}}cancellation{{/if}}</button>
+            </form>
+        </div>
+    </details>
+    {{else}}
+    <form method="post" action="/faculty/consultations/{{../appointment.id}}/status">
+        <input type="hidden" name="status" value="{{status}}">
+        <button type="submit" class="btn {{#if primary}}primary{{/if}}">{{label}}</button>
+    </form>
+    {{/if}}
+    {{/each}}
+    {{#unless compact}}
+    {{#if (eq appointment.status "pending")}}{{#if appointment.actions.length}}
+    <p class="muted small">Accept or decline by {{appointment.deadline}}. After that the request is automatically declined.</p>
+    {{/if}}{{/if}}
+    {{#if (eq appointment.status "confirmed")}}{{#unless appointment.slotEnded}}
+    <p class="muted small">Completion becomes available when the consultation ends.</p>
+    {{/unless}}{{/if}}
+    {{/unless}}
+</div>
+{{/if}}

@@ -1,0 +1,24 @@
+{{!--
+    GET /faculty/consultations/:id/updated
+    Context: appointment (record). Shown after the status change succeeded.
+--}}
+<div class="page-head">
+    <h1>
+        {{#if (eq appointment.status "confirmed")}}Request accepted
+        {{else if (eq appointment.status "declined")}}Request declined
+        {{else if (eq appointment.status "completed")}}Consultation completed
+        {{else if (eq appointment.status "cancelled")}}Consultation cancelled
+        {{else}}Consultation request{{/if}}
+    </h1>
+    <p>The appointment status is recorded for the student and faculty.</p>
+</div>
+
+{{#> consultation-summary appointment=appointment}}
+    <div class="notice">
+        This consultation is marked {{appointment.status}} in the appointment record.
+    </div>
+    <div class="btn-row">
+        <a class="btn primary" href="/faculty/consultations">View consultations</a>
+        <a class="btn" href="/faculty">Faculty overview</a>
+    </div>
+{{/consultation-summary}}

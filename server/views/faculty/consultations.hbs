@@ -1,0 +1,43 @@
+{{!--
+    GET /faculty/consultations?status=
+    Context: status, statusOptions [{value, label, selected}], list (consultation records), backQuery.
+    The filter is a normal GET form, so the URL holds the status. Each row links to the details page
+    with ?back= so "Back to consultations" returns to the same filtered list.
+--}}
+<div class="page-head">
+    <h1>Consultations</h1>
+    <p>Review requests, manage upcoming consultations, and view previous appointment records.</p>
+</div>
+
+<form class="filters" method="get" action="/faculty/consultations">
+    <select name="status" aria-label="Filter consultations by status" onchange="this.form.submit()">
+        <option value=""{{#unless status}} selected{{/unless}}>All statuses</option>
+        {{#each statusOptions}}
+        <option value="{{value}}"{{#if selected}} selected{{/if}}>{{label}}</option>
+        {{/each}}
+    </select>
+    <noscript><button type="submit" class="btn">Filter</button></noscript>
+</form>
+
+<section class="card consultation-records">
+    <h2>All consultation records</h2>
+    <p class="muted faculty-spaced">Pending, confirmed, completed, declined, and cancelled appointments.</p>
+    {{#each list}}
+    <div class="appt-row">
+        <div style="display: flex; gap: 12px; align-items: center; min-width: 0">
+            {{> avatar person=student size="sm"}}
+            <div style="min-width: 0">
+                <strong>{{student.name}} · {{subject}} · {{#if topic}}{{topic}}{{else}}No topic added{{/if}}</strong>
+                <span class="meta">{{fmtShort slot.date}} · {{fmtRange slot.start slot.end}}</span>
+            </div>
+        </div>
+        {{> badge status=status}}
+        <a class="btn" href="/faculty/consultations/{{id}}?back={{../backQuery}}">View details</a>
+    </div>
+    {{else}}
+    <div class="empty">
+        <h3>No consultations here</h3>
+        <p class="muted">Try another status filter.</p>
+    </div>
+    {{/each}}
+</section>

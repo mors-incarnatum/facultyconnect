@@ -207,3 +207,26 @@ a.appt-row {
 .faculty-week-section .section-title {
   margin-bottom: 16px;
 }
+
+/* Faculty status buttons: each button is a small form; decline and cancel open a confirmation first. */
+.status-actions form,
+.status-confirm form {
+  margin: 0;
+}
+.status-confirm summary {
+  list-style: none;
+  cursor: pointer;
+  display: inline-flex;
+}
+.status-confirm summary::-webkit-details-marker {
+  display: none;
+}
+.status-confirm[open] summary {
+  display: none;
+}
+.status-confirmation {
+  margin: 0;
+}
+.status-confirmation p {
+  margin: 0 0 12px;
+}

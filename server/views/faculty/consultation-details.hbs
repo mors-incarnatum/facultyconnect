@@ -1,0 +1,27 @@
+{{!--
+    GET /faculty/consultations/:id?back=
+    Context: appointment (record), showActions, backTo, autoDeclinedMessage.
+--}}
+<div class="page-head">
+    <h1>{{#if (eq appointment.status "pending")}}Consultation request{{else}}Consultation details{{/if}}</h1>
+    <p>Review the student’s topic and update the appointment status.</p>
+</div>
+
+<div class="two-col consultation-detail-grid">
+    {{#> consultation-summary appointment=appointment}}{{/consultation-summary}}
+
+    <aside class="card">
+        <h2>Update status</h2>
+        <p class="muted faculty-spaced">
+            {{#if appointment.isActive}}Choose the status that reflects this consultation.
+            {{else if appointment.autoDeclined}}The record is retained in your history.
+            {{else}}This consultation is {{appointment.status}}. The record is retained in your history.{{/if}}
+        </p>
+        {{#if showActions}}
+        {{> status-actions appointment=appointment message=autoDeclinedMessage}}
+        {{/if}}
+        <div class="btn-row">
+            <a class="btn block" href="{{backTo}}">Back to consultations</a>
+        </div>
+    </aside>
+</div>

@@ -35,7 +35,7 @@
                 <strong>{{subject}} · {{#if topic}}{{topic}}{{else}}No topic added{{/if}}</strong>
                 <p class="muted">{{description}}</p>
             </div>
-            {{!-- Batch 3B adds the Accept / Decline buttons here (status-actions partial). --}}
+            {{> status-actions appointment=this compact=true message=../autoDeclinedMessage}}
             <p class="faculty-spaced">
                 <a class="btn block" href="/faculty/consultations/{{id}}">View full request →</a>
             </p>

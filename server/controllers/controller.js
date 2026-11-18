@@ -2,6 +2,8 @@ const db = require('../models/db.js');
 
 const User = require('../models/UserModel.js');
 
+const Faculty = require('../models/FacultyModel.js');
+
 const auth = require('../utils/auth.js');
 
 const http = require('../utils/http.js');
@@ -13,8 +15,19 @@ const controller = {
     },
 
     // GET / - landing page (views/index.hbs)
-    getHome: function (req, res) {
-        return res.render('index', { title: 'FacultyConnect' });
+    getHome: async function (req, res) {
+        try {
+
+            var faculty = await db.findMany(Faculty, {}, '-pw');
+
+            return res.render('index', {
+                title: 'FacultyConnect',
+                faculty: faculty.slice(0, 3)
+            });
+        } catch (err) {
+            console.error('Error loading home page:', err);
+            return http.sendError(res, 500, 'Unable to load this page.');
+        }
     },
 
     // GET /login - views/login.hbs

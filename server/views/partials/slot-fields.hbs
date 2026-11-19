@@ -1,0 +1,32 @@
+{{!--
+    Fields for one consultation slot. Used by the add-slot dialog (faculty/availability) and the edit page (faculty/slot-form).
+    Parameters:
+      values  {date, start, end, mode, location}
+    Field names match what facultyController's slotFields() reads: date, start, end, mode, location.
+    public/js/availability.js moves the end time to start + 30 minutes when the start time changes.
+--}}
+<label class="field">
+    <span>Date (required)</span>
+    <input type="date" name="date" min="{{today}}" value="{{values.date}}" required>
+</label>
+<div class="field-row">
+    <label class="field">
+        <span>Start time (required)</span>
+        <input type="time" name="start" value="{{values.start}}" required>
+    </label>
+    <label class="field">
+        <span>End time (required)</span>
+        <input type="time" name="end" value="{{values.end}}" required>
+    </label>
+</div>
+<label class="field">
+    <span>Consultation mode</span>
+    <select name="mode">
+        <option value="in-person"{{selected values.mode "in-person"}}>In person</option>
+        <option value="online"{{selected values.mode "online"}}>Online</option>
+    </select>
+</label>
+<label class="field">
+    <span>Location / meeting details (required)</span>
+    <input type="text" name="location" value="{{values.location}}" required>
+</label>

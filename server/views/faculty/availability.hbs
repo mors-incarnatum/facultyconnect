@@ -1,0 +1,159 @@
+{{!--
+    GET /faculty/availability?add=1  (and the 400 re-render of POST /faculty/availability and POST /faculty/availability/slots)
+    Context: schedule {location, weeks, exceptions[], weekly[{index, day, enabled, intervals[{index, start, end}]}]},
+             weekOptions [{value, selected}], lastDate, slotForm, showAdd, slotError, error.
+
+    The weekly form is a normal POST with indexed field names (weekly[0][intervals][1][start] ...), so it saves without JavaScript.
+    public/js/availability.js adds: + Interval / Remove rows, "Copy to...", the add-slot dialog and the +30 min end time.
+    Without JavaScript: clear both times of a range to remove it, and the add-slot form shows at the top when ?add=1 is open.
+--}}
+<div class="page-head">
+    <h1>Availability manager</h1>
+    <p>Set weekly consultation hours, manage date exceptions, and add one-off availability.</p>
+</div>
+
+{{#> availability-tabs active="weekly"}}
+    <a class="btn primary" href="/faculty/availability?add=1" data-open-dialog="add-slot-dialog">+ Add availability</a>
+    <span class="schedule-state {{#if error}}dirty{{/if}}" role="status">{{#if error}}Unsaved changes · not published yet{{else}}Published schedule{{/if}}</span>
+{{/availability-tabs}}
+
+<form method="post" action="/faculty/availability" id="schedule-form">
+    {{#if error}}<div class="form-error" role="alert">{{error}}</div>{{/if}}
+    <div class="faculty-manager">
+        <section class="card recurring-hours">
+            <h2>Weekly recurring hours</h2>
+            <p class="muted small schedule-help">
+                Monday–Friday · 30-minute consultations · Campus local time · Publishing {{schedule.weeks}} {{plural schedule.weeks "week"}}
+            </p>
+            <noscript><p class="muted small">To remove an extra time range, clear both of its times and save.</p></noscript>
+
+            {{#each schedule.weekly}}
+            <div class="schedule-day" role="group" aria-label="{{day}} hours" data-day="{{index}}" data-name="{{day}}">
+                <span class="schedule-day-label">{{day}}</span>
+                <label class="btn day-toggle">
+                    <input type="checkbox" class="sr-only" name="weekly[{{index}}][enabled]"{{checked enabled}} aria-label="{{day}} availability">
+                    <span class="on" aria-hidden="true">● On</span>
+                    <span class="off" aria-hidden="true">○ Off</span>
+                </label>
+                <div class="schedule-intervals">
+                    {{#each intervals}}
+                    <div class="schedule-interval" data-interval="{{index}}">
+                        <label class="field time-field">
+                            <span>{{../day}} start {{add @index 1}}</span>
+                            <input type="time" name="weekly[{{../index}}][intervals][{{index}}][start]" value="{{start}}">
+                        </label>
+                        <label class="field time-field">
+                            <span>{{../day}} end {{add @index 1}}</span>
+                            <input type="time" name="weekly[{{../index}}][intervals][{{index}}][end]" value="{{end}}">
+                        </label>
+                        <div class="interval-actions">
+                            {{#if @first}}
+                            <button type="button" class="btn interval-add" data-action="add-interval" data-js-only hidden aria-label="Add {{../day}} interval">+ Interval</button>
+                            <button type="button" class="btn copy-btn" data-action="toggle-copy" data-js-only hidden aria-expanded="false" aria-label="Copy {{../day}} hours to other days">Copy to...</button>
+                            {{else}}
+                            <button type="button" class="btn interval-remove" data-action="remove-interval" data-js-only hidden aria-label="Remove {{../day}} interval {{add @index 1}}">Remove</button>
+                            {{/if}}
+                        </div>
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+            {{/each}}
+
+            <div class="field-row">
+                <label class="field">
+                    <span>Location (required)</span>
+                    <input type="text" name="location" value="{{schedule.location}}" required>
+                </label>
+                <label class="field">
+                    <span>Publish schedule for</span>
+                    <select name="weeks">
+                        {{#each weekOptions}}
+                        <option value="{{value}}"{{#if selected}} selected{{/if}}>{{value}} {{plural value "week"}}{{#if (eq value 4)}} (1 month · default){{/if}}{{#if (eq value 8)}} (half term){{/if}}{{#if (eq value 12)}} (full term / semester){{/if}}</option>
+                        {{/each}}
+                    </select>
+                </label>
+            </div>
+
+            <div class="schedule-protection muted small">
+                <strong>Occupied slots stay protected</strong>
+                <p>
+                    Pending, confirmed, and historical appointment slots stay unchanged, including within blocked date ranges. Exceptions remove only unreferenced times in the next {{schedule.weeks}} {{plural schedule.weeks "week"}}.
+                </p>
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>Date-specific overrides</h2>
+            <p class="muted faculty-spaced">Block exam weeks, holidays, or one day.</p>
+            <label class="field">
+                <span>Exception start date</span>
+                <input type="date" name="newException[start]" min="{{today}}" max="{{lastDate}}">
+            </label>
+            <label class="field">
+                <span>Exception end date</span>
+                <input type="date" name="newException[end]" min="{{today}}" max="{{lastDate}}">
+            </label>
+            <button class="btn block" type="submit">Add exception</button>
+            <p class="muted small faculty-spaced">Adding an exception saves and publishes your schedule.</p>
+
+            <ul class="exception-list">
+                {{#each schedule.exceptions}}
+                <li>
+                    <span>{{#if start}}{{fmtShort start}} – {{fmtShort end}}{{else}}{{fmtShort this}}{{/if}} · Unavailable</span>
+                    <input type="hidden" name="exceptions[{{@index}}][start]" value="{{#if start}}{{start}}{{else}}{{this}}{{/if}}">
+                    <input type="hidden" name="exceptions[{{@index}}][end]" value="{{#if end}}{{end}}{{else}}{{this}}{{/if}}">
+                    <label class="link-btn exception-remove">
+                        <input type="checkbox" name="exceptions[{{@index}}][remove]"> Remove on save
+                    </label>
+                </li>
+                {{/each}}
+            </ul>
+            <p class="muted small">
+                {{#if schedule.exceptions.length}}{{schedule.exceptions.length}} date {{plural schedule.exceptions.length "exception"}}.{{else}}No exceptions added yet.{{/if}}
+                Save changes publishes the next {{schedule.weeks}} {{plural schedule.weeks "week"}}.
+            </p>
+        </section>
+    </div>
+
+    <div class="draft-controls">
+        <button class="btn primary" type="submit">Save changes</button>
+        <a class="btn" href="/faculty/availability">Discard changes</a>
+    </div>
+</form>
+
+{{!-- One extra time range; availability.js fills in the placeholders and inserts it into a day. --}}
+<template id="interval-template">
+    <div class="schedule-interval" data-interval="__N__">
+        <label class="field time-field">
+            <span>__DAYNAME__ start __NUM__</span>
+            <input type="time" name="weekly[__DAY__][intervals][__N__][start]" value="__START__">
+        </label>
+        <label class="field time-field">
+            <span>__DAYNAME__ end __NUM__</span>
+            <input type="time" name="weekly[__DAY__][intervals][__N__][end]" value="__END__">
+        </label>
+        <div class="interval-actions">
+            <button type="button" class="btn interval-remove" data-action="remove-interval" aria-label="Remove __DAYNAME__ interval __NUM__">Remove</button>
+        </div>
+    </div>
+</template>
+
+<dialog class="modal-dialog" id="add-slot-dialog" aria-labelledby="add-slot-title"{{#if showAdd}} open{{/if}}>
+    <div class="modal-panel">
+        <div>
+            <h2 id="add-slot-title">Add availability slot</h2>
+            <p class="muted small">Add a one-off 30-minute consultation slot on a specific date.</p>
+        </div>
+        <form method="post" action="/faculty/availability/slots" data-auto-end>
+            {{#if slotError}}<div class="form-error" role="alert">{{slotError}}</div>{{/if}}
+            {{> slot-fields values=slotForm}}
+            <div class="modal-actions">
+                <a class="btn" href="/faculty/availability" data-close-dialog>Cancel</a>
+                <button type="submit" class="btn primary">+ Add consultation slot</button>
+            </div>
+        </form>
+    </div>
+</dialog>
+
+<script src="/js/availability.js"></script>

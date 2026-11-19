@@ -230,3 +230,50 @@ a.appt-row {
 .status-confirmation p {
   margin: 0 0 12px;
 }
+
+/* Availability manager: weekly hours form (works without JavaScript; availability.js adds the extra buttons). */
+
+/* The On / Off switch is a checkbox inside a label; :has() shows its state, so no script is needed. */
+.day-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+  white-space: nowrap;
+}
+.day-toggle .on { display: none; }
+.day-toggle:has(input:checked) .on { display: inline; }
+.day-toggle:has(input:checked) .off { display: none; }
+.day-toggle:has(input:checked) {
+  background: var(--green);
+  border-color: var(--green);
+  color: #fff;
+}
+.day-toggle:has(input:focus-visible) {
+  outline: 2px solid var(--green);
+  outline-offset: 2px;
+}
+
+/* A day that is switched off keeps its saved times but looks inactive. */
+.schedule-day:not(:has(.day-toggle input:checked)) .schedule-intervals {
+  opacity: 0.55;
+}
+
+/* Buttons that need JavaScript stay hidden until availability.js shows them. */
+[data-js-only][hidden] {
+  display: none !important;
+}
+
+/* Exceptions: "Remove on save" is a checkbox; ticking it strikes the line through until the form is saved. */
+.exception-remove {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+.exception-list li:has(input[type="checkbox"]:checked) > span {
+  text-decoration: line-through;
+  opacity: 0.6;
+}

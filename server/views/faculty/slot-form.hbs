@@ -1,0 +1,49 @@
+{{!--
+    GET /faculty/availability/:id/edit  (and the 400 re-render of POST /faculty/availability/:id/edit)
+    Context: slot, values, editable, occupied, hasHistory, error.
+    Adding a new slot happens in the dialog on faculty/availability; this page edits one existing slot.
+--}}
+<div class="page-head">
+    <h1>Edit availability</h1>
+    <p>Set the date and time students can request.</p>
+</div>
+
+<div class="toolbar">
+    <a href="/faculty/availability/slots">← Back to my availability</a>
+</div>
+
+<div class="two-col">
+    <form class="card" method="post" action="/faculty/availability/{{slot.id}}/edit" data-auto-end>
+        <h2 class="section-title">Consultation schedule</h2>
+        {{#if error}}<div class="form-error" role="alert">{{error}}</div>{{/if}}
+        {{#if editable}}
+        {{> slot-fields values=values}}
+        <p class="muted small">One appointment per slot · 30-minute consultations.</p>
+        <div class="btn-row">
+            <button class="btn primary" type="submit">Save changes</button>
+            <a class="btn" href="/faculty/availability/slots">Cancel</a>
+        </div>
+        {{else if occupied}}
+        <div class="notice warn">
+            This slot is reserved. Manage its appointment from <a href="/faculty/consultations">Consultations</a>.
+        </div>
+        {{else}}
+        <div class="notice warn">
+            This slot has appointment history and must be retained. Create a new slot instead.
+        </div>
+        <div class="btn-row">
+            <a class="btn" href="/faculty/availability/slots">Back to my availability</a>
+        </div>
+        {{/if}}
+    </form>
+
+    <aside class="card tint">
+        <h2>Keep availability current</h2>
+        <p class="faculty-spaced">
+            Students see published dates and time slots when they browse your profile. Changes are reflected in their availability view.
+        </p>
+        <p class="muted small">Review any existing appointment before changing an occupied slot.</p>
+    </aside>
+</div>
+
+<script src="/js/availability.js"></script>
